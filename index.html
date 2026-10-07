@@ -1,0 +1,826 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>한국 규제와 제품 연결</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: cubig.ai home language — centered hero, alternating white / lavender sections, list → detail pages. Single light theme, matching cubig.ai. */
+:root{
+  color-scheme:light;
+  --ink:#1c1c1c; --body:rgba(28,28,28,.80); --muted:#5f5f5d; --faint:#8d8c88;
+  --bg:#ffffff; --alt:#f8f7fc; --tint:#f4f2ff; --foot:#fafaf9;
+  --line:rgba(28,28,28,.09); --line2:rgba(28,28,28,.16);
+  --purple:#8a77e0; --purple-ink:#6f50cc; --purple-soft:rgba(138,119,224,.12);
+  --syn:#0f7f74; --syn-bg:#e5f4f1; --dts:#b85a17; --dts-bg:#fbeee3;
+  --risk:#b4650f; --risk-bg:#fdf3e4;
+  --ok:#1d7a50; --ok-bg:#e6f4ec; --plan:#2a62c2; --plan-bg:#e8effb;
+  --delay:#9a6410; --delay-bg:#fbf2dd; --pend:#5f5f6e; --pend-bg:#eeeef2;
+  --f:"Manrope","Noto Sans KR",ui-sans-serif,system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  --w:1216px;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:88px}
+body{background:var(--bg);color:var(--ink);font-family:var(--f);font-size:16px;line-height:1.6;margin:0;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--purple);outline-offset:2px;border-radius:6px}
+.wrap{max-width:calc(var(--w) + 64px);margin:0 auto;padding-inline:32px}
+svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ico{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:10px;background:var(--tint);color:var(--purple-ink);flex:none}
+.ico svg.i{width:20px;height:20px}
+.ico.sm{width:30px;height:30px;border-radius:8px}
+.ico.sm svg.i{width:16px;height:16px}
+.ico.risk{background:var(--risk-bg);color:var(--risk)}
+.ico.ok{background:var(--ok-bg);color:var(--ok)}
+.ico.syntitan{background:var(--syn-bg);color:var(--syn)}
+.ico.dts{background:var(--dts-bg);color:var(--dts)}
+.ico.grey{background:var(--alt);color:var(--muted)}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;gap:24px;height:64px}
+.logo{display:flex;align-items:center;gap:12px;white-space:nowrap}
+.logo b{font-weight:600;letter-spacing:.32em;font-size:15px}
+.logo span{font-size:13px;color:var(--muted);padding-left:12px;border-left:1px solid var(--line2)}
+.menu{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.menu a{display:flex;align-items:center;gap:7px;padding:8px 12px;font-size:14.5px;font-weight:500;color:var(--muted);border-radius:8px;white-space:nowrap}
+.menu a svg.i{width:16px;height:16px}
+.menu a:hover{color:var(--ink);background:var(--alt)}
+.menu a.on{color:var(--purple-ink);background:var(--tint);font-weight:700}
+.tools{margin-left:auto;display:flex;align-items:center;gap:10px}
+.gsearch{position:relative;width:250px}
+.gsearch input{width:100%;height:38px;border:1px solid var(--line2);border-radius:8px;padding:0 12px 0 36px;font-size:14px;background:#fff}
+.gsearch input:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 3px var(--purple-soft)}
+.gsearch > svg.i{position:absolute;left:11px;top:10px;width:17px;height:17px;color:var(--faint)}
+.results{position:absolute;right:0;top:46px;width:min(520px,calc(100vw - 32px));max-height:70vh;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 40px rgba(28,28,28,.12);padding:8px}
+.results h4{margin:10px 10px 4px;font-size:12px;font-weight:600;color:var(--purple-ink);letter-spacing:.04em}
+.results a{display:block;padding:8px 10px;border-radius:8px;font-size:14px}
+.results a:hover,.results a:focus{background:var(--alt)}
+.results a small{display:block;color:var(--muted);font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.results .none{padding:14px 10px;color:var(--muted);font-size:14px}
+.lang{display:flex;border:1px solid var(--line2);border-radius:8px;padding:3px;gap:2px;background:#fff}
+.lang button{border:0;background:none;padding:4px 10px;border-radius:6px;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--ink);color:#fff}
+
+/* type */
+.eyebrow{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--purple-ink);margin:0 0 14px}
+.pill-eb{display:inline-block;font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--purple);background:var(--purple-soft);padding:8px 20px;border-radius:999px;margin:0 0 26px}
+h1,h2,h3{margin:0;text-wrap:balance;color:var(--ink)}
+.h2{font-size:clamp(26px,3.2vw,36px);font-weight:600;letter-spacing:-.035em;line-height:1.28}
+.lead{font-size:17px;line-height:1.7;color:var(--body);max-width:62ch;margin:14px 0 0}
+section.sec{padding-block:clamp(56px,8vw,84px)}
+section.alt{background:var(--alt)}
+.sec-h{display:flex;flex-wrap:wrap;gap:16px 32px;align-items:flex-end;justify-content:space-between;margin-bottom:34px}
+.more{display:inline-flex;align-items:center;gap:6px;font-size:15px;font-weight:600;color:var(--purple-ink);white-space:nowrap}
+.more:hover{text-decoration:underline}
+.more svg.i{width:16px;height:16px}
+
+/* buttons */
+.btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.btn{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 22px;border-radius:8px;font-size:15px;font-weight:600}
+.btn svg.i{width:17px;height:17px}
+.btn.p{background:var(--purple);color:#fff}
+.btn.p:hover{background:#7a66d6}
+.btn.k{background:var(--ink);color:#fcfbf8;border-radius:6px}
+.btn.k:hover{background:#000}
+
+/* hero */
+.hero{text-align:center;padding-block:clamp(64px,10vw,104px) clamp(48px,7vw,72px)}
+.hero h1{font-size:clamp(34px,5.6vw,56px);font-weight:700;letter-spacing:-.04em;line-height:1.16}
+.hero h1 em{font-style:normal;color:var(--purple);display:block}
+.hero .lead{margin:22px auto 34px;text-align:center}
+.hero .fine{font-size:13.5px;color:var(--faint);margin:16px 0 0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:16px;margin-top:56px;overflow:hidden;background:#fff;text-align:left}
+.stat{padding:22px 24px;display:flex;gap:14px;align-items:center}
+.stat + .stat{border-left:1px solid var(--line)}
+.stat b{display:block;font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat span{font-size:14px;color:var(--muted)}
+a.stat:hover{background:var(--alt)}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.step{background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px 24px 24px;display:grid;gap:12px;align-content:start}
+.step .row{display:flex;justify-content:space-between;align-items:center}
+.step .no{font-family:var(--mono);font-size:13px;color:var(--faint)}
+.step h3{font-size:18px;font-weight:700;letter-spacing:-.02em}
+.step p{margin:0;color:var(--body);font-size:15px;line-height:1.6}
+
+/* filter toolbar */
+.toolbar{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;padding:16px 20px;background:var(--alt);border:1px solid var(--line);border-radius:14px;margin-bottom:22px}
+.tgroup{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.tlabel{font-size:13px;font-weight:700;color:var(--muted);margin-right:4px}
+.chip{border:1px solid var(--line2);background:#fff;border-radius:999px;padding:6px 13px;font-size:14px;font-weight:500;cursor:pointer;color:var(--muted);display:inline-flex;gap:6px;align-items:center}
+.chip:hover{color:var(--ink);border-color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip .n{font-size:12px;opacity:.6;font-variant-numeric:tabular-nums}
+.chip svg.i{width:15px;height:15px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.tsearch{position:relative;flex:1 1 280px;max-width:420px}
+.tsearch input{width:100%;height:42px;border:1px solid var(--line2);border-radius:10px;padding:0 14px 0 38px;font-size:15px;background:#fff}
+.tsearch input:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 3px var(--purple-soft)}
+.tsearch svg.i{position:absolute;left:12px;top:12px;color:var(--faint)}
+select.sel{height:42px;border:1px solid var(--line2);border-radius:10px;padding:0 32px 0 12px;font-size:14px;background:#fff;max-width:100%;min-width:0;cursor:pointer}
+.resbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 0 14px;font-size:14px;color:var(--muted)}
+.reset{border:0;background:none;color:var(--purple-ink);font-weight:600;font-size:14px;cursor:pointer;display:inline-flex;gap:5px;align-items:center;padding:4px}
+.reset:hover{text-decoration:underline}
+
+/* tags */
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;padding:4px 10px;border-radius:6px;white-space:nowrap}
+.tag svg.i{width:14px;height:14px}
+.tag.capsule{color:var(--purple-ink);background:var(--tint)}
+.tag.syntitan{color:var(--syn);background:var(--syn-bg)}
+.tag.dts{color:var(--dts);background:var(--dts-bg)}
+a.tag:hover{filter:brightness(.96)}
+.st{display:inline-block;font-size:12.5px;font-weight:700;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.s-시행{color:var(--ok);background:var(--ok-bg)} .s-시행예정{color:var(--plan);background:var(--plan-bg)}
+.s-연기{color:var(--delay);background:var(--delay-bg)} .s-계류,.s-초안{color:var(--pend);background:var(--pend-bg)}
+.kind{font-size:12.5px;color:var(--muted);border:1px solid var(--line2);padding:1px 8px;border-radius:5px;white-space:nowrap}
+.num{font-family:var(--mono);font-size:13px;color:var(--faint)}
+.cno{display:inline-flex;font-family:var(--mono);font-size:12.5px;border:1px solid var(--line2);border-radius:6px;padding:1px 7px;color:var(--muted);background:#fff}
+a.cno:hover{border-color:var(--purple);color:var(--purple-ink)}
+.cnos{display:inline-flex;gap:4px;flex-wrap:wrap}
+
+/* cards */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px 24px 20px;display:flex;flex-direction:column;gap:14px;min-width:0;transition:border-color .15s,box-shadow .15s,transform .15s}
+a.card:hover{border-color:var(--purple);box-shadow:0 10px 28px rgba(111,80,204,.10);transform:translateY(-2px)}
+.card .top{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13.5px;color:var(--muted)}
+.card .top .who{display:flex;align-items:center;gap:10px;font-weight:600}
+.card h3{font-size:18px;font-weight:700;letter-spacing:-.02em;line-height:1.45}
+.card .tags{display:flex;gap:6px;flex-wrap:wrap}
+.card .foot{margin-top:auto;padding-top:14px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--muted);gap:10px}
+.card .foot span{display:inline-flex;align-items:center;gap:6px}
+.card .foot svg.i{width:15px;height:15px}
+.card .go{color:var(--purple-ink);font-weight:600}
+.card p.snip{margin:0;color:var(--body);font-size:15px;line-height:1.6}
+
+/* product cards */
+.prod{background:#fff;border:1px solid var(--line);border-radius:16px;padding:30px 28px 24px;display:flex;flex-direction:column;gap:18px;min-width:0}
+.prod .hd{display:flex;align-items:center;gap:14px}
+.prod h3{font-size:24px;font-weight:700;letter-spacing:-.03em}
+.prod ol{margin:0;padding:0;list-style:none}
+.prod ol a{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line);font-size:15.5px;font-weight:500}
+.prod ol a:hover{color:var(--purple-ink)}
+.prod ol a svg.i{width:16px;height:16px;color:var(--faint)}
+.prod .foot{margin-top:auto;font-size:14px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+/* timeline */
+.tl{border-top:1px solid var(--line)}
+.tl-row{display:grid;grid-template-columns:170px 1fr;gap:24px;padding:22px 0;border-bottom:1px solid var(--line)}
+.tl-date{display:flex;gap:12px;align-items:flex-start}
+.tl-date b{display:block;font-size:20px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.3}
+.tl-date small{font-size:13px;color:var(--muted)}
+.tl-items{display:grid;gap:10px;align-content:center}
+.tl-item{display:flex;gap:6px 12px;align-items:baseline;flex-wrap:wrap;font-size:15.5px}
+.tl-item:hover .t{color:var(--purple-ink);text-decoration:underline}
+.tl-item .t{font-weight:600}
+.tl-item .l{color:var(--muted);font-size:14px}
+
+/* page header */
+.ph{background:var(--alt);padding-block:48px 44px;border-bottom:1px solid var(--line)}
+.crumb{font-size:14px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:24px}
+.crumb a{display:inline-flex;gap:6px;align-items:center}
+.crumb a:hover{color:var(--ink);text-decoration:underline}
+.crumb svg.i{width:15px;height:15px}
+.ph-row{display:flex;gap:20px;align-items:flex-start}
+.ph h1{font-size:clamp(26px,3.6vw,40px);font-weight:700;letter-spacing:-.035em;line-height:1.3;max-width:30ch}
+.ph .sub{font-size:15px;color:var(--muted);margin:10px 0 0;max-width:70ch}
+.ph .meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:20px}
+.ph .ico{width:52px;height:52px;border-radius:14px}
+.ph .ico svg.i{width:24px;height:24px}
+
+/* detail layout */
+.detail{display:grid;grid-template-columns:230px minmax(0,1fr);gap:56px;padding-block:48px 80px}
+.toc{position:sticky;top:96px;align-self:start;display:grid;gap:2px;font-size:14px}
+.toc b{font-size:12.5px;font-weight:700;letter-spacing:.06em;color:var(--faint);margin:14px 0 6px;text-transform:uppercase}
+.toc b:first-child{margin-top:0}
+.toc a{display:flex;gap:8px;align-items:center;padding:7px 10px;border-radius:8px;color:var(--muted)}
+.toc a svg.i{width:15px;height:15px}
+.toc a:hover{color:var(--ink);background:var(--alt)}
+.toc a.on{color:var(--purple-ink);background:var(--tint);font-weight:600}
+.dbody{max-width:800px;display:grid;gap:28px}
+.panel{border:1px solid var(--line);border-radius:18px;background:#fff;overflow:hidden}
+.panel-h{display:flex;align-items:center;gap:14px;padding:20px 28px;border-bottom:1px solid var(--line);background:var(--alt)}
+.panel-h h2{font-size:20px;font-weight:700;letter-spacing:-.025em}
+.panel-h p{margin:2px 0 0;font-size:14px;color:var(--muted)}
+.panel-b{padding:8px 28px}
+.blk{display:grid;gap:14px;padding:24px 0}
+.blk + .blk{border-top:1px solid var(--line)}
+.blk h3{font-size:17px;font-weight:700;letter-spacing:-.015em;display:flex;gap:10px;align-items:center}
+.blk h3 .n{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--faint);border:1px solid var(--line2);border-radius:5px;padding:0 6px}
+ul.b{margin:0;padding:0;list-style:none;display:grid;gap:9px}
+ul.b li{position:relative;padding-left:20px;font-size:16.5px;line-height:1.7;color:var(--body)}
+ul.b li::before{content:"";position:absolute;left:3px;top:.72em;width:6px;height:6px;border-radius:50%;background:var(--purple);opacity:.6}
+ul.b.sm li{font-size:15px;line-height:1.65}
+.risk ul.b li::before{background:var(--risk)}
+.box{background:var(--tint);border-radius:18px;padding:26px 30px;display:grid;gap:16px}
+.box .bh{display:flex;align-items:center;gap:12px}
+.box .bh h2{font-size:19px;font-weight:700;letter-spacing:-.02em}
+.box ul.b li{color:var(--ink)}
+.box ul.b li::before{opacity:1}
+.lawcards{display:grid;gap:8px}
+.lawcard{display:flex;gap:14px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:14px 18px;background:#fff;transition:border-color .15s,background .15s}
+.lawcard:hover{border-color:var(--purple);background:var(--alt)}
+.lawcard .tx{flex:1;min-width:0;display:grid;gap:2px}
+.lawcard b{font-size:15.5px;font-weight:700;letter-spacing:-.01em}
+.lawcard span{color:var(--muted);font-size:14.5px}
+.lawcard > svg.i{color:var(--purple-ink)}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.lk{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--line2);border-radius:10px;padding:8px 14px;font-size:14.5px;font-weight:600;background:#fff}
+.lk:hover{border-color:var(--purple);color:var(--purple-ink)}
+.lk svg.i{width:15px;height:15px}
+.pn{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pn a{border:1px solid var(--line);border-radius:12px;padding:16px 20px;display:grid;gap:4px;min-width:0}
+.pn a:hover{border-color:var(--purple)}
+.pn small{font-size:13px;color:var(--muted)}
+.pn b{font-size:15px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pn .r{text-align:right}
+.mini{display:grid;gap:8px}
+.mini a{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.mini a:hover{border-color:var(--purple)}
+.mini b{font-size:15px;font-weight:600;flex:1;min-width:0}
+.mini small{color:var(--muted);font-size:13px}
+
+/* feature rows */
+.feats{display:grid;gap:16px}
+.feat{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;min-width:0}
+.feat-h{display:flex;justify-content:space-between;align-items:center;gap:12px 20px;flex-wrap:wrap;padding:20px 28px;border-bottom:1px solid var(--line)}
+.feat-h h3{font-size:19px;font-weight:700;letter-spacing:-.02em}
+.feat-h .meta{display:flex;gap:14px;align-items:center;flex-wrap:wrap;font-size:14px;color:var(--muted)}
+.feat-h a.src{display:inline-flex;gap:5px;align-items:center;color:var(--purple-ink);font-weight:600}
+.feat-b{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.feat-b > div{padding:22px 28px;display:grid;gap:20px;align-content:start;min-width:0}
+.feat-b > div + div{border-left:1px solid var(--line);background:#fcfbfe}
+.lab{display:flex;gap:7px;align-items:center;font-size:13.5px;font-weight:700;color:var(--ink);margin:0 0 10px}
+.lab svg.i{width:15px;height:15px;color:var(--purple-ink)}
+.reflist{display:grid;gap:6px}
+.reflist a{display:inline-flex;gap:6px;align-items:center;font-size:15px;font-weight:600;color:var(--purple-ink)}
+.reflist a:hover{text-decoration:underline}
+.reflist a svg.i{width:14px;height:14px}
+
+/* sources */
+.sgroup{margin-bottom:28px}
+.sgroup-h{display:flex;gap:10px 14px;align-items:center;flex-wrap:wrap;padding:12px 0;border-bottom:1.5px solid var(--ink)}
+.sgroup-h h3{font-size:16px;font-weight:700;letter-spacing:-.01em;flex:1 1 300px}
+.sgroup-h .c{font-size:13px;color:var(--muted)}
+.srow{display:grid;grid-template-columns:76px minmax(0,1fr) auto;gap:6px 20px;align-items:center;padding:14px 8px;border-bottom:1px solid var(--line);border-radius:0}
+.srow:hover{background:var(--alt)}
+.srow:hover .a{color:var(--purple-ink)}
+.srow .a{font-size:15.5px;font-weight:600;letter-spacing:-.01em}
+.srow .m{display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+.srow .d{font-family:var(--mono);font-size:12.5px;color:var(--muted);min-width:86px;text-align:right}
+.texts{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.texts.one{grid-template-columns:1fr}
+.text{border:1px solid var(--line);border-radius:16px;padding:22px 26px;background:#fff;min-width:0}
+.text p{margin:0;white-space:pre-line;font-size:16px;line-height:1.8;color:var(--body)}
+.text.en p{font-family:Georgia,"Times New Roman",serif;font-size:16.5px;color:var(--ink)}
+.empty{padding:48px 0;color:var(--muted);text-align:center;font-size:16px}
+
+.flash{animation:flash 1.8s ease-out}
+@keyframes flash{0%,35%{box-shadow:0 0 0 3px var(--purple)}100%{box-shadow:0 0 0 0 rgba(138,119,224,0)}}
+@media (prefers-reduced-motion:reduce){.flash{animation:none}*{transition:none!important}}
+
+footer{background:var(--foot);border-top:1px solid var(--line);padding-block:36px;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+@media (max-width:1100px){
+  .grid3{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:repeat(2,1fr)}
+  .detail{grid-template-columns:1fr;gap:28px}
+  .toc{display:none}
+  .gsearch{width:190px}
+  .logo span{display:none}
+}
+@media (max-width:760px){
+  .wrap{padding-inline:16px}
+  .nav-in{height:auto;flex-wrap:wrap;gap:6px 10px;padding-block:10px}
+  .tools{flex:1 1 auto}
+  .gsearch{width:auto;flex:1 1 140px}
+  .menu{order:3;flex-basis:100%;margin-inline:-8px}
+  .grid3,.grid2,.steps,.texts,.pn,.feat-b{grid-template-columns:1fr}
+  .feat-b > div + div{border-left:0;border-top:1px solid var(--line)}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat:nth-child(3){border-left:0}
+  .stat:nth-child(n+3){border-top:1px solid var(--line)}
+  .stat{padding:18px 16px}
+  .tl-row{grid-template-columns:1fr;gap:10px}
+  .srow{grid-template-columns:1fr;gap:4px}
+  .srow .m{justify-content:flex-start}
+  .srow .d{text-align:left;min-width:0}
+  .card,.prod{padding:20px}
+  .panel-h,.panel-b,.feat-h,.feat-b > div{padding-inline:18px}
+  .box{padding:22px 20px}
+  .ph-row .ico{display:none}
+  ul.b li{font-size:16px}
+  .toolbar{padding:14px}
+}
+
+.hero .lead{max-width:none;text-wrap:balance}
+.hero .fine{max-width:92ch;margin-inline:auto;line-height:1.75;text-wrap:balance}
+.hero .fine span{display:block}
+@media (max-width:720px){.br-d{display:none}}
+.s-시행예정,.s-개정예정{color:var(--plan);background:var(--plan-bg)}
+.s-계도기간{color:var(--delay);background:var(--delay-bg)}
+.s-검증필요{color:var(--risk);background:var(--risk-bg)}
+.s-출시예정{color:var(--plan);background:var(--plan-bg);font-size:11.5px;vertical-align:middle;margin-left:4px}
+.s-확인필요{color:var(--risk);background:var(--risk-bg);font-size:11.5px;vertical-align:middle;margin-left:4px}
+.upnote{margin:6px 0 0;font-size:13.5px;color:var(--muted)}
+</style>
+</head>
+<body>
+
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="logo" href="#home" aria-label="Home"><b>CUBIG</b><span id="logoSub"></span></a>
+    <nav class="menu" id="menu"></nav>
+    <div class="tools">
+      <div class="gsearch">
+        <svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="gq" type="search" autocomplete="off">
+        <div class="results" id="results" hidden></div>
+      </div>
+      
+    </div>
+  </div>
+</header>
+<main id="app"></main>
+<footer><div class="wrap"><span>CUBIG · 한국 규제와 제품 연결 v1.0 · 사내 영업, 콘텐츠용</span><span id="footNote"></span></div></footer>
+
+<script>
+const DATA = {"cases": [{"id": "01", "sector": "공통", "customer": "외부 생성형 AI로 고객 문의와 첨부 문서를 요약하려는 기업", "laws": [{"t": "개인정보 보호법 제29조: 안전조치의무", "to": "clause:k5"}, {"t": "개인정보 보호법 제26조: 업무위탁", "to": "clause:k6"}, {"t": "개인정보 보호법 제28조의8: 국외이전", "to": "clause:k7"}, {"t": "생성형 AI 개인정보 처리 안내서: 서비스형 LLM 이용", "to": "clause:k12"}, {"t": "개인정보 보호법 제64조의2제6항: 보호 투자 과징금 감경", "to": "clause:k11"}], "why": ["문의와 첨부 문서에 이름, 연락처, 고객번호가 섞여 있음", "모델에 그대로 보낼 값과 먼저 바꿀 값을 가르는 기준이 없음", "외부 모델 서버가 해외에 있으면 국외이전 검토가 필요함", "원문, 대응표, 처리 기록을 어디에 두고 누가 볼지 정해지지 않음"], "risk": ["보안 검토에서 모델로 나가는 범위를 설명하기 어려움", "모델 공급자를 수탁자로 볼지 판단할 자료가 부족함", "안전조치를 했다는 근거를 사후에 제시하기 어려움"], "products": ["LLM Capsule"], "does": ["문의 텍스트와 파일에서 개인정보를 찾아 유형 표식으로 치환", "치환한 문의만 고객이 고른 AI 모델로 전달", "대응표로 요약 답변 속 표식을 원래 값으로 복원"], "where": ["설치형 구성에서는 대응표를 고객 환경 데이터베이스에 보관", "대응표 열람 범위를 운영자와 관리자로 구분", "관리자 화면에 남는 작업 기록 범위는 제품 담당에게 확인"], "explain": ["모델로 보내기 전에 치환한 항목과 표본 검수 결과", "대응표의 보관 위치와 열람 권한자", "안전조치 가운데 제품이 처리하는 범위와 처리하지 않는 범위"]}, {"id": "02", "sector": "공통", "customer": "개인정보가 섞인 업무 데이터를 AI 분석에 쓰려는 기업", "laws": [{"t": "개인정보 보호법 제3조: 최소 처리 원칙", "to": "clause:k1"}, {"t": "개인정보 보호법 제15조제3항: 추가적 이용", "to": "clause:k2"}, {"t": "가명정보 처리 가이드라인: 추가정보 분리와 비정형 검수", "to": "clause:k13"}], "why": ["분석용 표에 여러 부서의 개인정보가 함께 들어 있음", "분석 항목마다 개인정보가 필요한 이유가 정리되지 않음", "결측값, 이상값, 형식 오류가 섞여 있음", "부서별 수정 파일이 흩어져 어느 버전을 썼는지 알기 어려움"], "risk": ["수집 목적 밖의 분석으로 볼 여지가 생김", "필요한 항목만 썼다는 근거를 제시하기 어려움", "품질 관리 결과와 수정 근거를 보여 주기 어려움"], "products": ["Syntitan"], "does": ["업무용 CSV와 Excel 파일의 오류와 민감 컬럼을 진단", "분석에 기여가 적은 컬럼을 제거(필요한 항목은 고객이 판단)", "정제 결과를 다시 진단해 전후 상태를 비교"], "where": ["정제 후 데이터 상태를 버전으로 저장", "검토를 마친 상태를 릴리즈로 확정", "버전마다 적용한 처리와 변경 내용을 기록"], "explain": ["분석에 쓴 항목과 뺀 항목", "어떤 오류를 고쳐 어느 버전을 썼는지", "추가적 이용을 판단할 때 함께 낼 처리 전후 자료"]}, {"id": "03", "sector": "공통", "customer": "연구와 시험용 합성데이터를 외부 개발사와 함께 쓰려는 기업", "laws": [{"t": "개인정보 보호법 제28조의2: 가명정보 처리", "to": "clause:k3"}, {"t": "개인정보 보호법 제58조의2: 익명정보 적용 제외", "to": "clause:k4"}, {"t": "합성데이터 안내서: 법적 성격과 재식별 위험 평가", "to": "clause:k14"}], "why": ["합성데이터가 가명정보인지 익명정보인지 판단할 자료가 없음", "개발사에 넘길 파일의 재식별 위험을 평가한 자료가 없음", "시험에 쓸 만한 품질인지 보여 줄 자료가 없음"], "risk": ["외부 제공 조건을 정하기 어려움", "가명정보로 보면 제공 절차와 안전조치가 추가로 필요함", "품질이 낮으면 시험 결과를 믿기 어려움"], "products": ["DTS"], "does": ["연구와 시험 목적에 맞춰 원본과 별개인 데이터를 재구성", "원본과 비교해 분포, 변수 관계, 중복을 평가", "재구성 데이터로 학습한 모델 결과를 비교"], "where": ["원본과 구분되는 재구성 데이터 파일 생성", "분포, 관계, 중복을 비교한 품질 자료 제공", "학습 결과 비교 자료 제공"], "explain": ["원본을 대신할 데이터가 시험에 쓸 만한 품질인지", "재구성 데이터와 원본의 분포 차이", "고객이 수행한 재식별 위험 평가와 함께 볼 효용 자료"]}, {"id": "04", "sector": "금융", "customer": "생성형 AI를 내부 업무에 도입하려는 금융회사", "laws": [{"t": "전자금융감독규정 제15조: 망분리(생성형 AI는 혁신금융서비스 특례)", "to": "clause:k19"}, {"t": "개인정보 보호법 제29조: 안전조치의무", "to": "clause:k5"}, {"t": "생성형 AI 개인정보 처리 안내서: 서비스형 LLM 이용", "to": "clause:k12"}, {"t": "금융분야 인공지능 가이드라인: 입출력 개인(신용)정보 마스킹", "to": "clause:k20"}], "why": ["내부 업무망과 외부 AI 모델이 분리돼 있음", "감독규정 조문에는 생성형 AI 예외가 없어 특례 지정과 보안 조건이 필요함", "금융 AI 가이드라인의 망분리 대체통제 점검 항목에 입출력 개인(신용)정보 마스킹이 들어 있음", "상담 기록과 심사 문서에 고객 식별정보가 많음"], "risk": ["망분리 예외 조건을 못 맞추면 도입 자체가 막힘", "고객 정보가 외부 모델로 나가면 감독 지적 대상이 됨", "보호조치 설명 자료가 없으면 내부 승인이 늦어짐"], "products": ["LLM Capsule"], "does": ["상담 기록과 문서의 고객 정보를 표식으로 치환", "치환된 요청만 승인된 모델로 전달", "답변을 내부에서 원래 값으로 복원"], "where": ["설치형 구성으로 금융회사 환경 안에 배포", "대응표는 금융회사 데이터베이스에 보관", "관리자 화면에 남는 작업 기록 범위는 제품 담당에게 확인"], "explain": ["모델로 보낸 요청에서 치환한 항목과 표본 검수 결과", "대응표와 원문을 보관한 위치", "망분리 예외 신청과 내부 승인에 쓸 데이터 흐름"]}, {"id": "05", "sector": "금융", "customer": "신용평가와 심사 모델의 데이터를 보완하고 검증하려는 금융회사", "laws": [{"t": "금융분야 AI 가이드라인: 데이터 품질과 편향 관리", "to": "clause:k20"}, {"t": "신용정보법 제36조의2: 자동화평가 설명요구", "to": "clause:k21"}, {"t": "신용정보법 제40조의2: 가명처리 행위규칙", "to": "clause:k22"}], "why": ["새 상품이나 고객군은 학습 사례가 적음", "연체, 사기처럼 드문 사례가 부족해 결과가 치우침", "어떤 데이터로 학습했는지 설명 자료가 흩어져 있음"], "risk": ["고객이 설명을 요구하면 근거 데이터를 제시하기 어려움", "편향 점검 결과를 감독기관에 보여 주기 어려움", "가명처리 데이터의 관리 기록이 부족하고, 재구성 데이터의 법적 성격도 따로 판단해야 함"], "products": ["Syntitan", "DTS"], "does": ["학습 데이터의 상태를 진단하고 정제", "부족한 사례를 증강하거나 재구성", "보완 전후 모델 결과를 비교"], "where": ["보완 전후 데이터 상태를 버전으로 저장", "재구성 데이터의 품질 비교 자료", "학습과 생성에 쓰지 않은 같은 평가 데이터로 낸 전후 비교 결과"], "explain": ["어떤 사례를 왜 보완했는지", "보완 전후 이진 분류 성능 비교 결과(집단별 편향 분석은 고객 모델에서 수행)", "평가 모델 개발에 쓴 데이터의 버전 기록(개인별 기초정보 설명은 고객 시스템 몫)"]}, {"id": "06", "sector": "의료", "customer": "환자 데이터를 연구와 AI 개발에 활용하려는 의료기관", "laws": [{"t": "개인정보 보호법 제23조: 민감정보", "to": "clause:k8"}, {"t": "보건의료데이터 활용 가이드라인: 가명처리와 특별 동의", "to": "clause:k24"}, {"t": "생명윤리법: 기관생명윤리위원회 심의", "to": "clause:k25"}, {"t": "개인정보 보호법 제28조의2: 가명정보 처리", "to": "clause:k3"}], "why": ["진료기록은 건강정보라 민감정보에 해당함", "가명처리해도 연구 목적과 심의 절차를 갖춰야 함", "희귀 질환처럼 사례가 적은 데이터는 재식별 위험이 큼"], "risk": ["외부 연구기관에 원본을 넘기기 어려움", "가명처리만으로는 희귀 사례가 드러날 수 있음", "심의와 반출 승인이 늦어져 연구 일정이 밀림"], "products": ["DTS"], "does": ["연구 목적에 맞춰 원본과 별개인 데이터를 재구성", "연구에 필요한 분포와 변수 관계를 원본과 대조", "재구성 데이터로 학습한 모델 결과를 비교"], "where": ["원본은 기관 안에 두고 재구성 결과만 넘길 수 있는 구성", "분포와 변수 관계를 비교한 품질 자료", "재구성 데이터의 시험 적합성 검토 자료"], "explain": ["원본 대신 쓴 데이터의 특성과 품질", "연구에 필요한 관계가 유지됐는지", "심의와 반출 검토에 함께 낼 위험 평가 보조 자료", "재구성할 때도 원본 처리 근거와 IRB 확인이 필요하고, 재구성 데이터도 재식별 평가 대상임"]}, {"id": "07", "sector": "의료", "customer": "진료와 원무 업무에 생성형 AI를 쓰려는 병원", "laws": [{"t": "의료법 제19조, 제21조, 제23조: 환자 정보와 전자의무기록", "to": "clause:k23"}, {"t": "개인정보 보호법 제23조: 민감정보", "to": "clause:k8"}, {"t": "개인정보 보호법 제29조: 안전조치의무", "to": "clause:k5"}, {"t": "개인정보 보호법 제64조의2제6항: 보호 투자 과징금 감경", "to": "clause:k11"}], "why": ["진료 메모와 문서에 환자 이름과 진단 내용이 함께 있음", "전자의무기록은 국외 보관이 허용되지 않음", "개인용 무료 AI 서비스로는 입력 데이터 처리 조건을 통제하기 어려움"], "risk": ["환자 정보 누설로 의료법 위반 소지가 생김", "외부 모델 경로가 해외에 있으면 국외이전 근거가 필요함", "사고가 나면 병원이 통지와 신고 책임을 짐"], "products": ["LLM Capsule"], "does": ["문서와 질문의 환자 식별정보를 표식으로 치환", "치환된 요청만 기업용 계약을 맺은 모델로 전달", "답변을 병원 안에서 원래 값으로 복원"], "where": ["설치형 구성에서는 대응표를 병원 환경에 보관", "대응표 열람 범위를 역할별로 구분", "관리자 화면에 남는 작업 기록 범위는 제품 담당에게 확인"], "explain": ["모델로 보낸 요청에서 치환한 항목과 표본 검수 결과", "대응표와 원문이 병원 밖으로 나가지 않았는지(설치형 기준)", "안전조치 가운데 제품이 처리하는 범위"]}, {"id": "08", "sector": "공공", "customer": "외부 생성형 AI를 업무에 쓰려는 공공기관", "laws": [{"t": "국가 망 보안체계(N2SF) 보안 가이드라인: 정보 등급과 외부 서비스", "to": "clause:k26"}, {"t": "공공부문 생성형 AI 활용 지침: 입력 정보 제한", "to": "clause:k27"}, {"t": "개인정보 보호법 제33조: 개인정보 영향평가", "to": "clause:k9"}, {"t": "AI 데이터행정법 제32조: 공공분야 AI 영향평가", "to": "clause:k30"}], "why": ["민원 문서에 이름, 연락처, 주소가 들어 있음", "업무망과 외부 AI 사이에 망 분리와 등급 기준이 있음", "외부 AI에 개인정보와 비공개 정보를 넣지 말라는 지침이 있음"], "risk": ["보안성 검토에서 외부 전송 범위를 설명하지 못하면 도입이 막힘", "개인정보 처리 시스템이면 영향평가 대상이 될 수 있음", "지침을 어긴 입력이 생기면 기관이 책임을 짐", "공공분야 AI 영향평가 대상이 될 수 있음(단순하거나 경미한 업무는 면제 가능)"], "products": ["LLM Capsule"], "does": ["민원 문서의 개인정보를 표식으로 치환", "치환된 요청만 승인된 모델로 전달", "답변을 기관 안에서 원래 값으로 복원"], "where": ["기관 DMZ나 내부망에 설치하는 구성", "대응표는 기관 환경에 보관", "관리자 화면에 남는 작업 기록 범위는 제품 담당에게 확인"], "explain": ["외부로 보낸 요청에서 치환한 항목과 표본 검수 결과", "대응표와 원문을 보관한 위치", "보안성 검토와 영향평가에 쓸 데이터 흐름(외부 AI 이용 승인 자체는 기관 판단)"]}, {"id": "09", "sector": "공공", "customer": "보유 데이터를 AI 학습용으로 개방하려는 공공기관", "laws": [{"t": "공공데이터 AI 친화 가이드라인: 품질과 이력 관리", "to": "clause:k28"}, {"t": "공공데이터법 제22조, AI 데이터행정법 제29조: 품질과 학습용데이터", "to": "clause:k29"}], "why": ["개방 데이터가 형식 점검은 통과해도 AI 학습에 바로 쓰기 어려움", "결측값, 이상값, 형식 불일치를 어떻게 고쳤는지 남긴 기록이 없음", "데이터가 어떻게 만들어지고 바뀌었는지 이력이 남지 않음"], "risk": ["이용자 문의에 처리 이력을 답하기 어려움", "품질 평가에서 관리 근거를 제시하기 어려움", "고친 값이 원래 값을 왜곡했는지 확인하기 어려움(값 영향 기록 화면은 출시 예정)"], "products": ["Syntitan"], "does": ["개방 데이터가 AI에 쓸 만한 상태인지 진단", "결측값과 이상값 등의 정제 방법을 추천하고 적용", "정제 후 다시 진단해 전후 상태를 비교"], "where": ["버전마다 적용한 처리와 변경 내용을 기록", "검토를 마친 상태를 릴리즈로 확정", "원본과 정제본을 같은 화면에서 비교"], "explain": ["무엇을 고쳐 어떤 버전을 개방했는지", "버전별 변경 이력", "이용자 문의에 답할 처리 전후 자료", "이상값 처리는 값을 자르고 로그 변환하므로 개방 전에 원래 값과 대조해야 함"]}, {"id": "10", "sector": "AI 개발과 도입", "customer": "고영향 AI를 개발하거나 운영하는 사업자", "laws": [{"t": "AI 기본법 제2조제4호, 제33조: 고영향 AI 정의와 확인", "to": "clause:k15"}, {"t": "AI 기본법 제34조: 고영향 AI 사업자 책무", "to": "clause:k16"}, {"t": "AI 기본법 제31조: 투명성 확보", "to": "clause:k18"}], "why": ["대출 심사, 채용, 의료처럼 고영향 영역에 해당할 수 있음", "위험관리와 설명 방안을 문서로 남겨야 함", "학습 데이터가 어떤 상태였는지 기록이 흩어져 있음"], "risk": ["책무 이행 문서를 요구받으면 데이터 근거를 제시하기 어려움", "모델이나 데이터가 바뀐 뒤 이전 판단을 설명하기 어려움(현재는 당시 데이터 버전 확인까지, 조건 비교는 출시 예정)"], "products": ["Syntitan", "DTS"], "does": ["학습 데이터와 평가 데이터의 상태를 진단하고 정제", "부족한 사례를 보완", "보완 전후 결과를 비교", "학습 사례가 부족하면 DTS로 데이터를 재구성"], "where": ["데이터 상태를 버전과 릴리즈로 저장", "버전별 변경 내용과 작성자 기록", "전후 평가 결과와 데이터 다운로드", "재구성 데이터의 품질 비교 자료(가이드라인 서식의 합성데이터 요약에 활용)"], "explain": ["어떤 데이터 상태로 모델을 만들었는지", "데이터를 어떻게 바꿨는지", "책무 이행 문서에 붙일 데이터 기록(법 준수 판단 자체는 고객 몫)"]}, {"id": "11", "sector": "AI 개발과 도입", "customer": "AI 영향평가와 설명 근거를 준비하려는 조직", "laws": [{"t": "AI 기본법 제35조: 고영향 AI 영향평가", "to": "clause:k17"}, {"t": "개인정보 보호법 제33조: 개인정보 영향평가", "to": "clause:k9"}, {"t": "AI 데이터행정법 제32조: 공공분야 AI 영향평가", "to": "clause:k30"}], "why": ["영향평가에 학습 데이터 상태 설명이 필요할 수 있음", "평가 당시 데이터와 지금 데이터가 다를 수 있음", "개인정보가 들어간 시스템이면 개인정보 영향평가도 겹침"], "risk": ["평가 근거 데이터가 남아 있지 않으면 결과를 설명하기 어려움", "조건이 바뀐 뒤 재평가 범위를 정하기 어려움(조건 비교와 재검증은 출시 예정)"], "products": ["Syntitan"], "does": ["평가 대상 데이터의 상태를 진단", "검토를 마친 데이터 상태를 릴리즈로 확정", "학습과 생성에 쓰지 않은 같은 평가 데이터로 전후 결과를 비교"], "where": ["릴리즈된 데이터 버전과 릴리즈 노트", "전후 평가 결과", "버전별 변경 이력"], "explain": ["영향평가 때 쓴 데이터가 어떤 상태였는지", "평가 이후 데이터가 바뀌었는지", "재평가 범위를 정할 때 쓸 데이터 버전 기록(조건 비교는 출시 예정)"]}, {"id": "12", "sector": "AI 개발과 도입", "customer": "AI로 개인에게 중대한 결정을 내리는 조직", "laws": [{"t": "개인정보 보호법 제37조의2: 자동화된 결정", "to": "clause:k10"}, {"t": "신용정보법 제36조의2: 자동화평가 설명요구", "to": "clause:k21"}], "why": ["사람 개입 없이 결정하면 정보주체가 거부하거나 설명을 요구할 수 있음", "결정에 쓰인 주요 기준과 처리 과정을 설명해야 함", "결정 당시 데이터와 처리 기록이 남지 않을 수 있음"], "risk": ["설명 요구에 응하지 못하면 권리 침해 소지가 생김", "재검토 요청 때 같은 조건을 다시 보기 어려움(현재는 당시 데이터 버전 확인까지, 조건 비교는 출시 예정)"], "products": ["Syntitan"], "does": ["결정에 쓰는 데이터의 상태를 진단하고 정제", "검토를 마친 데이터 상태를 릴리즈로 확정"], "where": ["릴리즈된 데이터 버전과 릴리즈 노트", "버전별 데이터 처리 변경 이력"], "explain": ["결정 모델에 쓴 데이터 버전", "데이터를 어떻게 바꿨는지", "설명과 재검토 대응에 붙일 데이터 기록(설명 문안 작성은 고객 몫)"]}], "features": [{"id": "f5", "product": "LLM Capsule", "status": "출시", "name": "민감정보 치환과 응답 복원", "does": ["입력 텍스트와 파일에서 개인정보를 탐지", "탐지한 값을 유형 표식으로 바꿔 모델에 전달", "대응표로 답변 속 표식을 원래 값으로 복원"], "records": ["원래 값과 표식을 짝지은 대응표 생성", "설치형은 고객 환경 데이터베이스에 대응표 보관"], "cases": ["01", "04", "07", "08"], "clauses": [{"t": "개인정보 보호법 제29조", "to": "clause:k5"}, {"t": "생성형 AI 개인정보 처리 안내서", "to": "clause:k12"}, {"t": "공공부문 생성형 AI 활용 지침", "to": "clause:k27"}, {"t": "개인정보 보호법 제64조의2제6항", "to": "clause:k11"}, {"t": "전자금융감독규정 제15조", "to": "clause:k19"}, {"t": "금융분야 인공지능 가이드라인", "to": "clause:k20"}], "check": ["사용 언어, 문서 형식, 개인정보 종류 확인", "고객 문서로 탐지 결과를 직접 확인(탐지율 수치는 약속하지 말 것)", "복원이 정확한지, 필요한 문맥이 유지되는지 확인"]}, {"id": "f6", "product": "LLM Capsule", "status": "출시", "name": "고객 환경의 대응표 보관과 권한 분리", "does": ["원래 값과 표식을 짝지은 대응표 관리", "운영자와 관리자의 접근 범위 구분"], "records": ["설치형은 내부 데이터베이스에 대응표 저장", "역할에 따른 대응표 열람 권한 설정"], "cases": ["01", "04", "07", "08"], "clauses": [{"t": "개인정보 보호법 제29조", "to": "clause:k5"}, {"t": "의료법 제23조와 전자의무기록 기준", "to": "clause:k23"}], "check": ["원문, 대응표, 기록의 보관 위치 확인", "저장 암호화, 키 관리, 백업 구성 확인", "Cloud형과 API형은 큐빅 운영 환경에서 처리된다고 안내"]}, {"id": "f7", "product": "LLM Capsule", "status": "확인 필요", "name": "작업 기록과 조회", "does": ["제품 처리 경로에서 일어난 이벤트를 기록", "작업 내역을 사후에 조회"], "records": ["이벤트별 식별자, 조직, 수행자, 권한 저장", "IP, 처리 대상, 결과를 이벤트에 기록", "이벤트 저장소에서 14일이 지나면 파일로 장기 저장하는 경로"], "cases": ["01", "08"], "clauses": [{"t": "개인정보 보호법 제29조", "to": "clause:k5"}], "check": ["외부 안내 전 제품 담당에게 기록 항목과 보관 범위 확인", "필요한 보관기간과 조회 항목 확인", "변조 방지와 보안관제 연계 구성 확인", "AI 이용 기록 전체 가운데 제품이 맡는 범위 확인"], "statusNote": "UK, EU판과 같은 Confluence LLM Capsule 페이지 기준. 사용자 화면에서는 확인하지 못했고, 설치형 소개서의 감사 로그는 아직 제품 담당 확인 전"}, {"id": "f8", "product": "LLM Capsule", "status": "출시", "name": "고객 설치형 배포(내부망, DMZ)", "does": ["고객 내부 환경이나 DMZ에 제품 배포", "배포 구조별 데이터 흐름 설명", "외부 모델 호출 경로의 전송 범위 확인"], "records": ["고객 환경의 원문, 대응표, 기록 위치 명시", "제품 접근 권한과 작업 기록을 기술 자료로 사용"], "cases": ["04", "07", "08"], "clauses": [{"t": "전자금융감독규정 제15조", "to": "clause:k19"}, {"t": "국가 망 보안체계(N2SF)", "to": "clause:k26"}, {"t": "개인정보 보호법 제28조의8", "to": "clause:k7"}, {"t": "AI 데이터행정법 제32조", "to": "clause:k30"}], "check": ["설치 위치(내부망, DMZ)와 망 연계 구성 확인", "DMZ에 설치해도 외부 AI 이용 승인을 대신하지 않는다고 안내", "답변 생성 모델은 별도 계약 필요"]}, {"id": "f9", "product": "Syntitan", "status": "출시", "name": "데이터 상태 진단과 정제", "does": ["업로드한 CSV와 Excel 데이터가 AI에 쓸 만한 상태인지 진단", "결측값, 이상값, 형식 오류를 찾아 정제 방법 추천", "정제를 적용한 뒤 다시 진단"], "records": ["정제 전후 데이터 상태와 진단 결과", "저장된 데이터 버전으로 수정 결과 비교"], "cases": ["02", "05", "09", "10"], "clauses": [{"t": "공공데이터법 품질관리", "to": "clause:k29"}, {"t": "공공데이터 AI 친화 가이드라인", "to": "clause:k28"}, {"t": "금융분야 AI 가이드라인", "to": "clause:k20"}], "check": ["주요 오류 유형과 원천 사실을 대조할 방법 확인", "일부 정제는 값을 바꾸므로 원래 값에 준 영향 확인"]}, {"id": "f10", "product": "Syntitan", "status": "출시", "name": "민감 컬럼 탐지와 불필요 컬럼 제외", "does": ["민감정보가 든 컬럼 탐지(이름, 전화번호, 주민등록번호 등 8종)", "탐지한 값을 유형명으로 치환", "분석 기여가 적은 컬럼 제거"], "records": ["컬럼 처리 후 데이터 상태 저장", "선택한 상태를 릴리즈로 확정"], "cases": ["02"], "clauses": [{"t": "개인정보 보호법 제3조", "to": "clause:k1"}, {"t": "개인정보 보호법 제15조제3항", "to": "clause:k2"}, {"t": "가명정보 처리 가이드라인", "to": "clause:k13"}], "check": ["분석 목적에 필요한 개인정보 항목 확인", "오탐 가능성(지명이 이름으로 잡히는 등)을 결과 화면에서 확인", "개인정보를 올릴 때 처리 위치와 위탁에 해당하는지 확인"]}, {"id": "f11", "product": "Syntitan", "status": "출시", "name": "행 증강과 클래스 균형화", "does": ["데이터 행을 늘리는 증강", "클래스별 데이터 수량 조정"], "records": ["증강과 균형화 전후의 데이터 상태", "전후 평가 결과"], "cases": ["05", "10"], "clauses": [{"t": "금융분야 AI 가이드라인", "to": "clause:k20"}, {"t": "AI 기본법 제34조", "to": "clause:k16"}], "check": ["부족한 사례의 정의와 성공 기준 확인", "전후 비교에 같은 별도 평가 데이터를 쓰는지 확인", "집단별 오류는 고객 모델에서 추가 평가"]}, {"id": "f12", "product": "Syntitan", "status": "출시", "name": "데이터 버전과 릴리즈 기록", "does": ["작업 시점의 데이터 상태 저장", "검증 기준으로 삼을 버전을 릴리즈로 확정"], "records": ["버전별 시각, 적용 처리, 변경 내용, 작성자, 해시", "릴리즈 노트"], "cases": ["09", "10", "11"], "clauses": [{"t": "AI 기본법 제34조", "to": "clause:k16"}, {"t": "공공데이터 AI 친화 가이드라인", "to": "clause:k28"}, {"t": "AI 기본법 제35조", "to": "clause:k17"}, {"t": "AI 데이터행정법 제32조", "to": "clause:k30"}], "check": ["필요한 변경 기록과 데이터 버전 확인", "릴리즈가 운영 승인을 뜻하지 않는다고 안내"]}, {"id": "f13", "product": "Syntitan", "status": "출시", "name": "정제 전후 평가", "does": ["지원 모델로 정제 전후 결과 비교", "현재 내장 비교는 이진 분류만 지원"], "records": ["평가 결과와 전후 데이터 다운로드"], "cases": ["05", "10", "11"], "clauses": [{"t": "AI 기본법 제35조", "to": "clause:k17"}, {"t": "금융분야 AI 가이드라인", "to": "clause:k20"}], "check": ["성공 기준과 비교할 별도 평가 데이터 확인", "고객의 실제 모델에 쓸 평가 방법 확인"]}, {"id": "f14", "product": "DTS", "status": "출시", "name": "데이터 재구성", "does": ["원본의 통계 특성을 바탕으로 별개의 데이터를 재구성", "연구와 시험용 대체 데이터 준비", "필요하면 차등 프라이버시 적용"], "records": ["원본과 구분되는 재구성 데이터 파일", "생성 결과의 품질 평가 자료"], "cases": ["03", "06", "10"], "clauses": [{"t": "개인정보 보호법 제28조의2", "to": "clause:k3"}, {"t": "개인정보 보호법 제58조의2", "to": "clause:k4"}, {"t": "보건의료데이터 활용 가이드라인", "to": "clause:k24"}, {"t": "AI 기본법 제34조", "to": "clause:k16"}], "check": ["필요한 관계와 희소 사례 정의 확인", "재식별 위험 평가는 고객이 별도로 수행", "재구성 데이터라도 공유가 자동으로 허용되지는 않는다고 안내"]}, {"id": "f15", "product": "DTS", "status": "출시", "name": "분포, 관계, 중복 품질 평가", "does": ["원본과 재구성 결과의 값 분포 비교", "변수 간 관계와 중복 행 평가"], "records": ["분포, 상관, 중복 품질 비교 자료", "재구성 데이터의 시험 적합성 검토 자료"], "cases": ["03", "05", "06"], "clauses": [{"t": "합성데이터 안내서", "to": "clause:k14"}, {"t": "보건의료데이터 활용 가이드라인", "to": "clause:k24"}], "check": ["필요한 분포와 관계, 성공 기준 확인", "재식별 위험 평가 방법 확인"]}, {"id": "f16", "product": "DTS", "status": "출시", "name": "재구성 데이터 학습 모델의 성능 비교", "does": ["재구성 데이터로 분류 모델 학습", "원본 학습 결과와 비교"], "records": ["재구성 데이터로 학습한 모델의 성능 비교 자료", "원본과 비교한 품질 평가 자료"], "cases": ["03", "05", "10"], "clauses": [{"t": "금융분야 AI 가이드라인", "to": "clause:k20"}, {"t": "합성데이터 안내서", "to": "clause:k14"}], "check": ["보완 전후에 쓸 별도 평가 데이터 확인", "실제 모델의 독립 검증 방법 확인"]}], "clauses": [{"id": "k1", "name": "개인정보 보호법 제3조제1항, 제2항", "type": "법률", "status": ["시행 · 2026-09-11 (현행 법률 제21445호)"], "req": ["처리 목적을 명확히 하고 필요한 최소한만 수집", "목적에 필요한 범위에서 적합하게 처리", "목적 밖의 용도로 활용 금지"], "target": ["개인정보를 처리하는 모든 개인정보처리자", "AI 분석과 학습에 쓰는 데이터에도 같은 원칙 적용"], "todo": ["분석 목적별로 필요한 개인정보 항목 정리", "불필요한 항목은 빼거나 치환한 뒤 사용", "어떤 항목을 왜 남겼는지 기록"], "sources": [{"t": "KR-P-01 · 제3조제1항·제2항", "to": "source:KR-P-01"}], "features": [{"t": "Syntitan · 민감 컬럼 탐지와 불필요 컬럼 제외", "to": "feature:f10"}], "cases": ["02"]}, {"id": "k2", "name": "개인정보 보호법 제15조제3항, 시행령 제14조의2", "type": "법률", "status": ["시행 · 2026-09-11 (시행령 대통령령 제36671호)"], "req": ["당초 수집 목적과 합리적으로 관련된 범위에서 이용", "예측 가능성과 정보주체가 불이익을 받는지 고려", "가명처리나 암호화 같은 안전조치를 했는지 고려"], "target": ["보유 데이터를 새 분석이나 AI 학습에 쓰려는 처리자", "동의 없이 추가로 이용하려는 경우"], "todo": ["네 가지 고려사항을 판단한 근거를 문서로 기록", "계속 이용한다면 처리방침에 판단 기준 공개", "안전조치(가명처리, 암호화) 적용 내역 보관"], "sources": [{"t": "KR-P-02 · 제15조제3항", "to": "source:KR-P-02"}, {"t": "KR-P-03 · 시행령 제14조의2제1항", "to": "source:KR-P-03"}], "features": [{"t": "Syntitan · 민감 컬럼 탐지와 불필요 컬럼 제외", "to": "feature:f10"}], "cases": ["02"]}, {"id": "k3", "name": "개인정보 보호법 제2조제1호의2, 제28조의2, 제28조의4", "type": "법률", "status": ["시행 · 2026-09-11"], "req": ["가명정보도 개인정보이므로 법 의무가 계속 적용", "통계작성, 과학적 연구, 공익적 기록보존 목적에 한해 동의 없이 처리", "복원용 추가 정보는 분리 보관하고 접근 권한도 분리"], "target": ["가명정보를 연구나 통계에 쓰는 처리자", "가명정보를 제3자에게 제공하는 경우"], "todo": ["처리 목적을 구체적으로 설정(\"AI 학습\"처럼 추상적인 목적은 불가)", "추가 정보를 보관할 위치와 열람할 사람 지정", "업무 효율화를 위한 치환은 특례가 아니라 안전조치로 설명"], "sources": [{"t": "KR-P-04 · 제2조제1호 다목·제1호의2", "to": "source:KR-P-04"}, {"t": "KR-P-05 · 제28조의2", "to": "source:KR-P-05"}, {"t": "KR-P-06 · 제28조의4제1항", "to": "source:KR-P-06"}, {"t": "KR-P-07 · 시행령 제29조의5제1항", "to": "source:KR-P-07"}], "features": [{"t": "DTS · 데이터 재구성", "to": "feature:f14"}], "cases": ["03", "06"]}, {"id": "k4", "name": "개인정보 보호법 제58조의2", "type": "법률", "status": ["시행 · 2026-09-11"], "req": ["시간, 비용, 기술을 합리적으로 고려해 판단", "다른 정보를 써도 개인을 알아볼 수 없는 정보가 대상", "이런 익명정보에는 법 적용 제외"], "target": ["익명정보로 보고 자유롭게 쓰거나 제공하려는 처리자"], "todo": ["복원 수단이 남아 있지 않은지 확인", "재식별 위험 평가 결과를 판단 근거로 보관", "익명 판단이 어려우면 가명정보로 관리"], "sources": [{"t": "KR-P-08 · 제58조의2", "to": "source:KR-P-08"}], "features": [{"t": "DTS · 데이터 재구성", "to": "feature:f14"}], "cases": ["03"]}, {"id": "k5", "name": "개인정보 보호법 제29조, 안전성 확보조치 기준", "type": "법률", "status": ["법률 시행 · 2026-09-11", "고시 제2026-9호 시행 · 2026-07-01"], "req": ["내부 관리계획 수립과 기술적, 관리적, 물리적 안전조치", "접근 권한은 최소한으로 부여하고 부여 이력은 3년 보관", "접속기록 1년 이상(5만명 이상, 민감정보, 고유식별정보 처리 시 2년 이상) 보관"], "target": ["개인정보처리자와 수탁자(제26조제8항 준용)", "AI 서비스나 검색 색인도 개인정보처리시스템이면 적용"], "todo": ["AI로 보내는 데이터의 보호조치 결정", "대응표와 처리 기록의 접근 권한 설정", "외부 모델을 호출할 때 전송 암호화와 기록 보관"], "sources": [{"t": "KR-P-09 · 제29조", "to": "source:KR-P-09"}, {"t": "KR-P-10 · 제5조(접근 권한의 관리) 제1항·제3항", "to": "source:KR-P-10"}, {"t": "KR-P-11 · 제6조(접근통제) 제1항", "to": "source:KR-P-11"}, {"t": "KR-P-12 · 제7조(개인정보의 암호화) 제4항", "to": "source:KR-P-12"}, {"t": "KR-P-13 · 제8조(접속기록의 보관 및 점검) 제1항", "to": "source:KR-P-13"}], "features": [{"t": "LLM Capsule · 민감정보 치환과 응답 복원", "to": "feature:f5"}, {"t": "LLM Capsule · 고객 환경의 대응표 보관과 권한 분리", "to": "feature:f6"}, {"t": "LLM Capsule · 작업 기록과 조회", "to": "feature:f7"}], "cases": ["01", "04", "07"]}, {"id": "k6", "name": "개인정보 보호법 제26조제1항, 제4항, 제6항", "type": "법률", "status": ["시행 · 2026-09-11"], "req": ["위탁할 때 처리 제한, 보호조치 등을 담은 문서 작성", "수탁자 교육과 처리 현황 감독", "재위탁은 위탁자 동의 필요"], "target": ["외부 AI 서비스나 솔루션 업체에 처리를 맡기는 처리자", "서비스형 LLM 공급자, 클라우드형 솔루션 공급자"], "todo": ["모델 공급자, 솔루션 공급자와 위탁 계약(DPA) 체결", "재위탁 제한과 감사권 조항 확인", "원문이 지나가는 운영 환경이 누구 것인지 확인"], "sources": [{"t": "KR-P-14 · 제26조제1항·제4항·제6항", "to": "source:KR-P-14"}], "features": [], "cases": ["01"]}, {"id": "k7", "name": "개인정보 보호법 제28조의8제1항", "type": "법률", "status": ["시행 · 2026-09-11"], "req": ["국외 제공, 처리위탁, 보관은 원칙적으로 금지", "별도 동의, 계약 이행, 인증, 적정성 인정 등은 예외", "국외에서 조회만 되어도 이전에 해당"], "target": ["해외에 서버가 있는 AI 모델이나 클라우드를 쓰는 처리자"], "todo": ["모델 처리 지역과 저장 여부 확인", "이전 근거(동의, 처리방침 공개 등) 선택", "국외로 가는 개인정보 범위를 최소화"], "sources": [{"t": "KR-P-15 · 제28조의8제1항", "to": "source:KR-P-15"}], "features": [{"t": "LLM Capsule · 고객 설치형 배포(내부망, DMZ)", "to": "feature:f8"}], "cases": ["01"]}, {"id": "k8", "name": "개인정보 보호법 제23조제1항, 제2항", "type": "법률", "status": ["시행 · 2026-09-11"], "req": ["건강정보 같은 민감정보는 원칙적으로 처리 금지", "별도 동의 또는 법령 근거가 있어야 처리", "제29조 수준의 안전조치 적용"], "target": ["진료, 상담, 보험 데이터를 다루는 처리자"], "todo": ["AI에 넣는 데이터에 민감정보가 있는지 확인", "처리 근거(별도 동의, 법령) 확보", "민감정보 처리 시스템의 접속기록 2년 이상 보관"], "sources": [{"t": "KR-P-16 · 제23조제1항·제2항", "to": "source:KR-P-16"}], "features": [], "cases": ["06", "07"]}, {"id": "k9", "name": "개인정보 보호법 제33조제1항", "type": "법률", "status": ["시행 · 2026-09-11"], "req": ["공공기관은 기준에 해당하는 개인정보파일을 운용하기 전에 영향평가 실시", "위험요인 분석과 개선 사항 도출", "결과를 개인정보보호위원회에 제출"], "target": ["공공기관(의무)", "민간은 노력 의무"], "todo": ["새 AI 시스템이 영향평가 대상 파일을 다루는지 확인", "데이터 흐름과 보호조치 자료 준비", "개선 사항 이행 기록"], "sources": [{"t": "KR-P-17 · 제33조제1항", "to": "source:KR-P-17"}], "features": [], "cases": ["08", "11"]}, {"id": "k10", "name": "개인정보 보호법 제37조의2, 자동화된 결정 조치 기준", "type": "법률", "status": ["법률 시행 · 2024-03-15", "고시 제2024-9호"], "req": ["중대한 영향을 주는 자동화된 결정에 대한 거부권", "결정에 대한 설명 요구권", "결정 기준과 절차 공개"], "target": ["인공지능을 적용한 시스템으로 사람 개입 없이 결정하는 처리자", "사람이 최종 판단하는 요약이나 질의응답은 보통 해당하지 않음"], "todo": ["실질적인 사람 개입이 있는지 판단", "결정에 쓴 주요 기준과 데이터를 기록", "거부와 설명 요구 대응 절차 마련"], "sources": [{"t": "KR-P-18 · 제37조의2제1항~제4항", "to": "source:KR-P-18"}, {"t": "KR-P-19 · 제6조(거부ㆍ설명등요구에 대한 조치시 고려사항) 제1항", "to": "source:KR-P-19"}], "features": [], "cases": ["12"]}, {"id": "k11", "name": "개인정보 보호법 제64조의2제6항 (투자 감경)", "type": "법률", "status": ["시행 · 2026-09-11", "시행령 제60조의2제5항, 고시 제2026-12호"], "req": ["개인정보 보호에 예산, 인력, 설비를 투자하고 운영하면 과징금 감경", "감경 폭은 기준금액의 100분의 40 이하", "고의나 중대한 과실로 인한 위반은 제외"], "target": ["과징금 부과 대상이 될 수 있는 모든 처리자"], "todo": ["보호 투자 내역(규모, 비율, 지속성) 기록", "법적 의무를 넘는 보호기술을 도입한 근거 보관", "감경 여부는 위원회가 판단해 도입만으로 확정되지 않는다는 점 유의"], "sources": [{"t": "KR-P-20 · 제64조의2제6항", "to": "source:KR-P-20"}, {"t": "KR-P-21 · 시행령 제60조의2제5항", "to": "source:KR-P-21"}, {"t": "KR-P-22 · 제8조의3(투자감경) 제1항", "to": "source:KR-P-22"}], "features": [{"t": "LLM Capsule · 민감정보 치환과 응답 복원", "to": "feature:f5"}], "cases": ["01", "07"]}, {"id": "k12", "name": "생성형 AI 개발·활용을 위한 개인정보 처리 안내서", "type": "가이드라인", "status": ["개인정보보호위원회 · 2025-08"], "req": ["서비스형 LLM은 계약과 약관으로 처리 안전성 확보", "저장과 재이용을 하지 않는 기업용 라이선스 고려", "규칙 기반 마스킹의 한계를 보완"], "target": ["서비스형 LLM을 업무에 쓰는 기업과 기관"], "todo": ["개인용 무료 라이선스 대신 기업용 계약 사용", "DPA에 입력데이터 소유권, 재이용 제한, 파기 명시", "입력 데이터 처리 방식을 계약으로 확인"], "sources": [{"t": "KR-P-23 · Ⅲ. 생성형 AI 개발·활용 단계별 고려사항, 서비스형 LLM(23면)", "to": "source:KR-P-23"}, {"t": "KR-P-24 · Ⅲ. 서비스형 LLM 사례(23면, 결정 제2024-017-237호)", "to": "source:KR-P-24"}, {"t": "KR-P-25 · Ⅲ. 서비스형 LLM, 기업용 이용약관·DPA(23~24면)", "to": "source:KR-P-25"}, {"t": "KR-P-26 · Ⅲ. 학습데이터 전처리, 비정형데이터 가명처리 참고(29면)", "to": "source:KR-P-26"}], "features": [{"t": "LLM Capsule · 민감정보 치환과 응답 복원", "to": "feature:f5"}], "cases": ["01", "04"]}, {"id": "k13", "name": "가명정보 처리 가이드라인 (2026. 3. 개정)", "type": "가이드라인", "status": ["개인정보보호위원회 · 2026-03"], "req": ["매핑테이블 같은 추가정보는 분리 저장하고 접근권한도 분리", "비정형데이터는 완벽하게 탐지하는 기술이 없다는 점을 전제", "비정형데이터는 추가 검수하고 결과서 보관"], "target": ["가명처리를 하는 처리자", "텍스트, 문서 같은 비정형데이터를 다루는 경우"], "todo": ["처리 목적을 구체적으로 설정", "추가 검수 방식과 결과 기록", "탐지 결과를 그대로 믿지 않고 표본 검수"], "sources": [{"t": "KR-P-27 · 제1장, 가명정보를 안전하게 관리하는 방법은?(16면)", "to": "source:KR-P-27"}, {"t": "KR-P-28 · 제3장 비정형데이터 가명처리 기준, 특수성 및 고려사항(58면)", "to": "source:KR-P-28"}, {"t": "KR-P-29 · 제2장 가명처리 절차, 가명처리 수행(45면)", "to": "source:KR-P-29"}], "features": [{"t": "Syntitan · 민감 컬럼 탐지와 불필요 컬럼 제외", "to": "feature:f10"}], "cases": ["02"]}, {"id": "k14", "name": "합성데이터 생성·활용 안내서", "type": "가이드라인", "status": ["개인정보보호위원회 · 2024-12"], "req": ["안전성 수준에 따라 익명정보 또는 가명정보로 판단", "재식별 가능성과 유용성을 함께 검증", "위험이 남아 있으면 모니터링하고 사용기간 설정"], "target": ["합성데이터를 만들어 쓰거나 외부에 제공하는 처리자"], "todo": ["합성데이터의 법적 성격을 판단한 근거 마련", "유용성과 안전성 검증 결과 보관", "제공한 뒤 활용 환경과 이력 관리"], "sources": [{"t": "KR-P-30 · 제2장 4. 합성데이터 생성·활용 시 고려사항, (법적 성격)(20면)", "to": "source:KR-P-30"}, {"t": "KR-P-31 · 제2장 4. (합성데이터의 한계)(23면)", "to": "source:KR-P-31"}, {"t": "KR-P-32 · 제3장 [5단계]-2 안전한 관리, 익명정보 성격의 합성데이터", "to": "source:KR-P-32"}], "features": [{"t": "DTS · 분포, 관계, 중복 품질 평가", "to": "feature:f15"}, {"t": "DTS · 재구성 데이터 학습 모델의 성능 비교", "to": "feature:f16"}], "cases": ["03"]}, {"id": "k15", "name": "AI 기본법 제2조제4호, 제33조, 시행령 제25조", "type": "법률", "status": ["시행 · 2026-01-22", "계도기간 최소 1년(사실조사, 과태료)"], "req": ["대출 심사, 보건의료, 공공 판단 등 법정 영역에서 쓰이고 영향이 중대하면 고영향 AI", "제공하기 전에 사업자가 고영향 AI에 해당하는지 검토", "과기정통부에 확인을 요청할 때 학습용데이터 개요 첨부"], "target": ["고영향 영역에서 AI를 개발하거나 이용해 제품이나 서비스를 제공하는 사업자", "최종 결정에 사람이 개입하면 대상에서 제외될 수 있음(보건의료 영역은 예외 기준이 따로 있음)"], "todo": ["제품이 법정 영역에 해당하는지 검토한 결과 기록", "학습용데이터의 출처와 가공 내역 정리", "필요하면 과기정통부에 확인 요청"], "sources": [{"t": "KR-A-01 · 제2조제4호", "to": "source:KR-A-01"}, {"t": "KR-A-02 · 제33조", "to": "source:KR-A-02"}, {"t": "KR-A-03 · 제25조제1항~제3항", "to": "source:KR-A-03"}, {"t": "KR-A-09 · 부칙 제1조(법률 제20676호), 부칙(법률 제21311호)", "to": "source:KR-A-09"}, {"t": "KR-A-12 · 판단 기준(가이드라인 본문 미확인)", "to": "source:KR-A-12"}], "features": [], "cases": ["10"]}, {"id": "k16", "name": "AI 기본법 제34조, 시행령 제27조, 사업자 책무 가이드라인", "type": "법률", "status": ["시행 · 2026-01-22", "근거 문서 5년 보관(시행령 제27조)"], "req": ["위험관리방안과 설명 방안(주요 기준, 학습용데이터 개요) 마련", "이용자 보호와 사람에 의한 관리, 감독", "조치 근거를 문서로 5년간 보관"], "target": ["고영향 AI를 제공하는 개발사업자와 이용사업자"], "todo": ["학습용데이터의 형식, 수량, 수집, 전처리, 품질 점검 내역을 문서로 정리", "합성데이터를 썼다면 생성 이유와 도구를 기재", "문서마다 ID, 버전, 작성일을 남겨 추적할 수 있게 관리"], "sources": [{"t": "KR-A-04 · 제34조제1항", "to": "source:KR-A-04"}, {"t": "KR-A-05 · 제27조", "to": "source:KR-A-05"}, {"t": "KR-A-10 · 3.5 / 5-1-1 문서화 공통사항", "to": "source:KR-A-10"}, {"t": "KR-A-11 · 3.2 / 2-2-1 학습용데이터 개요", "to": "source:KR-A-11"}], "features": [{"t": "Syntitan · 행 증강과 클래스 균형화", "to": "feature:f11"}, {"t": "Syntitan · 데이터 버전과 릴리즈 기록", "to": "feature:f12"}, {"t": "DTS · 데이터 재구성", "to": "feature:f14"}], "cases": ["10"]}, {"id": "k17", "name": "AI 기본법 제35조 (영향평가)", "type": "법률", "status": ["시행 · 2026-01-22", "제1항 후단 시행 · 2026-07-21"], "req": ["고영향 AI를 제공하기 전에 기본권 영향평가(노력 의무)", "인공지능취약계층의 특성 반영", "국가기관은 영향평가를 실시한 제품을 우선 고려"], "target": ["고영향 AI를 제공하는 사업자", "고영향 AI를 구매하는 국가기관 등"], "todo": ["평가에 쓴 데이터와 조건 기록", "평가 이후 바뀐 내용 추적", "공공 납품에 대비해 영향평가를 실시한 근거 준비"], "sources": [{"t": "KR-A-06 · 제35조", "to": "source:KR-A-06"}], "features": [{"t": "Syntitan · 데이터 버전과 릴리즈 기록", "to": "feature:f12"}, {"t": "Syntitan · 정제 전후 평가", "to": "feature:f13"}], "cases": ["11"]}, {"id": "k18", "name": "AI 기본법 제31조, 시행령 제23조 (투명성)", "type": "법률", "status": ["시행 · 2026-01-22", "계도기간 최소 1년(사실조사, 과태료)"], "req": ["고영향 AI나 생성형 AI 기반임을 이용자에게 사전 고지", "생성형 AI 결과물임을 표시", "실제와 구분하기 어려운 결과물은 명확히 고지"], "target": ["고영향 AI나 생성형 AI로 제품이나 서비스를 제공하는 사업자"], "todo": ["약관, 화면 등 고지 방법 결정", "결과물 표시 방식(사람이 알아보는 표시, 기계가 읽는 표시) 결정", "CUBIG 제품에는 고지와 표시 기능이 없음을 전제로 안내"], "sources": [{"t": "KR-A-07 · 제31조", "to": "source:KR-A-07"}, {"t": "KR-A-08 · 제23조", "to": "source:KR-A-08"}], "features": [], "cases": ["10"]}, {"id": "k19", "name": "전자금융감독규정 제15조제1항제3호, 망분리 개선 로드맵", "type": "감독규정", "status": ["감독규정 시행 · 2026-07-15 (고시 제2026-29호)", "생성형 AI는 혁신금융서비스 특례로 허용 · 2024-11-27 첫 지정"], "req": ["내부 업무망을 외부 통신망과 분리", "조문에 생성형 AI 예외는 없고, 특례 지정과 보안 조건 이행으로 허용", "금융 AI 가이드라인의 보안 목적 AI, SaaS 대체통제 점검 항목에 입출력 개인(신용)정보 마스킹 포함"], "target": ["전자금융업무를 하는 금융회사와 전자금융업자"], "todo": ["외부 AI 연결 경로가 특례나 예외 범위인지 확인", "고객 정보가 외부 모델로 원문 그대로 가지 않도록 치환", "보안 목적 AI, SaaS 대체통제를 적용할 때 입력 모니터링과 로그 1년 이상 보존"], "sources": [{"t": "KR-F-01 · 제15조제1항제3호", "to": "source:KR-F-01"}, {"t": "KR-F-02 · 로드맵 1단계(규제 샌드박스)", "to": "source:KR-F-02"}, {"t": "KR-F-05 · 7. 보안성 원칙 — 망분리 대체 정보보호통제(보안 목적 AI·SaaS), 점검 항목 ⑦", "to": "source:KR-F-05"}, {"t": "KR-F-09 · 제19조제1항", "to": "source:KR-F-09"}], "features": [{"t": "LLM Capsule · 민감정보 치환과 응답 복원", "to": "feature:f5"}, {"t": "LLM Capsule · 고객 설치형 배포(내부망, DMZ)", "to": "feature:f8"}], "cases": ["04"]}, {"id": "k20", "name": "금융분야 인공지능 가이드라인 (2026. 6.)", "type": "가이드라인", "status": ["금융위원회 · 시행 2026-06-22", "금감원 AI 위험관리프레임워크 동시 배포"], "req": ["학습과 참조 데이터의 정확성, 완전성, 대표성 검증", "인구통계 특성별 편향을 정기적으로 분석하고 개선", "데이터 계보와 출처 추적, 위험통제 문서화"], "target": ["업종과 관계없이 AI를 쓰는 모든 금융회사(자율규제)"], "todo": ["학습 데이터의 대표성과 편향 점검 결과 보관", "보완한 데이터의 생성 근거와 검증 결과 기록", "데이터 버전과 출처를 추적할 수 있게 관리"], "sources": [{"t": "KR-F-03 · Ⅱ. 7대 원칙 4. 신뢰성 원칙 4.2 데이터 품질 관리", "to": "source:KR-F-03"}, {"t": "KR-F-04 · 4.3 공정성·편향성 점검 / 1.4 위험통제 절차 마련·이행", "to": "source:KR-F-04"}], "features": [{"t": "LLM Capsule · 민감정보 치환과 응답 복원", "to": "feature:f5"}, {"t": "Syntitan · 데이터 상태 진단과 정제", "to": "feature:f9"}, {"t": "Syntitan · 행 증강과 클래스 균형화", "to": "feature:f11"}, {"t": "Syntitan · 정제 전후 평가", "to": "feature:f13"}, {"t": "DTS · 재구성 데이터 학습 모델의 성능 비교", "to": "feature:f16"}], "cases": ["04", "05"]}, {"id": "k21", "name": "신용정보법 제36조의2", "type": "법률", "status": ["시행 · 2026-09-11 (현행본)"], "req": ["자동화평가를 했는지와 그 결과, 주요 기준 설명", "평가에 쓴 기초정보의 개요 설명", "정정, 삭제, 재산출 요구에 대응"], "target": ["자동화평가로 신용평가나 여신 결정을 하는 금융회사"], "todo": ["평가 모델에 쓴 데이터와 기준을 기록", "재산출 요구에 대비해 당시 데이터 버전 보관", "설명 문안과 근거 자료 연결"], "sources": [{"t": "KR-F-06 · 제36조의2", "to": "source:KR-F-06"}], "features": [], "cases": ["05", "12"]}, {"id": "k22", "name": "신용정보법 제40조의2, 제32조제6항제9호의2", "type": "법률", "status": ["시행 · 2026-09-11 (현행본)"], "req": ["가명처리에 쓴 추가정보는 분리 보관하거나 삭제", "가명정보 보안대책 수립과 접속기록 보관", "가명처리, 익명처리 기록 3년 보존"], "target": ["가명정보로 AI 모델 개발이나 연구를 하는 금융회사"], "todo": ["추가정보(대응표)의 보관 위치와 접근 권한 분리", "가명처리 행위 기록 보존", "업무 효율화를 위한 LLM 처리는 이 조항으로 정당화할 수 없음을 전제"], "sources": [{"t": "KR-F-07 · 제40조의2제1항·제2항·제6항·제7항·제8항", "to": "source:KR-F-07"}, {"t": "KR-F-08 · 제32조제6항제9호의2", "to": "source:KR-F-08"}], "features": [], "cases": ["05"]}, {"id": "k23", "name": "의료법 제19조, 제21조제2항, 제23조, 전자의무기록 시설 장비 기준", "type": "법률", "status": ["시행 · 2026-10-02 (현행본)", "제23조제4항 개정 시행 · 2026-12-10", "제19조 개정 시행 · 2026-12-24"], "req": ["업무상 알게 된 환자 정보 누설 금지", "환자가 아닌 사람의 기록 열람 금지(법에 정한 예외만 허용)", "전자의무기록 시스템과 백업장비는 국내에만 설치"], "target": ["의료기관과 의료인", "전자의무기록은 공급사를 포함한 누구에게나 적용"], "todo": ["진료 정보의 원문이 외부 AI로 가지 않게 관리", "전자의무기록 연동 AI는 처리 위치를 국내로 한정", "외부 처리 업체가 제3자에 해당하는지 유권해석 확인"], "sources": [{"t": "KR-M-01 · 제19조제1항", "to": "source:KR-M-01"}, {"t": "KR-M-02 · 제21조제2항", "to": "source:KR-M-02"}, {"t": "KR-M-03 · 제23조제2항·제3항", "to": "source:KR-M-03"}, {"t": "KR-M-04 · 제7조, 별표 1·별표 2 4.3", "to": "source:KR-M-04"}], "features": [{"t": "LLM Capsule · 고객 환경의 대응표 보관과 권한 분리", "to": "feature:f6"}], "cases": ["07"]}, {"id": "k24", "name": "보건의료데이터 활용 가이드라인", "type": "가이드라인", "status": ["보건복지부, 개인정보보호위원회 · 개정 시행 2025-12-31", "본 지도 인용은 2020. 9. 판 문언(최신판 대조 필요)"], "req": ["환자 기록에는 의료법이 우선 적용", "가명처리해 개인을 알아볼 수 없는 진료기록은 개인정보 보호법 적용", "정신질환 같은 고위험 범주는 본인 동의가 원칙"], "target": ["진료 데이터를 연구나 AI 개발에 쓰려는 의료기관"], "todo": ["가명처리 전에 원문이 외부로 전달되는지 확인", "고위험 범주 정보는 우선 제외하거나 별도 동의 확보", "데이터심의위원회(DRB) 절차 확인"], "sources": [{"t": "KR-M-05 · 붙임2 의료법 지침(개인정보 보호법과의 관계)", "to": "source:KR-M-05"}, {"t": "KR-M-06 · Ⅲ. 1. 적용 대상정보의 범위", "to": "source:KR-M-06"}], "features": [{"t": "DTS · 데이터 재구성", "to": "feature:f14"}, {"t": "DTS · 분포, 관계, 중복 품질 평가", "to": "feature:f15"}], "cases": ["06"]}, {"id": "k25", "name": "생명윤리법 제15조, 시행규칙 제13조", "type": "법률", "status": ["시행 · 2025-10-01 (현행본)"], "req": ["인간대상연구는 시작 전에 기관생명윤리위원회(IRB) 심의", "기존 자료를 쓰는 연구는 요건을 갖추면 심의 면제 가능", "면제도 IRB 확인 절차 필요"], "target": ["진료기록 기반 AI 연구를 하는 의료기관과 연구자"], "todo": ["연구 계획에 데이터 처리 방식(가명처리, 재구성) 명시", "IRB 심의 또는 면제 확인", "제품 개발을 위한 학습이 연구에 해당하는지 별도 검토"], "sources": [{"t": "KR-M-07 · 법 제15조, 시행규칙 제13조제1항제3호", "to": "source:KR-M-07"}, {"t": "KR-M-08 · 붙임1 개인정보 보호법 개정에 따른 생명윤리법 유권해석", "to": "source:KR-M-08"}], "features": [], "cases": ["06"]}, {"id": "k26", "name": "국가 망 보안체계(N2SF) 보안 가이드라인, 국가 사이버보안 기본지침", "type": "지침", "status": ["N2SF 가이드라인 1.0 정식판 · 2025-09-30 (원문 대조 필요)", "기본지침 개정 · 2026-05-01 (비공개, 보도 기준)"], "req": ["업무 정보를 C, S, O 등급으로 분류", "망분리를 일률적으로 적용하지 않고 등급별로 보안통제", "외부 생성형 AI와 클라우드는 등급과 통제 조건에 따라 활용"], "target": ["국가기관, 지자체, 공공기관"], "todo": ["AI에 넣을 업무 정보의 등급 판단", "등급에 맞게 외부로 나가는 정보 범위 축소", "보안성 검토에 낼 데이터 흐름 자료 준비"], "sources": [{"t": "KR-G-01 · 본 책자 등급분류 단계 + 부록2 정보서비스 모델 해설서", "to": "source:KR-G-01"}, {"t": "KR-G-02 · 제3장 제1절(국가망보안체계 신설), 구 제40조 삭제", "to": "source:KR-G-02"}], "features": [{"t": "LLM Capsule · 고객 설치형 배포(내부망, DMZ)", "to": "feature:f8"}], "cases": ["08"]}, {"id": "k27", "name": "공공부문 AI 도입·활용 가이드, 생성형 AI 보안 가이드라인", "type": "가이드라인", "status": ["행정안전부 가이드 · 2026-06-10", "국가정보원 보안 가이드라인 · 2023-06-29", "AI 데이터행정법 제27조 시행 · 2026-08-28", "입력 금지 문구는 원문 대조 필요"], "req": ["범정부 AI 공통기반을 우선 이용(노력 의무)", "외부 생성형 AI에 비공개 정보와 개인정보 입력 금지", "답변이 사실인지 검증"], "target": ["생성형 AI를 업무에 도입하거나 쓰는 공공기관과 공무원"], "todo": ["외부 AI에 들어가는 정보에서 개인정보와 비공개 정보 제거", "공통기반 이용 여부 검토", "입력 기준을 내부 지침과 교육에 반영"], "sources": [{"t": "KR-G-03 · 보도자료 요지(가이드 본문 미확보)", "to": "source:KR-G-03"}, {"t": "KR-G-04 · 주의사항", "to": "source:KR-G-04"}, {"t": "KR-G-05 · 보도자료 제목(본문은 HWP 첨부)", "to": "source:KR-G-05"}, {"t": "KR-G-11 · 제27조(공통기반의 구축 등)", "to": "source:KR-G-11"}], "features": [{"t": "LLM Capsule · 민감정보 치환과 응답 복원", "to": "feature:f5"}], "cases": ["08"]}, {"id": "k28", "name": "공공데이터의 인공지능 친화적 관리 가이드라인 v1.1", "type": "가이드라인", "status": ["행정안전부, NIA · 2026-07-31 (v1.0 2026-03-31)"], "req": ["기계가 이해할 수 있는 메타데이터 제공", "버전과 변경 이력을 문서로 남기고 공개", "출처와 이력을 기록해 추적할 수 있게 하고, 공유 전 O, S, C 등급 분류(예시 기준)"], "target": ["공공데이터를 개방하거나 AI 학습용으로 공유하는 공공기관"], "todo": ["데이터별 처리와 변경 이력 기록", "편향과 한계점 문서화", "S등급 데이터는 비식별 처리하고 재식별 위험 점검"], "sources": [{"t": "KR-G-06 · FAIR 원칙 03·04·07, 3.1 데이터 생애주기 및 이력 관리", "to": "source:KR-G-06"}, {"t": "KR-G-07 · 1.3.2 공유 데이터 자격 기준", "to": "source:KR-G-07"}], "features": [{"t": "Syntitan · 데이터 상태 진단과 정제", "to": "feature:f9"}, {"t": "Syntitan · 데이터 버전과 릴리즈 기록", "to": "feature:f12"}], "cases": ["09"]}, {"id": "k29", "name": "공공데이터법 제22조, AI 데이터행정법 제16조, 제29조", "type": "법률", "status": ["시행 · 2026-08-28"], "req": ["기관장의 공공데이터 품질관리 조치 의무", "이력을 포함한 메타데이터 관리", "AI 학습용데이터의 적정한 품질수준 확보"], "target": ["공공데이터와 학습용데이터를 관리하는 공공기관"], "todo": ["품질 진단 결과와 개선 조치 기록", "메타데이터에 처리 이력 포함", "학습용데이터 품질 기준과 점검 결과 보관"], "sources": [{"t": "KR-G-08 · 제22조(공공데이터의 품질관리)", "to": "source:KR-G-08"}, {"t": "KR-G-09 · 제16조(데이터관리체계의 구축)", "to": "source:KR-G-09"}, {"t": "KR-G-10 · 제29조(학습용데이터의 관리)", "to": "source:KR-G-10"}], "features": [{"t": "Syntitan · 데이터 상태 진단과 정제", "to": "feature:f9"}], "cases": ["09"]}, {"id": "k30", "name": "AI 데이터행정법 제32조 (공공분야 AI 영향평가)", "type": "법률", "status": ["시행 · 2026-08-28"], "req": ["공공기관은 AI 도입 전에 기본권 영향평가를 하고 결과 공표", "위험관리방안 수립과 시행", "단순하거나 경미한 업무 등은 면제 가능"], "target": ["AI를 도입하려는 공공기관"], "todo": ["도입하려는 AI의 데이터 흐름과 보호조치 정리", "평가에 쓴 데이터와 조건 기록", "평가 후 운영하면서 생긴 변경 관리"], "sources": [{"t": "KR-G-12 · 제32조(공공분야 인공지능 영향평가 등)", "to": "source:KR-G-12"}], "features": [{"t": "LLM Capsule · 고객 설치형 배포(내부망, DMZ)", "to": "feature:f8"}, {"t": "Syntitan · 데이터 버전과 릴리즈 기록", "to": "feature:f12"}], "cases": ["08", "11"]}], "sources": [{"id": "KR-P-01", "region": "개인정보", "law": "개인정보 보호법(법률 제21445호, 2026. 3. 10. 일부개정)", "article": "제3조제1항·제2항", "type": "법률", "status": "시행", "date": "2026-09-11", "ko": "제3조(개인정보 보호 원칙) ① 개인정보처리자는 개인정보의 처리 목적을 명확하게 하여야 하고 그 목적에 필요한 범위에서 최소한의 개인정보만을 적법하고 정당하게 수집하여야 한다.\n② 개인정보처리자는 개인정보의 처리 목적에 필요한 범위에서 적합하게 개인정보를 처리하여야 하며, 그 목적 외의 용도로 활용하여서는 아니 된다.", "req": ["처리 목적을 명확히 정하기", "목적에 필요한 최소한만 수집하기", "목적 외 용도로 활용하지 않기"], "ctx": ["LLM에 넣는 데이터에도 최소 수집 원칙을 적용하기", "업무에 필요 없는 개인정보는 프롬프트에 넣지 않기", "원본 대신 치환 데이터나 합성 데이터를 쓰는 근거로 삼기"], "change": [], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/개인정보보호법/제3조"}], "clause": "clause:k1", "en": "", "clauseName": "개인정보 보호법 제3조제1항, 제2항"}, {"id": "KR-P-02", "region": "개인정보", "law": "개인정보 보호법(법률 제21445호, 2026. 3. 10. 일부개정)", "article": "제15조제3항", "type": "법률", "status": "시행", "date": "2026-09-11", "ko": "제15조(개인정보의 수집ㆍ이용)\n③ 개인정보처리자는 당초 수집 목적과 합리적으로 관련된 범위에서 정보주체에게 불이익이 발생하는지 여부, 암호화 등 안전성 확보에 필요한 조치를 하였는지 여부 등을 고려하여 대통령령으로 정하는 바에 따라 정보주체의 동의 없이 개인정보를 이용할 수 있다.", "req": ["당초 수집 목적과 합리적으로 관련되는지 고려", "정보주체에게 불이익이 생기는지 고려", "암호화 등 안전조치를 했는지 고려"], "ctx": ["보유 데이터를 AI 학습에 쓸 때 검토하는 근거", "프롬프트 학습 근거로 인정한 PIPC 결정례 제2025-011-031호(생성형 AI 안내서 수록)", "가명처리 특례(제28조의2)와는 별개인 경로"], "change": ["2020. 2. 4. 신설"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/개인정보보호법/제15조"}], "clause": "clause:k2", "en": "", "clauseName": "개인정보 보호법 제15조제3항, 시행령 제14조의2"}, {"id": "KR-P-03", "region": "개인정보", "law": "개인정보 보호법 시행령(대통령령 제36671호, 2026. 9. 10. 일부개정)", "article": "시행령 제14조의2제1항", "type": "시행령", "status": "시행", "date": "2026-09-11", "ko": "제14조의2(개인정보의 추가적인 이용ㆍ제공의 기준 등) ① 개인정보처리자는 법 제15조제3항 또는 제17조제4항에 따라 정보주체의 동의 없이 개인정보를 이용 또는 제공(이하 “개인정보의 추가적인 이용 또는 제공”이라 한다)하려는 경우에는 다음 각 호의 사항을 고려해야 한다.\n1. 당초 수집 목적과 관련성이 있는지 여부\n2. 개인정보를 수집한 정황 또는 처리 관행에 비추어 볼 때 개인정보의 추가적인 이용 또는 제공에 대한 예측 가능성이 있는지 여부\n3. 정보주체의 이익을 부당하게 침해하는지 여부\n4. 가명처리 또는 암호화 등 안전성 확보에 필요한 조치를 하였는지 여부", "req": ["당초 목적과 관련이 있는지 판단", "추가 이용을 예측할 수 있는지 판단", "가명처리나 암호화 조치를 했는지 판단"], "ctx": ["네 가지 고려사항을 모두 문서로 남겨야 방어할 수 있음", "가명처리와 암호화가 추가 이용의 판단 요소로 명시돼 있음", "계속 이용하면 제2항에 따라 처리방침에 판단 기준을 공개해야 함"], "change": ["2023. 9. 12. 제2항 개정(처리방침 공개, CPO 점검)"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/개인정보보호법시행령/제14조의2"}], "clause": "clause:k2", "en": "", "clauseName": "개인정보 보호법 제15조제3항, 시행령 제14조의2"}, {"id": "KR-P-04", "region": "개인정보", "law": "개인정보 보호법(법률 제21445호, 2026. 3. 10. 일부개정)", "article": "제2조제1호 다목·제1호의2", "type": "법률", "status": "시행", "date": "2026-09-11", "ko": "제2조(정의) 이 법에서 사용하는 용어의 뜻은 다음과 같다.\n1. “개인정보”란 살아 있는 개인에 관한 정보로서 다음 각 목의 어느 하나에 해당하는 정보를 말한다.\n다. 가목 또는 나목을 제1호의2에 따라 가명처리함으로써 원래의 상태로 복원하기 위한 추가 정보의 사용ㆍ결합 없이는 특정 개인을 알아볼 수 없는 정보(이하 “가명정보”라 한다)\n1의2. “가명처리”란 개인정보의 일부를 삭제하거나 일부 또는 전부를 대체하는 등의 방법으로 추가 정보가 없이는 특정 개인을 알아볼 수 없도록 처리하는 것을 말한다.", "req": ["가명정보도 개인정보에 포함", "추가 정보 없이는 특정 개인을 알아볼 수 없게 처리", "일부 삭제, 대체 등의 방법으로 처리"], "ctx": ["복원 가능한 치환(대응표 보유)은 익명처리가 아니라 가명처리", "가명정보에도 법 전반의 의무가 계속 적용", "LLM 입력을 치환한 결과물의 법적 분류 기준"], "change": ["2020. 2. 4. 데이터 3법 개정으로 신설"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/개인정보보호법/제2조"}], "clause": "clause:k3", "en": "", "clauseName": "개인정보 보호법 제2조제1호의2, 제28조의2, 제28조의4"}, {"id": "KR-P-05", "region": "개인정보", "law": "개인정보 보호법(법률 제21445호, 2026. 3. 10. 일부개정)", "article": "제28조의2", "type": "법률", "status": "시행", "date": "2026-09-11", "ko": "제28조의2(가명정보의 처리 등) ① 개인정보처리자는 통계작성, 과학적 연구, 공익적 기록보존 등을 위하여 정보주체의 동의 없이 가명정보를 처리할 수 있다.\n② 개인정보처리자는 제1항에 따라 가명정보를 제3자에게 제공하는 경우에는 특정 개인을 알아보기 위하여 사용될 수 있는 정보를 포함해서는 아니 된다.", "req": ["통계작성, 과학적 연구, 공익적 기록보존 목적으로 한정", "정보주체의 동의 없이 가명정보 처리 허용", "제3자 제공 시 개인을 알아보는 데 쓰일 수 있는 정보 포함 금지"], "ctx": ["일반 업무 효율화(요약, 질의응답)는 특례 목적이 아님", "특례 밖의 치환은 제29조 안전조치 수단으로 봄", "가이드라인은 \"AI 학습\"처럼 추상적인 목적은 정할 수 없다고 안내함"], "change": ["2020. 2. 4. 신설"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/개인정보보호법/제28조의2"}], "clause": "clause:k3", "en": "", "clauseName": "개인정보 보호법 제2조제1호의2, 제28조의2, 제28조의4"}, {"id": "KR-P-06", "region": "개인정보", "law": "개인정보 보호법(법률 제21445호, 2026. 3. 10. 일부개정)", "article": "제28조의4제1항", "type": "법률", "status": "시행", "date": "2026-09-11", "ko": "제28조의4(가명정보에 대한 안전조치의무 등) ① 개인정보처리자는 제28조의2 또는 제28조의3에 따라 가명정보를 처리하는 경우에는 원래의 상태로 복원하기 위한 추가 정보를 별도로 분리하여 보관ㆍ관리하는 등 해당 정보가 유출등이 되지 아니하도록 대통령령으로 정하는 바에 따라 안전성 확보에 필요한 기술적ㆍ관리적 및 물리적 조치를 하여야 한다.", "req": ["추가 정보를 따로 분리해 보관, 관리", "기술적·관리적·물리적 안전조치", "유출등 방지"], "ctx": ["치환 대응표와 복원키가 곧 추가 정보", "원 데이터와 같은 인프라에 보관하면 분리 원칙과 충돌", "조문상 제28조의2, 제28조의3에 따른 처리에만 적용"], "change": ["2026. 3. 10. 개정(시행 2026. 9. 11.), \"유출등\" 용어로 정비"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/개인정보보호법/제28조의4"}], "clause": "clause:k3", "en": "", "clauseName": "개인정보 보호법 제2조제1호의2, 제28조의2, 제28조의4"}, {"id": "KR-P-07", "region": "개인정보", "law": "개인정보 보호법 시행령(대통령령 제36671호, 2026. 9. 10. 일부개정)", "article": "시행령 제29조의5제1항", "type": "시행령", "status": "시행", "date": "2026-09-11", "ko": "제29조의5(가명정보에 대한 안전성 확보 조치) ① 개인정보처리자는 법 제28조의4제1항에 따라 가명정보 및 가명정보를 원래의 상태로 복원하기 위한 추가 정보(이하 이 조에서 “추가정보”라 한다)에 대하여 다음 각 호의 안전성 확보 조치를 해야 한다.\n1. 제30조에 따른 안전성 확보 조치\n2. 가명정보와 추가정보의 분리 보관. 다만, 추가정보가 불필요한 경우에는 추가정보를 파기해야 한다.\n3. 가명정보와 추가정보에 대한 접근 권한의 분리. 다만, 「소상공인기본법」 제2조에 따른 소상공인으로서 가명정보를 취급할 자를 추가로 둘 여력이 없는 경우 등 접근 권한의 분리가 어려운 정당한 사유가 있는 경우에는 업무 수행에 필요한 최소한의 접근 권한만 부여하고 접근 권한의 보유 현황을 기록으로 보관하는 등 접근 권한을 관리ㆍ통제해야 한다.", "req": ["제30조 안전성 확보조치 적용", "가명정보와 추가정보를 분리해 보관", "접근 권한 분리"], "ctx": ["추가정보가 필요 없게 되면 파기해야 함", "소상공인 등은 최소 권한 부여로 갈음할 수 있음", "대응표를 설계할 때 저장 위치와 권한을 따로 나눠야 함"], "change": ["2023. 9. 12. 개정"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/개인정보보호법시행령/제29조의5"}], "clause": "clause:k3", "en": "", "clauseName": "개인정보 보호법 제2조제1호의2, 제28조의2, 제28조의4"}, {"id": "KR-P-08", "region": "개인정보", "law": "개인정보 보호법(법률 제21445호, 2026. 3. 10. 일부개정)", "article": "제58조의2", "type": "법률", "status": "시행", "date": "2026-09-11", "ko": "제58조의2(적용제외) 이 법은 시간ㆍ비용ㆍ기술 등을 합리적으로 고려할 때 다른 정보를 사용하여도 더 이상 개인을 알아볼 수 없는 정보에는 적용하지 아니한다.", "req": ["시간, 비용, 기술을 합리적으로 고려해야 함", "다른 정보를 사용해도 개인을 알아볼 수 없어야 함", "해당하는 정보에는 법을 적용하지 않음"], "ctx": ["익명정보인지 판단하는 기준이 됨", "합성데이터가 익명정보로 인정되면 법이 적용되지 않음", "복원 수단이 남아 있으면 해당하지 않음"], "change": ["2020. 2. 4. 신설"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/개인정보보호법/제58조의2"}], "clause": "clause:k4", "en": "", "clauseName": "개인정보 보호법 제58조의2"}, {"id": "KR-P-09", "region": "개인정보", "law": "개인정보 보호법(법률 제21445호, 2026. 3. 10. 일부개정)", "article": "제29조", "type": "법률", "status": "시행", "date": "2026-09-11", "ko": "제29조(안전조치의무) 개인정보처리자는 개인정보가 유출등이 되지 아니하도록 내부 관리계획 수립, 접속기록 보관 등 대통령령으로 정하는 바에 따라 안전성 확보에 필요한 기술적ㆍ관리적 및 물리적 조치를 하여야 한다.", "req": ["내부 관리계획 수립", "접속기록 보관", "기술적·관리적·물리적 안전조치"], "ctx": ["LLM이나 RAG 색인도 개인정보처리시스템이면 적용됨", "입력 치환과 마스킹은 이 의무의 이행 수단으로 설명할 수 있음", "제64조의2제1항제9호 단서: 안전조치를 다하면 유출 과징금 면제"], "change": ["2026. 3. 10. 개정(시행 2026. 9. 11.), \"유출등\" 용어로 정비"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/개인정보보호법/제29조"}], "clause": "clause:k5", "en": "", "clauseName": "개인정보 보호법 제29조, 안전성 확보조치 기준"}, {"id": "KR-P-10", "region": "개인정보", "law": "개인정보의 안전성 확보조치 기준(개인정보보호위원회고시 제2026-9호, 2026. 7. 1. 일부개정)", "article": "제5조(접근 권한의 관리) 제1항·제3항", "type": "고시", "status": "시행", "date": "2026-07-01", "ko": "제5조(접근 권한의 관리) ① 개인정보처리자는 개인정보처리시스템에 대한 접근 권한을 업무 수행에 필요한 최소한의 범위로 차등 부여하여야 한다.\n③ 개인정보처리자는 제1항 및 제2항에 의한 권한 부여, 변경 또는 말소에 대한 내역을 기록하고, 그 기록을 최소 3년간 보관하여야 한다.", "req": ["업무에 필요한 최소 범위로 차등 부여", "부여, 변경, 말소 내역 기록", "기록은 최소 3년 보관"], "ctx": ["AI 서비스 관리자 권한과 지식베이스 공개 범위에도 적용", "대응표 접근 권한 이력도 3년 보관 대상"], "change": ["2026. 7. 1. 일부개정(제2026-9호)"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/행정규칙/개인정보의안전성확보조치기준"}], "clause": "clause:k5", "en": "", "clauseName": "개인정보 보호법 제29조, 안전성 확보조치 기준"}, {"id": "KR-P-11", "region": "개인정보", "law": "개인정보의 안전성 확보조치 기준(개인정보보호위원회고시 제2026-9호, 2026. 7. 1. 일부개정)", "article": "제6조(접근통제) 제1항", "type": "고시", "status": "시행", "date": "2026-07-01", "ko": "제6조(접근통제) ① 개인정보처리자는 정보통신망을 통한 불법적인 접근 및 침해사고 방지를 위해 다음 각 호의 안전조치를 하여야 한다.\n1. 개인정보처리시스템에 대한 접속 권한을 인터넷 프로토콜(IP) 주소 등으로 제한하여 인가받지 않은 접근을 제한\n2. 개인정보처리시스템에 접속한 인터넷 프로토콜(IP) 주소 등을 분석하여 개인정보 유출 시도 탐지 및 대응", "req": ["IP 주소 등으로 접속 권한 제한", "유출 시도를 탐지하고 대응"], "ctx": ["외부 LLM API 호출도 통제 대상", "제2항: 외부에서 접속할 때 안전한 인증수단 적용 의무"], "change": ["2026. 7. 1. 일부개정(제2026-9호)"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/행정규칙/개인정보의안전성확보조치기준"}], "clause": "clause:k5", "en": "", "clauseName": "개인정보 보호법 제29조, 안전성 확보조치 기준"}, {"id": "KR-P-12", "region": "개인정보", "law": "개인정보의 안전성 확보조치 기준(개인정보보호위원회고시 제2026-9호, 2026. 7. 1. 일부개정)", "article": "제7조(개인정보의 암호화) 제4항", "type": "고시", "status": "시행", "date": "2026-07-01", "ko": "제7조(개인정보의 암호화)\n④ 개인정보처리자는 개인정보를 정보통신망을 통하여 인터넷망 구간으로 송ㆍ수신하는 경우에는 이를 안전한 암호 알고리즘으로 암호화하여야 한다.", "req": ["인터넷망으로 송수신할 때 암호화", "안전한 암호 알고리즘 사용"], "ctx": ["외부 LLM으로 보내는 프롬프트에 적용", "제2항: 주민등록번호 등 7종은 저장할 때 암호화", "제6항: 대규모 처리자의 암호 키 관리 절차"], "change": ["2026. 7. 1. 일부개정(제2026-9호)"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/행정규칙/개인정보의안전성확보조치기준"}], "clause": "clause:k5", "en": "", "clauseName": "개인정보 보호법 제29조, 안전성 확보조치 기준"}, {"id": "KR-P-13", "region": "개인정보", "law": "개인정보의 안전성 확보조치 기준(개인정보보호위원회고시 제2026-9호, 2026. 7. 1. 일부개정)", "article": "제8조(접속기록의 보관 및 점검) 제1항", "type": "고시", "status": "시행", "date": "2026-07-01", "ko": "제8조(접속기록의 보관 및 점검) ① 개인정보처리자는 개인정보처리시스템에 접속한 자(다만, 정보주체는 제외한다)의 접속기록을 1년 이상 보관ㆍ관리하여야 한다. 다만, 다음 각 호의 어느 하나에 해당하는 경우에는 2년 이상 보관ㆍ관리하여야 한다.\n1. 5만명 이상의 정보주체에 관한 개인정보를 처리하는 개인정보처리시스템에 해당하는 경우\n2. 고유식별정보 또는 민감정보를 처리하는 개인정보처리시스템에 해당하는 경우\n3. 개인정보처리자로서 「전기통신사업법」제6조제1항에 따라 등록을 하거나 같은 항 단서에 따라 신고한 기간통신사업자에 해당하는 경우", "req": ["접속기록 1년 이상 보관", "5만 명 이상이거나 민감정보, 고유식별정보를 처리하면 2년 이상"], "ctx": ["AI 서비스의 질의와 처리 기록도 접속기록 관리 대상", "민감정보를 다루는 RAG 색인은 2년 보관"], "change": ["2026. 7. 1. 일부개정(제2026-9호)"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/행정규칙/개인정보의안전성확보조치기준"}], "clause": "clause:k5", "en": "", "clauseName": "개인정보 보호법 제29조, 안전성 확보조치 기준"}, {"id": "KR-P-14", "region": "개인정보", "law": "개인정보 보호법(법률 제21445호, 2026. 3. 10. 일부개정)", "article": "제26조제1항·제4항·제6항", "type": "법률", "status": "시행", "date": "2026-09-11", "ko": "제26조(업무위탁에 따른 개인정보의 처리 제한) ① 개인정보처리자가 제3자에게 개인정보의 처리 업무를 위탁하는 경우에는 다음 각 호의 내용이 포함된 문서로 하여야 한다.\n1. 위탁업무 수행 목적 외 개인정보의 처리 금지에 관한 사항\n2. 개인정보의 기술적ㆍ관리적 보호조치에 관한 사항\n3. 그 밖에 개인정보의 안전한 관리를 위하여 대통령령으로 정한 사항\n④ 위탁자는 업무 위탁으로 인하여 정보주체의 개인정보가 유출등이 되지 아니하도록 수탁자를 교육하고, 처리 현황 점검 등 대통령령으로 정하는 바에 따라 수탁자가 개인정보를 안전하게 처리하는지를 감독하여야 한다.\n⑥ 수탁자는 위탁받은 개인정보의 처리 업무를 제3자에게 다시 위탁하려는 경우에는 위탁자의 동의를 받아야 한다.", "req": ["위탁할 때 필수 사항을 담은 문서 작성", "수탁자 교육과 처리 현황 감독", "재위탁하려면 위탁자 동의"], "ctx": ["서비스형 LLM 공급자는 보통 수탁자로 계약함", "DPA에 재위탁 통제와 감사권을 명시해야 함", "제8항: 수탁자에게도 제29조, 제64조의2 등을 준용함"], "change": ["2026. 3. 10. 제4항 개정(시행 2026. 9. 11.)", "2023. 3. 14. 제6항 신설"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/개인정보보호법/제26조"}], "clause": "clause:k6", "en": "", "clauseName": "개인정보 보호법 제26조제1항, 제4항, 제6항"}, {"id": "KR-P-15", "region": "개인정보", "law": "개인정보 보호법(법률 제21445호, 2026. 3. 10. 일부개정)", "article": "제28조의8제1항", "type": "법률", "status": "시행", "date": "2026-09-11", "ko": "제28조의8(개인정보의 국외 이전) ① 개인정보처리자는 개인정보를 국외로 제공(조회되는 경우를 포함한다)ㆍ처리위탁ㆍ보관(이하 이 절에서 “이전”이라 한다)하여서는 아니 된다. 다만, 다음 각 호의 어느 하나에 해당하는 경우에는 개인정보를 국외로 이전할 수 있다.\n1. 정보주체로부터 국외 이전에 관한 별도의 동의를 받은 경우\n2. 법률, 대한민국을 당사자로 하는 조약 또는 그 밖의 국제협정에 개인정보의 국외 이전에 관한 특별한 규정이 있는 경우\n3. 정보주체와의 계약의 체결 및 이행을 위하여 개인정보의 처리위탁ㆍ보관이 필요한 경우로서 다음 각 목의 어느 하나에 해당하는 경우\n가. 제2항 각 호의 사항을 제30조에 따른 개인정보 처리방침에 공개한 경우\n나. 전자우편 등 대통령령으로 정하는 방법에 따라 제2항 각 호의 사항을 정보주체에게 알린 경우\n4. 개인정보를 이전받는 자가 제32조의2에 따른 개인정보 보호 인증 등 보호위원회가 정하여 고시하는 인증을 받은 경우로서 다음 각 목의 조치를 모두 한 경우\n가. 개인정보 보호에 필요한 안전조치 및 정보주체 권리보장에 필요한 조치\n나. 인증받은 사항을 개인정보가 이전되는 국가에서 이행하기 위하여 필요한 조치\n5. 개인정보가 이전되는 국가 또는 국제기구의 개인정보 보호체계, 정보주체 권리보장 범위, 피해구제 절차 등이 이 법에 따른 개인정보 보호 수준과 실질적으로 동등한 수준을 갖추었다고 보호위원회가 인정하는 경우", "req": ["국외 제공, 처리위탁, 보관은 원칙적으로 금지", "예외: 별도 동의, 계약 이행, 인증, 적정성 등", "조회되는 경우도 이전에 포함"], "ctx": ["해외 리전 LLM API를 호출하면 국외이전 검토 대상", "제3호는 처리방침 공개나 개별 고지가 필요", "치환한 뒤 보내면 이전되는 개인정보 범위가 줄어듦"], "change": ["2023. 3. 14. 신설"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/개인정보보호법/제28조의8"}], "clause": "clause:k7", "en": "", "clauseName": "개인정보 보호법 제28조의8제1항"}, {"id": "KR-P-16", "region": "개인정보", "law": "개인정보 보호법(법률 제21445호, 2026. 3. 10. 일부개정)", "article": "제23조제1항·제2항", "type": "법률", "status": "시행", "date": "2026-09-11", "ko": "제23조(민감정보의 처리 제한) ①개인정보처리자는 사상ㆍ신념, 노동조합ㆍ정당의 가입ㆍ탈퇴, 정치적 견해, 건강, 성생활 등에 관한 정보, 그 밖에 정보주체의 사생활을 현저히 침해할 우려가 있는 개인정보로서 대통령령으로 정하는 정보(이하 “민감정보”라 한다)를 처리하여서는 아니 된다. 다만, 다음 각 호의 어느 하나에 해당하는 경우에는 그러하지 아니하다.\n1. 정보주체에게 제15조제2항 각 호 또는 제17조제2항 각 호의 사항을 알리고 다른 개인정보의 처리에 대한 동의와 별도로 동의를 받은 경우\n2. 법령에서 민감정보의 처리를 요구하거나 허용하는 경우\n② 개인정보처리자가 제1항 각 호에 따라 민감정보를 처리하는 경우에는 그 민감정보가 분실ㆍ도난ㆍ유출ㆍ위조ㆍ변조 또는 훼손(이하 “유출등”이라 한다)이 되지 아니하도록 제29조에 따른 안전성 확보에 필요한 조치를 하여야 한다.", "req": ["민감정보 처리는 원칙적으로 금지", "예외: 별도 동의 또는 법령 근거", "제29조 안전조치 의무"], "ctx": ["건강정보는 법률 본문에 명시된 민감정보", "의료, 상담 데이터를 LLM에 넣을 때 핵심 조항", "시행령 제18조에서 유전정보, 생체정보 등을 추가"], "change": ["2026. 3. 10. 제2항 개정(시행 2026. 9. 11.)"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/개인정보보호법/제23조"}], "clause": "clause:k8", "en": "", "clauseName": "개인정보 보호법 제23조제1항, 제2항"}, {"id": "KR-P-17", "region": "개인정보", "law": "개인정보 보호법(법률 제21445호, 2026. 3. 10. 일부개정)", "article": "제33조제1항", "type": "법률", "status": "시행", "date": "2026-09-11", "ko": "제33조(개인정보 영향평가) ① 공공기관의 장은 대통령령으로 정하는 기준에 해당하는 개인정보파일의 운용으로 인하여 정보주체의 개인정보 침해가 우려되는 경우에는 그 위험요인의 분석과 개선 사항 도출을 위한 평가(이하 “영향평가”라 한다)를 하고 그 결과를 보호위원회에 제출하여야 한다.", "req": ["공공기관 영향평가 의무", "위험요인 분석과 개선 사항 도출", "결과를 보호위원회에 제출"], "ctx": ["공공기관 AI 도입 시 대상 파일이면 영향평가를 먼저 실시", "제11항: 민간은 노력 의무", "민간이 자율로 수행하면 과태료, 과징금 감경 가능(생성형 AI 안내서 각주)"], "change": ["2023. 3. 14. 개정(평가기관 지정 등)"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/개인정보보호법/제33조"}], "clause": "clause:k9", "en": "", "clauseName": "개인정보 보호법 제33조제1항"}, {"id": "KR-P-18", "region": "개인정보", "law": "개인정보 보호법(법률 제21445호, 2026. 3. 10. 일부개정)", "article": "제37조의2제1항~제4항", "type": "법률", "status": "시행", "date": "2026-09-11", "ko": "제37조의2(자동화된 결정에 대한 정보주체의 권리 등) ① 정보주체는 완전히 자동화된 시스템(인공지능 기술을 적용한 시스템을 포함한다)으로 개인정보를 처리하여 이루어지는 결정(「행정기본법」 제20조에 따른 행정청의 자동적 처분은 제외하며, 이하 이 조에서 “자동화된 결정”이라 한다)이 자신의 권리 또는 의무에 중대한 영향을 미치는 경우에는 해당 개인정보처리자에 대하여 해당 결정을 거부할 수 있는 권리를 가진다. 다만, 자동화된 결정이 제15조제1항제1호ㆍ제2호 및 제4호에 따라 이루어지는 경우에는 그러하지 아니하다.\n② 정보주체는 개인정보처리자가 자동화된 결정을 한 경우에는 그 결정에 대하여 설명 등을 요구할 수 있다.\n③ 개인정보처리자는 제1항 또는 제2항에 따라 정보주체가 자동화된 결정을 거부하거나 이에 대한 설명 등을 요구한 경우에는 정당한 사유가 없는 한 자동화된 결정을 적용하지 아니하거나 인적 개입에 의한 재처리ㆍ설명 등 필요한 조치를 하여야 한다.\n④ 개인정보처리자는 자동화된 결정의 기준과 절차, 개인정보가 처리되는 방식 등을 정보주체가 쉽게 확인할 수 있도록 공개하여야 한다.", "req": ["중대한 영향을 미치는 결정에 대한 거부권", "설명 요구권", "기준과 절차 공개"], "ctx": ["인공지능 기술을 적용한 시스템도 명시적으로 포함됨", "사람이 최종 판단하는 요약, 질의응답은 보통 해당하지 않음", "자동으로 불이익 처분까지 이어지면 해당할 수 있음"], "change": ["2023. 3. 14. 신설, 2024. 3. 15. 시행"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/개인정보보호법/제37조의2"}], "clause": "clause:k10", "en": "", "clauseName": "개인정보 보호법 제37조의2, 자동화된 결정 조치 기준"}, {"id": "KR-P-19", "region": "개인정보", "law": "자동화된 결정에 대한 개인정보처리자의 조치 기준(개인정보보호위원회고시 제2024-9호, 2024. 9. 26. 제정)", "article": "제6조(거부ㆍ설명등요구에 대한 조치시 고려사항) 제1항", "type": "고시", "status": "시행", "date": "2024-09-26", "ko": "제6조(거부ㆍ설명등요구에 대한 조치시 고려사항) ① 개인정보처리자는 정보주체의 거부ㆍ설명등요구에 따른 조치를 위하여 완전히 자동화된 시스템으로 이루어지는 결정이 자동화된 결정에 해당하는지 여부를 판단할 때에는 다음 각 호의 사항 및 [별표]의 예시를 모두 고려해야 한다.\n1. 정당한 권한을 가진 사람의 실질적이고 의미 있는 개입 없이 완전히 자동화된 시스템에 의해 결정이 이루어졌는지 여부\n2. 완전히 자동화된 시스템으로 해당 정보주체의 개인정보를 분석ㆍ가공하는 등 개별적인 처리 과정을 거쳐 의미 있는 정보를 추출하는지 여부\n3. 개인정보처리자가 내린 결정으로서 정보주체의 권리 또는 의무에 영향을 미치는 결정인지 여부\n4. 해당 결정이 정보주체의 권리 또는 의무에 영향을 미치는 최종적인 결정에 해당하는지 여부\n5. 완전히 자동화된 시스템에 의한 개인정보의 처리와 결정 사이에 실질적인 관련성이 있는지 여부\n6. 다른 법률에 자동화된 결정에 대한 정보주체의 권리를 규정한 특별한 규정이 있는지 여부", "req": ["실질적인 인적 개입이 있는지 판단", "최종 결정에 해당하는지 판단", "[별표] 예시도 함께 고려"], "ctx": ["고시 정식 명칭은 「자동화된 결정에 대한 개인정보처리자의 조치 기준」", "요청된 「권리 행사 방법 및 절차에 관한 고시」 명칭은 확인되지 않음", "[별표] 예시 본문은 확인하지 못함"], "change": ["재검토기한: 2025. 1. 1. 기준 매 3년(제9조)"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/행정규칙/자동화된결정에대한개인정보처리자의조치기준"}], "clause": "clause:k10", "en": "", "clauseName": "개인정보 보호법 제37조의2, 자동화된 결정 조치 기준"}, {"id": "KR-P-20", "region": "개인정보", "law": "개인정보 보호법(법률 제21445호, 2026. 3. 10. 일부개정)", "article": "제64조의2제6항", "type": "법률", "status": "시행", "date": "2026-09-11", "ko": "제64조의2(과징금의 부과)\n⑥ 보호위원회는 개인정보 보호를 위하여 예산ㆍ인력ㆍ설비ㆍ장치 등을 투자하고 운영하는 등 대통령령으로 정하는 사유가 있는 경우에는 제1항 및 제2항에 따른 과징금을 감경한다. 다만, 개인정보처리자의 고의 또는 중대한 과실로 위반행위를 한 경우는 제외한다.", "req": ["개인정보 보호 투자, 운영 시 과징금 감경(의무)", "대통령령으로 정하는 사유를 충족한 경우", "고의, 중과실 위반은 제외"], "ctx": ["개정 사실 확인: 법률 제21445호, 2026. 9. 11. 시행", "보호 기술 도입이 감경 요소가 될 수 있음", "제품 도입만으로 감경이 확정된다고 단정하면 안 됨"], "change": ["2026. 3. 10. 신설(시행 2026. 9. 11.)", "같은 개정으로 제2항 가중 과징금(매출 100분의 10) 신설"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/개인정보보호법/제64조의2"}], "clause": "clause:k11", "en": "", "clauseName": "개인정보 보호법 제64조의2제6항 (투자 감경)"}, {"id": "KR-P-21", "region": "개인정보", "law": "개인정보 보호법 시행령(대통령령 제36671호, 2026. 9. 10. 일부개정)", "article": "시행령 제60조의2제5항", "type": "시행령", "status": "시행", "date": "2026-09-11", "ko": "제60조의2(과징금의 산정기준 등)\n⑤ 법 제64조의2제6항 본문에서 “개인정보 보호를 위하여 예산ㆍ인력ㆍ설비ㆍ장치 등을 투자하고 운영하는 등 대통령령으로 정하는 사유가 있는 경우”란 개인정보 보호를 위하여 예산ㆍ인력ㆍ설비ㆍ장치 등을 투자하고 운영하는 경우로서 다음 각 호의 사항을 고려하여 보호위원회가 정하여 고시하는 기준을 충족하는 경우를 말한다.\n1. 개인정보 보호를 위하여 예산ㆍ인력ㆍ설비ㆍ장치 등에 투자한 규모ㆍ비율 및 그 투자의 지속성\n2. 법 제30조의3에 따른 사업주 또는 대표자의 책임 이행 정도\n3. 개인정보 보호책임자의 역할, 조직 및 인력 구성 등 개인정보 보호 체계 운영 내용 및 수준\n4. 그 밖에 개인정보 안전성 확보 조치에 관한 추가적인 노력", "req": ["투자 규모, 비율, 지속성", "대표자의 책임 이행 정도", "안전성 확보를 위한 추가 노력"], "ctx": ["감경 사유를 위임받은 시행령이 2026. 9. 10. 공포됨", "동료 검토서(2026. 8. 5.)의 \"미제정\" 지적은 이후 해소됨", "별표 1의5: 기준금액의 100분의 40 범위에서 감경"], "change": ["2026. 9. 10. 신설(대통령령 제36671호, 시행 2026. 9. 11.)"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/개인정보보호법시행령/제60조의2"}], "clause": "clause:k11", "en": "", "clauseName": "개인정보 보호법 제64조의2제6항 (투자 감경)"}, {"id": "KR-P-22", "region": "개인정보", "law": "개인정보 보호법 위반에 대한 과징금 부과기준(개인정보보호위원회고시 제2026-12호, 2026. 9. 11. 일부개정)", "article": "제8조의3(투자감경) 제1항", "type": "고시", "status": "시행", "date": "2026-09-11", "ko": "제8조의3(투자감경) ① 다음 각 호의 사항을 종합적으로 고려하여 기준금액의 100분의 40 이하에 해당하는 금액을 감경한다. 다만, 법 제64조의2제6항 단서에 해당하는 경우는 제외한다.\n1. 개인정보 보호를 위하여 예산ㆍ인력ㆍ설비ㆍ장치 등에 투자한 규모ㆍ비율, 그 투자의 지속성, 증가 정도 등이 우수한 경우\n2. 법 제30조의3에 따른 사업주 또는 대표자의 책임 이행 정도, 개인정보 보호책임자의 지정ㆍ권한ㆍ책임 이행 및 업무수행 수준, 인력 구성ㆍ운영 등 개인정보 보호 체계의 운영ㆍ수준이 우수한 경우\n3. 법상 의무사항 이외의 강화된 보호기술의 적용 등 안전성 확보조치 수준이나 노력 등이 우수한 경우", "req": ["기준금액의 100분의 40 이하로 감경", "투자, 보호 체계, 강화된 보호기술을 종합해 고려", "직전 3개 사업연도의 조치가 기준(제2항)"], "ctx": ["제3호 \"법상 의무 이외의 강화된 보호기술\"이 제품과 이어지는 지점", "PIPC 「과징금 투자 감경제도 안내서」(2026. 9.)도 함께 발간"], "change": ["2026. 9. 11. 일부개정(제2026-12호)으로 신설"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/행정규칙/개인정보보호법위반에대한과징금부과기준"}, {"t": "개인정보보호위원회 안내서 게시판(과징금 투자 감경제도 안내서)", "to": "https://www.pipc.go.kr/np/cop/bbs/selectBoardArticle.do?bbsId=BS217&mCode=D010030000&nttId=12468"}], "clause": "clause:k11", "en": "", "clauseName": "개인정보 보호법 제64조의2제6항 (투자 감경)"}, {"id": "KR-P-23", "region": "개인정보", "law": "생성형 인공지능(AI) 개발·활용을 위한 개인정보 처리 안내서(개인정보보호위원회, 2025. 8.)", "article": "Ⅲ. 생성형 AI 개발·활용 단계별 고려사항, 서비스형 LLM(23면)", "type": "가이드라인", "status": "시행", "date": "2025-08-06", "ko": "서비스형 LLM은 주로 기관 간 계약에 따라 API를 통해 데이터를 송수신하는 방식으로 운용되며, 이 과정에서 이용자의 개인정보가 전송되거나 저장되는 경우에는, 라이선스 계약, 이용약관 등을 통해 해당 데이터 처리의 안전성을 확보하는 것이 바람직합니다. 우선, 서비스형 LLM은 개인정보 저장 및 재이용(AI 학습 포함) 배제 규정을 둔 ‘기업용 API 라이선스 (Enterprise API)’를 제공하는 경우가 많습니다. 기업･기관은 이와 같은 보다 높은 수준의 프라이버시 보호를 제공하는 라이선스 이용을 고려할 수 있습니다.", "req": ["라이선스와 약관으로 데이터 처리 안전성 확보", "저장, 재이용을 배제하는 기업용 라이선스 고려"], "ctx": ["개인용 무료 라이선스는 입력이 학습에 쓰일 우려", "같은 면에서 보관, 재이용, 국외이전 사전 검토 권고", "발간일: PIPC 공개 2025. 8. 6.(게시판 등록 8. 22.)"], "change": ["재검토: 발간일로부터 3년마다"], "refs": [{"t": "개인정보보호위원회 안내서 게시판(생성형 인공지능)", "to": "https://www.pipc.go.kr/np/cop/bbs/selectBoardArticle.do?bbsId=BS217&mCode=D010030000&nttId=11439"}], "clause": "clause:k12", "en": "", "clauseName": "생성형 AI 개발·활용을 위한 개인정보 처리 안내서"}, {"id": "KR-P-24", "region": "개인정보", "law": "생성형 인공지능(AI) 개발·활용을 위한 개인정보 처리 안내서(개인정보보호위원회, 2025. 8.)", "article": "Ⅲ. 서비스형 LLM 사례(23면, 결정 제2024-017-237호)", "type": "결정례", "status": "시행", "date": "2025-08-06", "ko": "의료기관이 진료 대화를 기반으로 의료기록 작성업무를 자동화하는 과정에서 개인용 무료 라이선스로 서비스형 LLM을 사용하면 입력 데이터가 LLM 서비스 제공자의 자체 목적(예: LLM 학습)으로 활용될 우려가 있음 기업용 라이선스(Enterprise API)로 서비스형 LLM을 사용해 의료기관의 목적으로만 데이터가 처리 되도록 조치 ※ 개인정보보호위원회 제2024-017-237호(비공개) 결정", "req": ["기업용 라이선스 사용", "처리자의 목적으로만 데이터 처리"], "ctx": ["결정문은 비공개, 안내서에 실린 요약으로만 확인", "동료 검토서는 24면으로 적었으나 PDF상 23면"], "change": [], "refs": [{"t": "개인정보보호위원회 안내서 게시판(생성형 인공지능)", "to": "https://www.pipc.go.kr/np/cop/bbs/selectBoardArticle.do?bbsId=BS217&mCode=D010030000&nttId=11439"}], "clause": "clause:k12", "en": "", "clauseName": "생성형 AI 개발·활용을 위한 개인정보 처리 안내서"}, {"id": "KR-P-25", "region": "개인정보", "law": "생성형 인공지능(AI) 개발·활용을 위한 개인정보 처리 안내서(개인정보보호위원회, 2025. 8.)", "article": "Ⅲ. 서비스형 LLM, 기업용 이용약관·DPA(23~24면)", "type": "가이드라인", "status": "시행", "date": "2025-08-06", "ko": "또한, 기업･기관은 서비스형 LLM에 적용되는 기업용 이용약관(Enterprise Terms of Use) 및 데이터 처리 부속서(DPA, Data Processing Addendum) 등 계약을 통해 ▲입력데이터의 소유권 ▲재이용 제한 ▲안전조치 ▲데이터 파기 등의 사항을 명확히 규정하고, 필요시 서비스 특성을 고려한 특약을 추가하여 데이터 보호 요구사항을 계약상 확보하는 것이 권장됩니다.", "req": ["입력 데이터 소유권 명시", "재이용 제한, 파기 조항", "필요하면 특약 추가"], "ctx": ["입력 데이터 처리 방식을 계약으로 확인하라는 취지", "비교표에 위수탁 관계, 재위탁 제한, 감사권 항목 제시"], "change": [], "refs": [{"t": "개인정보보호위원회 안내서 게시판(생성형 인공지능)", "to": "https://www.pipc.go.kr/np/cop/bbs/selectBoardArticle.do?bbsId=BS217&mCode=D010030000&nttId=11439"}], "clause": "clause:k12", "en": "", "clauseName": "생성형 AI 개발·활용을 위한 개인정보 처리 안내서"}, {"id": "KR-P-26", "region": "개인정보", "law": "생성형 인공지능(AI) 개발·활용을 위한 개인정보 처리 안내서(개인정보보호위원회, 2025. 8.)", "article": "Ⅲ. 학습데이터 전처리, 비정형데이터 가명처리 참고(29면)", "type": "가이드라인", "status": "시행", "date": "2025-08-06", "ko": "규칙, 정규표현식 등을 통한 개인정보 검출 및 마스킹은 정확도 측면에서 한계가 있을 수 있으며, 이를 보완하기 위해 LLM 모델을 통해 사전에 정의되지 않은 패턴의 개인정보를 검출하고 마스킹할 수 있음", "req": ["규칙 기반 마스킹의 한계 인지", "AI 기반 검출로 보완"], "ctx": ["같은 면: 고유식별정보, 계좌, 카드번호는 학습 전 삭제하거나 가명처리, 익명처리", "34면: 입출력 필터로 개인정보 제거, 치환 가능", "해당 참고 박스의 출처는 가명정보 가이드라인(2024. 2.)"], "change": [], "refs": [{"t": "개인정보보호위원회 안내서 게시판(생성형 인공지능)", "to": "https://www.pipc.go.kr/np/cop/bbs/selectBoardArticle.do?bbsId=BS217&mCode=D010030000&nttId=11439"}], "clause": "clause:k12", "en": "", "clauseName": "생성형 AI 개발·활용을 위한 개인정보 처리 안내서"}, {"id": "KR-P-27", "region": "개인정보", "law": "가명정보 처리 가이드라인 [본권] 가명정보 제도 안내편(개인정보보호위원회, 2026. 3. 개정)", "article": "제1장, 가명정보를 안전하게 관리하는 방법은?(16면)", "type": "가이드라인", "status": "시행", "date": "2026-03-31", "ko": "가명정보는 추가정보*와 비교･대조할 경우 재식별이 가능해지므로, * (추가정보) 가명정보를 원래의 상태로 복원하기 위한 정보로, 가명처리 과정에서 개인정보의 전부･일부를 대체하는데 이용된 수단･방식(알고리즘 등), 삭제･대체된 개인정보 부분을 복원할 수 있는 정보(매핑테이블 등), 가명처리에 사용한 개인정보 등이 포함될 수 있음 추가정보가 재식별에 악용되지 않도록 가명정보와 분리하여 별도로 저장･관리하고 접근권한을 분리하는 등 안전하게 보관･관리하여야 함", "req": ["추가정보 분리 저장, 관리", "접근권한 분리", "매핑테이블도 추가정보에 포함"], "ctx": ["치환 대응표는 매핑테이블로서 추가정보에 해당", "별권 제3장: 불가피하면 DB 테이블 등으로 논리적 분리 허용"], "change": ["2026. 3. 개정: 본권과 별권 분리, 위험도에 따라 절차 차등화", "직전판 2024. 2."], "refs": [{"t": "개인정보보호위원회 안내서 게시판(가명정보 처리 가이드라인)", "to": "https://www.pipc.go.kr/np/cop/bbs/selectBoardArticle.do?bbsId=BS217&mCode=D010030000&nttId=11931"}], "clause": "clause:k13", "en": "", "clauseName": "가명정보 처리 가이드라인 (2026. 3. 개정)"}, {"id": "KR-P-28", "region": "개인정보", "law": "가명정보 처리 가이드라인 [본권] 가명정보 제도 안내편(개인정보보호위원회, 2026. 3. 개정)", "article": "제3장 비정형데이터 가명처리 기준, 특수성 및 고려사항(58면)", "type": "가이드라인", "status": "시행", "date": "2026-03-31", "ko": "(가명처리 기술의 불완전성) 비정형데이터 내 개인식별 위험성이 있는 모든 항목을 완벽하게 탐지･처리할 수 있는 기술이 부재", "req": ["기술의 한계를 전제로 위험 관리", "처리 맥락과 재식별 공격 위험 고려"], "ctx": ["텍스트 속 주소를 놓치거나 상호명을 과하게 지운 예시 수록", "치환 엔진도 완벽한 탐지를 주장하면 안 됨", "탐지율 등 검수 결과를 증빙으로 남겨야 함"], "change": ["2024. 2. 개정에서 비정형 기준 신설, 2026. 3. 유지"], "refs": [{"t": "개인정보보호위원회 안내서 게시판(가명정보 처리 가이드라인)", "to": "https://www.pipc.go.kr/np/cop/bbs/selectBoardArticle.do?bbsId=BS217&mCode=D010030000&nttId=11931"}], "clause": "clause:k13", "en": "", "clauseName": "가명정보 처리 가이드라인 (2026. 3. 개정)"}, {"id": "KR-P-29", "region": "개인정보", "law": "가명정보 처리 가이드라인 [본권] 가명정보 제도 안내편(개인정보보호위원회, 2026. 3. 개정)", "article": "제2장 가명처리 절차, 가명처리 수행(45면)", "type": "가이드라인", "status": "시행", "date": "2026-03-31", "ko": "비정형데이터 가명처리 시 비정형데이터의 특수성을 고려한 추가 검수가 필요하므로, 자체적인 추가 검수 후 ｢비정형데이터 추가검수 결과서｣ 작성･보관 필요", "req": ["비정형데이터 추가 검수", "추가검수 결과서 작성, 보관"], "ctx": ["서식은 별권 제5장 서식 6", "검수 결과서 자동 생성이 제품 기능과 이어지는 지점"], "change": [], "refs": [{"t": "개인정보보호위원회 안내서 게시판(가명정보 처리 가이드라인)", "to": "https://www.pipc.go.kr/np/cop/bbs/selectBoardArticle.do?bbsId=BS217&mCode=D010030000&nttId=11931"}], "clause": "clause:k13", "en": "", "clauseName": "가명정보 처리 가이드라인 (2026. 3. 개정)"}, {"id": "KR-P-30", "region": "개인정보", "law": "합성데이터 생성·활용 안내서(개인정보보호위원회, 2024. 12.)", "article": "제2장 4. 합성데이터 생성·활용 시 고려사항, (법적 성격)(20면)", "type": "가이드라인", "status": "시행", "date": "2024-12-01", "ko": "현행법 체계 상 완전 합성데이터의 경우 설정된 안전성 수준에 따라 익명정보 또는 가명정보로 판단될 수 있음 ※ 부분 합성데이터는 개인정보가 포함돼 있을 가능성 때문에 단순히 익명 또는 가명정보로 분류하는 것이 적절치 않음 합성데이터는 유형에 맞는 생성방법론, 정량·정성 검증절차 등을 거쳐 안전성이 인정되면, 익명정보로 활용될 수 있음", "req": ["안전성 수준에 따라 익명정보인지 가명정보인지 판단", "정량, 정성 검증 절차", "부분 합성은 따로 판단"], "ctx": ["합성데이터라는 이유만으로 익명정보가 되지 않음", "익명정보로 인정되면 제58조의2에 따라 법 적용 제외", "안전성이 낮으면 가명정보로 관리하도록 권고"], "change": ["정식 제목: 「데이터의 안전한 활용을 위한 합성데이터 생성·활용 안내서」", "게시판 등록 2025. 1. 3., 발간 2024. 12.(일자 표기 없음)"], "refs": [{"t": "개인정보보호위원회 안내서 게시판(합성데이터 생성·활용 안내서)", "to": "https://www.pipc.go.kr/np/cop/bbs/selectBoardArticle.do?bbsId=BS217&mCode=D010030000&nttId=10915"}], "clause": "clause:k14", "en": "", "clauseName": "합성데이터 생성·활용 안내서"}, {"id": "KR-P-31", "region": "개인정보", "law": "합성데이터 생성·활용 안내서(개인정보보호위원회, 2024. 12.)", "article": "제2장 4. (합성데이터의 한계)(23면)", "type": "가이드라인", "status": "시행", "date": "2024-12-01", "ko": "(합성데이터의 한계) 합성데이터에서 개인정보가 재식별될 가능성 및 합성데이터 자체가 허위정보 또는 편향된 정보로서 사회적 부작용을 유발할 가능성이 있음 특히 안전기준 설정 시 유용성이 높고 안전성이 낮은 경우 개인정보 재식별 등이 가능하므로 활용환경의 보호조치, 활용 이력 모니터링 등 관리 수준을 높여야 함", "req": ["재식별 가능성 평가", "활용 환경의 보호조치와 이력 모니터링", "유용성과 안전성을 함께 검증"], "ctx": ["안전성, 유용성 검증 결과가 판단 근거", "생성 절차: 사전준비, 생성, 검증, 심의위원회 평가 등 5단계"], "change": [], "refs": [{"t": "개인정보보호위원회 안내서 게시판(합성데이터 생성·활용 안내서)", "to": "https://www.pipc.go.kr/np/cop/bbs/selectBoardArticle.do?bbsId=BS217&mCode=D010030000&nttId=10915"}], "clause": "clause:k14", "en": "", "clauseName": "합성데이터 생성·활용 안내서"}, {"id": "KR-P-32", "region": "개인정보", "law": "합성데이터 생성·활용 안내서(개인정보보호위원회, 2024. 12.)", "article": "제3장 [5단계]-2 안전한 관리, 익명정보 성격의 합성데이터", "type": "가이드라인", "status": "시행", "date": "2024-12-01", "ko": "기본적으로 익명정보로 인정받은 합성데이터는 자유롭게 활용이 가능하고 별도의 관리는 필요하지 않음 - 다만, 추후 식별자·준식별자 관련 정보로 인한 재식별 가능성 등 잔여 위험*을 판단하고, 위험 예상 시 모니터링, 합성데이터 사용기간 설정 등을 권고", "req": ["잔여 위험 판단", "위험이 예상되면 모니터링, 사용기간 설정"], "ctx": ["멤버십 추론, 모델 반전 공격을 잔여 위험 예시로 제시", "재식별 위험은 시간이 지날수록 커진다고 명시", "면수 표기 없음: PDF 58쪽 부근"], "change": [], "refs": [{"t": "개인정보보호위원회 안내서 게시판(합성데이터 생성·활용 안내서)", "to": "https://www.pipc.go.kr/np/cop/bbs/selectBoardArticle.do?bbsId=BS217&mCode=D010030000&nttId=10915"}], "clause": "clause:k14", "en": "", "clauseName": "합성데이터 생성·활용 안내서"}, {"id": "KR-A-01", "region": "AI", "law": "인공지능 발전과 신뢰 기반 조성 등에 관한 기본법 (법률 제21311호)", "article": "제2조제4호", "type": "법률", "status": "시행", "date": "2026-01-22", "ko": "4. “고영향 인공지능”이란 사람의 생명, 신체의 안전 및 기본권에 중대한 영향을 미치거나 위험을 초래할 우려가 있는 인공지능시스템으로서 다음 각 목의 어느 하나의 영역에서 활용되는 것을 말한다. … 다. 「보건의료기본법」 제3조제1호에 따른 보건의료의 제공 및 이용체계의 구축ㆍ운영 라. 「의료기기법」 제2조제1항에 따른 의료기기 및 「디지털의료제품법」 제2조제2호에 따른 디지털의료기기의 개발 및 이용 … 사. 채용, 대출 심사 등 개인의 권리ㆍ의무 관계에 중대한 영향을 미치는 판단 또는 평가 … 자. 공공서비스 제공에 필요한 자격 확인 및 결정 또는 비용징수 등 국민에게 영향을 미치는 국가, 지방자치단체, 「공공기관의 운영에 관한 법률」 제4조에 따른 공공기관 등(이하 “국가기관등”이라 한다)의 의사결정 …", "req": ["11개 영역 중 하나에 활용되는지", "중대한 영향이나 위험을 미칠 우려가 있는지", "금융(사목), 의료(다목, 라목), 공공(자목)"], "ctx": ["대출 심사, 보건의료, 공공 판단에 쓰는 AI가 후보", "영역에 해당하는 것만으론 부족하고 위험의 중대성도 판단", "가목~카목 중 금융, 의료, 공공만 발췌"], "change": ["제2조 개정 2026-01-20(법률 제21311호)", "디지털의료기기 부분 2026-01-24 시행", "사실조사와 과태료에 최소 1년 이상 계도기간(2026-01-21 발표)"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/인공지능발전과신뢰기반조성등에관한기본법"}], "clause": "clause:k15", "en": "", "clauseName": "AI 기본법 제2조제4호, 제33조, 시행령 제25조"}, {"id": "KR-A-02", "region": "AI", "law": "인공지능 발전과 신뢰 기반 조성 등에 관한 기본법 (법률 제21311호)", "article": "제33조", "type": "법률", "status": "시행", "date": "2026-01-22", "ko": "제33조(고영향 인공지능의 확인) ① 인공지능사업자는 인공지능 또는 이를 이용한 제품ㆍ서비스를 제공하는 경우 그 인공지능이 고영향 인공지능에 해당하는지에 대하여 사전에 검토하여야 하며, 필요한 경우 과학기술정보통신부장관에게 고영향 인공지능에 해당하는지 여부의 확인을 요청할 수 있다. ② 과학기술정보통신부장관은 제1항에 따른 요청이 있는 경우 고영향 인공지능 해당 여부를 확인하여야 하며, 필요한 경우 전문위원회를 설치하여 관련 자문을 받을 수 있다. ③ 과학기술정보통신부장관은 고영향 인공지능의 기준과 예시 등에 관한 가이드라인을 수립하여 보급할 수 있다. …", "req": ["제공 전에 고영향 AI에 해당하는지 검토", "필요하면 과기정통부에 확인 요청"], "ctx": ["개발사업자와 이용사업자 모두 사전 검토 주체", "검토 결과는 확인 판단 자료로 쓰임", "직접 과태료 조항 없음(제43조 대상 아님)"], "change": ["사실조사와 과태료에 최소 1년 이상 계도기간(2026-01-21 발표)"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/인공지능발전과신뢰기반조성등에관한기본법"}], "clause": "clause:k15", "en": "", "clauseName": "AI 기본법 제2조제4호, 제33조, 시행령 제25조"}, {"id": "KR-A-03", "region": "AI", "law": "인공지능 발전과 신뢰 기반 조성 등에 관한 기본법 시행령 (대통령령 제36580호)", "article": "제25조제1항~제3항", "type": "시행령", "status": "시행", "date": "2026-01-22", "ko": "① 인공지능사업자가 법 제33조제1항에 따라 고영향 인공지능에 해당하는지에 대하여 확인을 요청하려는 경우에는 별지 서식의 고영향 인공지능 확인 요청서에 다음 각 호의 서류를 첨부하여 과학기술정보통신부장관에게 제출해야 한다. 1. 해당 인공지능제품 또는 인공지능서비스의 개요서 2. 해당 인공지능시스템의 개발 및 학습에 사용된 학습용데이터의 개요 3. 해당 인공지능시스템을 활용하는 과정 및 결과를 확인할 수 있는 자료 … ② … 2. 사람의 생명, 신체의 안전 및 기본권에 초래할 수 있는 위험의 영향, 중대성, 빈도 및 활용 영역별 특수성 … ③ 과학기술정보통신부장관은 제1항에 따른 요청을 받은 경우에는 요청을 받은 날부터 30일 이내에 그 결과를 회신해야 한다. …", "req": ["확인 요청 시 학습용데이터 개요 첨부", "활용 과정과 결과를 확인할 자료", "30일 안에 회신, 1회 30일 연장"], "ctx": ["확인 요청에도 학습데이터 개요가 필요", "데이터 출처, 가공 기록이 없으면 제출하기 어려움", "이의가 있으면 회신 후 10일 안에 재확인 요청"], "change": ["제정 대통령령 제36053호(2026-01-21)", "현행 제36580호(2026-08-20 시행, 타법개정)"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/인공지능발전과신뢰기반조성등에관한기본법시행령"}], "clause": "clause:k15", "en": "", "clauseName": "AI 기본법 제2조제4호, 제33조, 시행령 제25조"}, {"id": "KR-A-04", "region": "AI", "law": "인공지능 발전과 신뢰 기반 조성 등에 관한 기본법 (법률 제21311호)", "article": "제34조제1항", "type": "법률", "status": "시행", "date": "2026-01-22", "ko": "① 인공지능사업자는 고영향 인공지능 또는 이를 이용한 제품ㆍ서비스를 제공하는 경우 고영향 인공지능의 안전성ㆍ신뢰성을 확보하기 위하여 다음 각 호의 내용을 포함하는 조치를 대통령령으로 정하는 바에 따라 이행하여야 한다. 1. 위험관리방안의 수립ㆍ운영 2. 기술적으로 가능한 범위에서의 인공지능이 도출한 최종결과, 인공지능의 최종결과 도출에 활용된 주요 기준, 인공지능의 개발ㆍ활용에 사용된 학습용데이터의 개요 등에 대한 설명 방안의 수립ㆍ시행 3. 이용자 보호 방안의 수립ㆍ운영 4. 고영향 인공지능에 대한 사람의 관리ㆍ감독 5. 안전성ㆍ신뢰성 확보를 위한 조치의 내용을 확인할 수 있는 문서의 작성과 보관 6. 그 밖에 고영향 인공지능의 안전성ㆍ신뢰성 확보를 위하여 위원회에서 심의ㆍ의결된 사항", "req": ["위험관리방안과 설명 방안", "이용자 보호, 사람의 관리와 감독", "조치 확인 문서 작성, 보관"], "ctx": ["설명 방안에 학습용데이터 개요 명시", "위반하면 사실조사, 시정명령(제40조)", "시정명령을 이행하지 않으면 과태료(제43조)"], "change": ["다른 법령에 따라 준하는 조치를 하면 이행한 것으로 봄(제3항)", "사실조사와 과태료에 최소 1년 이상 계도기간(2026-01-21 발표)"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/인공지능발전과신뢰기반조성등에관한기본법"}], "clause": "clause:k16", "en": "", "clauseName": "AI 기본법 제34조, 시행령 제27조, 사업자 책무 가이드라인"}, {"id": "KR-A-05", "region": "AI", "law": "인공지능 발전과 신뢰 기반 조성 등에 관한 기본법 시행령 (대통령령 제36580호)", "article": "제27조", "type": "시행령", "status": "시행", "date": "2026-01-22", "ko": "① 인공지능사업자는 법 제34조제1항 각 호의 조치 중에서 다음 각 호에 해당하는 내용을 인공지능사업자의 사무소ㆍ사업장 또는 인터넷 홈페이지 등에 게시해야 한다. … ② 인공지능사업자는 법 제34조제1항 각 호의 조치를 이행하고 그 근거를 문서로 5년간 보관(전자적 방법을 통한 보관을 포함한다)해야 한다. ③ 법 제34조제1항제1호부터 제3호까지의 조치를 모두 또는 일부 이행한 인공지능사업자로부터 인공지능시스템을 제공받은 인공지능이용사업자가 해당 인공지능시스템의 본래 목적이나 용도를 현저하게 변경하는 등 중대한 기능 변경을 하지 않은 경우에는 … 이행한 것으로 본다. ④ 인공지능이용사업자는 인공지능개발사업자에게 법 제34조제1항에 따른 책무를 이행하기 위하여 필요한 자료의 제공을 요청할 수 있고, …", "req": ["조치 근거 문서 5년 보관", "위험관리, 설명, 이용자 보호 사항 게시", "관리 감독자의 성명과 연락처 게시"], "ctx": ["전자적 보관도 인정되고 영업비밀은 게시하지 않아도 됨", "이용사업자는 개발사에 자료를 요청할 수 있음", "기능을 중대하게 바꾸면 이용사업자도 책무를 짐"], "change": ["대통령령 제36053호, 2026-01-22 시행", "사실조사와 과태료에 최소 1년 이상 계도기간(2026-01-21 발표)"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/인공지능발전과신뢰기반조성등에관한기본법시행령"}], "clause": "clause:k16", "en": "", "clauseName": "AI 기본법 제34조, 시행령 제27조, 사업자 책무 가이드라인"}, {"id": "KR-A-06", "region": "AI", "law": "인공지능 발전과 신뢰 기반 조성 등에 관한 기본법 (법률 제21311호)", "article": "제35조", "type": "법률", "status": "시행", "date": "2026-07-21", "ko": "제35조(고영향 인공지능 영향평가) ① 인공지능사업자가 고영향 인공지능을 이용한 제품 또는 서비스를 제공하는 경우 사전에 사람의 기본권에 미치는 영향을 평가(이하 “영향평가”라 한다)하기 위하여 노력하여야 한다. 이 경우 영향평가에는 고영향 인공지능을 이용한 제품 또는 서비스의 성격을 고려하여 인공지능취약계층의 특성이 반영될 수 있도록 하여야 한다. ② 국가기관등이 고영향 인공지능을 이용한 제품 또는 서비스를 이용하려는 경우에는 영향평가를 실시한 제품 또는 서비스를 우선적으로 고려하여야 한다. ③ 그 밖에 영향평가의 구체적인 내용ㆍ방법 등에 관하여 필요한 사항은 대통령령으로 정한다.", "req": ["기본권 영향 사전 평가(노력의무)", "인공지능취약계층의 특성 반영", "공공기관 구매 시 평가한 제품 우선"], "ctx": ["민간은 노력의무라 과태료 없음", "공공 조달에서는 평가를 실시하면 유리", "시행령 제28조: 평가지표와 산출 방식 포함", "직접 하거나 제3자에 의뢰해 실시 가능"], "change": ["제1항 후단 신설, 2026-07-21 시행", "시행령 제28조 개정 2026-07-20(제36506호)"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/인공지능발전과신뢰기반조성등에관한기본법"}, {"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/인공지능발전과신뢰기반조성등에관한기본법시행령"}], "clause": "clause:k17", "en": "", "clauseName": "AI 기본법 제35조 (영향평가)"}, {"id": "KR-A-07", "region": "AI", "law": "인공지능 발전과 신뢰 기반 조성 등에 관한 기본법 (법률 제21311호)", "article": "제31조", "type": "법률", "status": "시행", "date": "2026-01-22", "ko": "제31조(인공지능 투명성 확보 의무) ① 인공지능사업자는 고영향 인공지능이나 생성형 인공지능을 이용한 제품 또는 서비스를 제공하려는 경우 제품 또는 서비스가 해당 인공지능에 기반하여 운용된다는 사실을 이용자에게 사전에 고지하여야 한다. ② 인공지능사업자는 생성형 인공지능 또는 이를 이용한 제품 또는 서비스를 제공하는 경우 그 결과물이 생성형 인공지능에 의하여 생성되었다는 사실을 표시하여야 한다. ③ 인공지능사업자는 인공지능시스템을 이용하여 실제와 구분하기 어려운 가상의 음향, 이미지 또는 영상 등의 결과물을 제공하는 경우 해당 결과물이 인공지능시스템에 의하여 생성되었다는 사실을 이용자가 명확하게 인식할 수 있는 방식으로 고지 또는 표시하여야 한다. …", "req": ["고영향, 생성형 AI임을 사전 고지", "생성 결과물임을 표시", "딥페이크 등은 명확하게 고지, 표시"], "ctx": ["제1항 위반은 바로 과태료(3천만원 이하)", "제2항, 제3항은 사실조사와 시정명령을 거침", "생성형 AI 서비스를 제공하는 기업 전반에 해당"], "change": ["사실조사와 과태료에 최소 1년 이상 계도기간(2026-01-21 발표)", "차수별 과태료(시행령 별표 2)는 검증 필요"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/인공지능발전과신뢰기반조성등에관한기본법"}], "clause": "clause:k18", "en": "", "clauseName": "AI 기본법 제31조, 시행령 제23조 (투명성)"}, {"id": "KR-A-08", "region": "AI", "law": "인공지능 발전과 신뢰 기반 조성 등에 관한 기본법 시행령 (대통령령 제36580호)", "article": "제23조", "type": "시행령", "status": "시행", "date": "2026-01-22", "ko": "① 법 제31조제1항에 따라 인공지능사업자는 … 다음 각 호의 어느 하나에 해당하는 방법으로 제품등이 해당 인공지능에 기반하여 운용된다는 사실을 이용자에게 사전에 고지해야 한다. 1. 제품등에 직접 기재하거나 계약서, 사용 설명서, 이용약관 등에 기재 2. 이용자의 화면 또는 단말기 등에 표시 … ② … 1. 사람이 인식할 수 있는 방법 2. 기계가 판독할 수 있는 방법. 이 경우 그 결과물이 생성형 인공지능에 의하여 생성되었다는 사실을 1회 이상 안내 문구ㆍ음성 등으로 제공해야 한다. … ④ … 2. 인공지능사업자의 내부 업무 용도로만 사용되는 경우 …", "req": ["약관, 화면 등으로 사전 고지", "사람이 인식하거나 기계가 판독할 수 있게 표시", "내부 업무용 등은 적용 예외"], "ctx": ["기계 판독 표시도 1회 안내가 필요", "고객사 직원이 쓰는 경우는 예외 인정이 어려움(해석)", "B2B는 계약서나 약관에 적어 고지할 수 있음"], "change": ["투명성 확보 가이드라인 2026-01-26 수정본(NIA)"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/인공지능발전과신뢰기반조성등에관한기본법시행령"}, {"t": "한국지능정보사회진흥원 공지(2026-01-22, 가이드라인 첨부)", "to": "https://nia.or.kr/site/nia_kor/ex/bbs/View.do?cbIdx=99835&bcIdx=28987&parentSeq=28987"}], "clause": "clause:k18", "en": "", "clauseName": "AI 기본법 제31조, 시행령 제23조 (투명성)"}, {"id": "KR-A-09", "region": "AI", "law": "인공지능 발전과 신뢰 기반 조성 등에 관한 기본법 (법률 제20676호 제정, 법률 제21311호 일부개정)", "article": "부칙 제1조(법률 제20676호), 부칙(법률 제21311호)", "type": "법률", "status": "시행", "date": "2026-01-22", "ko": "[부칙 <법률 제20676호, 2025. 1. 21.>] 제1조(시행일) 이 법은 공포 후 1년이 경과한 날부터 시행한다. 다만, 제2조제4호라목 중 디지털의료기기에 관한 부분은 2026년 1월 24일부터 시행한다. [부칙 <법률 제21311호, 2026. 1. 20.>] 이 법은 2026년 1월 22일부터 시행한다. 다만, 제3조제5항, … 및 제35조제1항 후단의 개정규정은 공포 후 6개월이 경과한 날부터 시행한다.", "req": ["2026-01-22 시행", "계도기간에도 의무 자체는 유효"], "ctx": ["계도기간에는 사실조사와 과태료를 유예", "사실조사는 인명사고 등 극히 예외적인 경우만", "종료일은 정해지지 않았고 빨라도 2027-01 이후", "2026-10 기준 종료일 공식 발표는 확인되지 않음"], "change": ["시행령 2026-01-20 국무회의 의결", "사실조사와 과태료에 최소 1년 이상 계도기간(2026-01-21 발표)", "인공지능기본법 지원데스크와 익명 컨설팅"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/인공지능발전과신뢰기반조성등에관한기본법"}, {"t": "대한민국 정책브리핑(과기정통부, 2026-01-21)", "to": "https://www.korea.kr/news/policyNewsView.do?newsId=148958380"}, {"t": "대한민국 정책브리핑 [보도참고] 추가 설명(2026-01-28)", "to": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156741740"}], "clause": "clause:k15", "en": "", "clauseName": "AI 기본법 제2조제4호, 제33조, 시행령 제25조"}, {"id": "KR-A-10", "region": "AI", "law": "고영향 인공지능 사업자 책무 가이드라인 (과학기술정보통신부, 2026. 1. 22.)", "article": "3.5 / 5-1-1 문서화 공통사항", "type": "가이드라인", "status": "시행", "date": "2026-01-22", "ko": "개발 및 이용사업자는 안전성ㆍ신뢰성 확보를 위해 사용하는 인공지능 관련 주요 정보를 서면 또는 전자문서의 형태로 문서화하며, 필요 시 정기적으로 점검ㆍ갱신하여 최신 상태를 유지하기 위해 노력해야 함. - 문서에는 문서 ID, 버전, 작성 담당자, 작성일을 기록하고 대상 인공지능의 전반적인 내용과 작동 방식, 구성요소 등을 이해할 수 있도록 작성되어야 함. - 문서간 추적성이 유지되고, 각 문서에서 기술하는 내용의 일관성이 유지되어야 함.", "req": ["안전신뢰문서 작성, 5년 보관", "문서 ID, 버전, 작성일 기록", "문서 간 추적성과 일관성 유지"], "ctx": ["부록에 안전신뢰문서 표준 양식 수록", "기존 사내 문서로 갈음할 수 있음(동등성 진술)", "열람 요청 시 영업비밀을 빼고 제공"], "change": ["NIA 게시본(파일명 260122)", "PDF에서 추출한 문장이라 문장부호는 원문 대조 권장"], "refs": [{"t": "한국지능정보사회진흥원 공지(2026-01-22, 가이드라인 첨부)", "to": "https://nia.or.kr/site/nia_kor/ex/bbs/View.do?cbIdx=99835&bcIdx=28987&parentSeq=28987"}, {"t": "고영향 인공지능 사업자 책무 가이드라인 PDF(NIA)", "to": "https://www.nia.or.kr/common/board/Download.do?bcIdx=28987&cbIdx=99835&fileNo=23"}], "clause": "clause:k16", "en": "", "clauseName": "AI 기본법 제34조, 시행령 제27조, 사업자 책무 가이드라인"}, {"id": "KR-A-11", "region": "AI", "law": "고영향 인공지능 사업자 책무 가이드라인 (과학기술정보통신부, 2026. 1. 22.)", "article": "3.2 / 2-2-1 학습용데이터 개요", "type": "가이드라인", "status": "시행", "date": "2026-01-22", "ko": "인공지능에 사용되는 학습용데이터의 일반적 내용과 함께 형식, 수량, 크기, 수집 및 전처리 방식 등의 정보를 정의하여 관리해야 함. … 개발사업자는 학습용데이터 전처리 작업의 기준, 절차 및 품질 점검 결과를 문서화하기 위해 노력해야 함. … [양식] 합성데이터 요약: 학습데이터에 인공지능 등이 합성한 데이터가 포함된 경우에만 작성하며, 합성 데이터를 생성한 이유, 어떤 모델이나 상용 제품ㆍ서비스를 이용하였는지 간략히 기재.", "req": ["학습데이터의 형식, 수량, 크기 정의", "수집, 전처리, 품질 점검 과정 문서화", "합성데이터를 쓰면 이유와 도구 기재"], "ctx": ["작성 주체는 개발사업자, 공개 범위는 자율", "데이터 출처와 변경 이력이 핵심 근거", "양식에 합성데이터 기재란이 있음"], "change": ["NIA 게시본(파일명 260122)", "PDF에서 추출한 문장이라 문장부호는 원문 대조 권장"], "refs": [{"t": "한국지능정보사회진흥원 공지(2026-01-22, 가이드라인 첨부)", "to": "https://nia.or.kr/site/nia_kor/ex/bbs/View.do?cbIdx=99835&bcIdx=28987&parentSeq=28987"}, {"t": "고영향 인공지능 사업자 책무 가이드라인 PDF(NIA)", "to": "https://www.nia.or.kr/common/board/Download.do?bcIdx=28987&cbIdx=99835&fileNo=23"}], "clause": "clause:k16", "en": "", "clauseName": "AI 기본법 제34조, 시행령 제27조, 사업자 책무 가이드라인"}, {"id": "KR-A-12", "region": "AI", "law": "고영향 인공지능 판단 가이드라인 (과학기술정보통신부, 2026. 4. 29. 수정본)", "article": "판단 기준(가이드라인 본문 미확인)", "type": "가이드라인", "status": "검증 필요", "date": "2026-04-29", "ko": "[과기정통부 정책뉴스 2026. 1. 21. 원문] 판단 기준의 경우 AI가 ▲법에서 정하는 영역에서 활용되었는지 여부 ▲위험의 중대성 등을 모두 고려함과 동시에 최종 의사결정 과정에 사람이 개입하는 경우는 통제 가능한 것으로 판단해 고영향AI 대상에서 제외된다.", "req": ["영역 해당 여부와 위험 중대성을 함께 고려", "최종 결정에 사람이 개입하면 제외"], "ctx": ["가이드라인 본문(10MB 초과)은 열람하지 못함", "제목과 일자는 NIA 첨부 파일명 기준", "인용문은 가이드라인이 아닌 정책뉴스 원문"], "change": ["2026-01-22 최초 게시, 2026-04-29 수정본(NIA)"], "refs": [{"t": "한국지능정보사회진흥원 공지(2026-01-22, 가이드라인 첨부)", "to": "https://nia.or.kr/site/nia_kor/ex/bbs/View.do?cbIdx=99835&bcIdx=28987&parentSeq=28987"}, {"t": "고영향 인공지능 판단 가이드라인 PDF(NIA, 2026-04-29판)", "to": "https://www.nia.or.kr/common/board/Download.do?bcIdx=28987&cbIdx=99835&fileNo=27"}, {"t": "대한민국 정책브리핑(과기정통부, 2026-01-21)", "to": "https://www.korea.kr/news/policyNewsView.do?newsId=148958380"}], "clause": "clause:k15", "en": "", "clauseName": "AI 기본법 제2조제4호, 제33조, 시행령 제25조"}, {"id": "KR-F-01", "region": "금융", "law": "전자금융감독규정(금융위원회고시 제2026-29호, 2026. 7. 15. 일부개정)", "article": "제15조제1항제3호", "type": "감독규정", "status": "시행", "date": "2026-07-15", "ko": "제15조(해킹 등 방지대책) ① 금융회사 또는 전자금융업자는 정보처리시스템 및 정보통신망을 해킹 등 전자적 침해행위로부터 방지하기 위하여 다음 각 호의 대책을 수립ㆍ운용하여야 한다. … 3. 내부통신망과 연결된 내부 업무용시스템은 인터넷(무선통신망 포함) 등 외부통신망과 분리ㆍ차단 및 접속 금지. 다만, 다음 각 목의 경우에는 그러하지 아니하다. 가. 이용자의 고유식별정보 또는 개인신용정보(「신용정보의 이용 및 보호에 관한 법률」 제40조의2에 따른 가명처리에 관한 행위규칙을 준수한 가명정보는 제외)를 처리하지 않는 연구ㆍ개발 목적의 경우(단, … 금융감독원장이 정한 망분리 대체 정보보호통제를 적용하고 정보보호위원회가 승인한 경우에 한한다) 나. 업무상 불가피한 경우로서 금융감독원장의 확인을 받은 경우", "req": ["내부 업무망을 외부통신망과 분리, 차단", "연구, 개발 예외는 가명정보만 허용", "예외 적용 시 대체 정보보호통제와 승인 필요"], "ctx": ["외부 생성형 AI 연결은 원칙상 망분리 위반", "현행 문언에 생성형 AI 예외 조항은 없음", "가명정보는 R&D 망 예외에서 처리 가능", "실무상 허용은 혁신금융서비스나 한시 완화를 거침"], "change": ["2024-08-13 「금융분야 망분리 개선 로드맵」 발표", "2024-11-27 생성형 AI 혁신금융서비스 첫 지정(9개사 10건)", "2026-01-19 SaaS 망분리 예외 시행세칙 개정 사전예고(개인정보, 신용정보 처리 제외), 확정 시행일 검증 필요", "2026-05-22 보안목적 AI 망분리 한시(1년) 완화 발표(대형 49개사 대상)", "2026-06-10 금융위원장 '역량 갖춘 금융사 망분리 전면 해제, 연내 시행 목표' 발언(언론 보도, 규정 개정 전이라 검증 필요)"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/행정규칙/전자금융감독규정"}, {"t": "금융위원회 보도자료(2026. 1. 19.) SaaS 망분리 개선", "to": "https://fsc.go.kr/po010101/86080"}, {"t": "금융위원회 보도자료(2026. 5. 22.) 보안목적 AI 망분리 완화", "to": "https://fsc.go.kr/no010101/86972"}, {"t": "한국경제(2026. 6. 10.) 망분리 전면 해제 보도", "to": "https://www.hankyung.com/article/2026061090151"}], "clause": "clause:k19", "en": "", "clauseName": "전자금융감독규정 제15조제1항제3호, 망분리 개선 로드맵"}, {"id": "KR-F-02", "region": "금융", "law": "금융위원회·금융감독원 「금융분야 망분리 개선 로드맵」 및 생성형 AI 혁신금융서비스(규제특례) 지정", "article": "로드맵 1단계(규제 샌드박스)", "type": "가이드라인", "status": "시행", "date": "2024-08-13", "ko": "(생성형 AI) 샌드박스를 통해 인터넷 활용 제한 등에 대한 규제 특례를 허용한다. 이와 함께, 예상되는 리스크에 대한 보안대책을 조건으로 부과 … (SaaS) 보안관리, 고객관리(CRM) 등의 업무까지 이용 범위를 확대하고, 가명정보 처리 및 모바일 단말기에서의 SaaS 이용까지 허용 … (연구·개발) ｢전자금융감독규정｣을 개정하여 금융회사 등이 연구·개발 결과물을 보다 간편하게 이관할 수 있도록 물리적 제한을 완화하고, 가명정보 활용을 허용", "req": ["샌드박스 지정 시 보안대책 조건 이행", "금감원과 금융보안원의 점검, 컨설팅", "SaaS는 가명정보 처리까지 허용"], "ctx": ["생성형 AI는 법 개정이 아닌 특례로 허용", "특례 범위 밖에서 원본 개인신용정보를 넣으면 위험", "가명처리나 치환이 특례 조건 충족에 유리", "2024. 11. 27. 9개사 10건 첫 지정(신청 74개사 141건)"], "change": ["2024-08-13 로드맵 발표(연내 감독규정 개정, 중장기 「디지털 금융보안법」 추진)", "2024-11-27 금융위 정례회의, 생성형 AI 혁신금융서비스 첫 지정", "2024-12-12 금융권 AI 플랫폼(2025 상반기) 등 AI 활용 지원 방안 발표", "개인신용정보 원본 처리 허용 단계의 공식 일정은 검증 필요"], "refs": [{"t": "금융위원회 보도자료(2024. 8. 13.)", "to": "https://www.fsc.go.kr/no010101/82885"}, {"t": "금융위원회 보도자료 생성형 AI 혁신금융서비스 지정", "to": "https://www.fsc.go.kr/no010101/83554"}, {"t": "금융위원회 보도자료(2024. 12. 12.)", "to": "https://www.fsc.go.kr/no010101/83594"}], "clause": "clause:k19", "en": "", "clauseName": "전자금융감독규정 제15조제1항제3호, 망분리 개선 로드맵"}, {"id": "KR-F-03", "region": "금융", "law": "금융위원회 「금융분야 인공지능 가이드라인」(2026. 6.)", "article": "Ⅱ. 7대 원칙 4. 신뢰성 원칙 4.2 데이터 품질 관리", "type": "가이드라인", "status": "시행", "date": "2026-06-22", "ko": "4.2 데이터 품질 관리 ✔ 인공지능 학습 및 참조에 사용하는 데이터와 인공지능시스템에 입력되는 데이터의 품질을 검증·확인한다. 금융회사등은 인공지능 개발·이용에 필요한 데이터의 정확성, 완전성, 일관성, 대표성, 적시성을 체계적으로 검증하는 절차를 거치도록 한다. … 사용된 데이터는 계보(lineage)와 출처가 추적가능하도록 관리되어야 한다. … 외부 상용 인공지능(LLM 등)을 활용하는 경우와 같이 금융회사가 데이터에 직접 접근하거나 통제하기 어려운 경우에는 해당 모델의 공급자 신뢰성 확인, 제공된 기술 문서 검토, 파인튜닝(Fine-tuning; 미세조정) 단계에서의 데이터 품질점검 등을 통해 데이터 품질수준을 확보한다.", "req": ["정확성, 완전성, 일관성, 대표성, 적시성 검증", "데이터 계보와 출처 추적", "외부 LLM 공급자 신뢰성 확인"], "ctx": ["자율규제지만 업종과 관계없이 모든 금융회사가 대상", "학습 데이터와 RAG 참조 데이터 모두 품질 관리 대상", "합성데이터를 쓰면 대표성 검증 근거가 필요", "고영향 AI는 AI기본법상 별도의 법적 의무"], "change": ["2021 「금융분야 AI 운영 가이드라인」 → 2026. 6. 전면 개정(2022 개발·활용 안내서, 2023 보안 가이드라인 포함 흐름)", "2026-06-18 개정안 발표, 2026-06-22 시행", "2026-06-22 금융감독원 「금융분야 AI 위험관리프레임워크」, 금융보안원 「금융분야 인공지능 보안 안내서」 동시 배포"], "refs": [{"t": "금융위원회 보도자료(2026. 6. 18.) 및 가이드라인 전문", "to": "https://www.fsc.go.kr/no010101/87142"}], "clause": "clause:k20", "en": "", "clauseName": "금융분야 인공지능 가이드라인 (2026. 6.)"}, {"id": "KR-F-04", "region": "금융", "law": "금융위원회 「금융분야 인공지능 가이드라인」(2026. 6.)", "article": "4.3 공정성·편향성 점검 / 1.4 위험통제 절차 마련·이행", "type": "가이드라인", "status": "시행", "date": "2026-06-22", "ko": "4.3 공정성·편향성 점검 ✔ 인공지능서비스가 모든 집단에 대해 차별 없이 공정하게 작동하도록 데이터와 모델을 분석하여 개선한다. … 인공지능 개발 이용에 사용되는 데이터에서 발생할 수 있는 편향성을 사전에 점검하고 조치한다. 성별, 연령, 지역 등 인구통계학적 특성에 따른 데이터 편향이 있는지 정기적으로 분석하고 특정 집단에 불리한 결과를 초래할 수 있는 편향이 탐지될 경우 이를 개선한다. … (1.4) 인공지능 위험평가·통제와 관련된 모든 과정을 문서화하고 체계적으로 관리하여 조직 내 의사결정의 투명성을 제고하도록 노력하여야 하며", "req": ["인구통계 특성별로 데이터 편향 정기 분석", "편향이 탐지되면 개선 조치", "위험평가와 통제 전 과정 문서화"], "ctx": ["대출심사, 신용평가 모델은 편향 지표 필수", "위험이 낮은 사내 업무용 AI는 통제 완화 가능", "편향 보정용 데이터 보강 수요로 이어짐", "세부 통제는 금감원 AI RMF 참조"], "change": ["2026-06-22 시행(개정판). 구체적인 위험통제 예시는 금감원 AI RMF로 위임"], "refs": [{"t": "금융위원회 보도자료(2026. 6. 18.) 및 가이드라인 전문", "to": "https://www.fsc.go.kr/no010101/87142"}], "clause": "clause:k20", "en": "", "clauseName": "금융분야 인공지능 가이드라인 (2026. 6.)"}, {"id": "KR-F-05", "region": "금융", "law": "금융위원회 「금융분야 인공지능 가이드라인」(2026. 6.)", "article": "7. 보안성 원칙 — 망분리 대체 정보보호통제(보안 목적 AI·SaaS), 점검 항목 ⑦", "type": "가이드라인", "status": "시행", "date": "2026-06-22", "ko": "금융회사등은 보안 등의 목적을 위해 인공지능을 활용하는 과정에서 망분리를 완화할 경우, 보안상 취약점 등이 발생하지 않도록 아래와 같은 망분리 대체 통제를 적용한다. … ✓ 생성형 AI 서비스의 경우 유료 비즈니스 등 관리형 버전 이용(미학습 약정 필수) … ✓ 개인신용정보, 고유식별정보 등 중요정보 입력ㆍ처리ㆍ외부전송ㆍ유출 여부 모니터링 및 통제 … ✓ 접속ㆍ이용 내역, 관리자 활동, 이상행위 등에 대한 모니터링 및 로그 수집(1년 이상 보존) / ⑦ 입출력 데이터에서 목적 외 고유식별정보 및 개인(신용)정보 포함 여부를 탐지하고 마스킹 또는 차단하는 기능을 구현했는가?", "req": ["관리형 생성형 AI 사용과 미학습 약정", "중요정보 입력과 외부 전송 모니터링", "입출력의 개인(신용)정보 탐지, 마스킹"], "ctx": ["LLM 입출력 마스킹이 점검 항목에 명시", "프롬프트 치환, 복원 제품의 직접 근거", "로그 1년 이상 보존 요구와 연결됨", "대체통제 목록은 보안 목적 AI와 SaaS 기준"], "change": ["2026-05-22 보안목적 AI 망분리 한시 완화 발표에 이어 가이드라인에 대체통제 수록"], "refs": [{"t": "금융위원회 보도자료(2026. 6. 18.) 및 가이드라인 전문", "to": "https://www.fsc.go.kr/no010101/87142"}], "clause": "clause:k19", "en": "", "clauseName": "전자금융감독규정 제15조제1항제3호, 망분리 개선 로드맵"}, {"id": "KR-F-06", "region": "금융", "law": "신용정보의 이용 및 보호에 관한 법률(법률 제21445호, 2026. 3. 10. 타법개정)", "article": "제36조의2", "type": "법률", "status": "시행", "date": "2026-09-11", "ko": "제36조의2(자동화평가 결과에 대한 설명 및 이의제기 등) ① 개인인 신용정보주체는 개인신용평가회사 및 대통령령으로 정하는 신용정보제공ㆍ이용자(이하 이 조에서 “개인신용평가회사등”이라 한다)에 대하여 다음 각 호의 사항을 설명하여 줄 것을 요구할 수 있다. 1. 다음 각 목의 행위에 자동화평가를 하는지 여부 가. 개인신용평가 … 2. 자동화평가를 하는 경우 다음 각 목의 사항 가. 자동화평가의 결과 나. 자동화평가의 주요 기준 다. 자동화평가에 이용된 기초정보(이하 이 조에서 “기초정보”라 한다)의 개요 … ② … 2. 자동화평가에 이용된 기초정보의 내용이 정확하지 아니하거나 최신의 정보가 아니라고 판단되는 경우 … 가. 기초정보를 정정하거나 삭제할 것을 요구하는 행위 나. 자동화평가 결과를 다시 산출할 것을 요구하는 행위", "req": ["자동화평가 여부, 결과, 주요 기준 설명", "기초정보의 개요 설명", "정정, 삭제, 재산출 요구에 대응"], "ctx": ["AI 신용평가, 여신 결정에 설명 의무", "학습 데이터와 입력 데이터의 출처 관리가 전제", "가명정보에는 적용 제외(제40조의3)"], "change": ["2020-02-04 신설(2020. 8. 5. 시행), 이후 본조 개정 없음(현행 2026. 9. 11. 시행본 기준)"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/신용정보의이용및보호에관한법률/제36조의2"}], "clause": "clause:k21", "en": "", "clauseName": "신용정보법 제36조의2"}, {"id": "KR-F-07", "region": "금융", "law": "신용정보의 이용 및 보호에 관한 법률(법률 제21445호, 2026. 3. 10. 타법개정)", "article": "제40조의2제1항·제2항·제6항·제7항·제8항", "type": "법률", "status": "시행", "date": "2026-09-11", "ko": "제40조의2(가명처리ㆍ익명처리에 관한 행위규칙) ① 신용정보회사등은 가명처리에 사용한 추가정보를 대통령령으로 정하는 방법으로 분리하여 보관하거나 삭제하여야 한다. ② 신용정보회사등은 가명처리한 개인신용정보에 대하여 … 내부관리계획을 수립하고 접속기록을 보관하는 등 … 기술적ㆍ물리적ㆍ관리적 보안대책을 수립ㆍ시행하여야 한다. … ⑥ 신용정보회사등은 영리 또는 부정한 목적으로 특정 개인을 알아볼 수 있게 가명정보를 처리하여서는 아니 된다. ⑦ … 특정 개인을 알아볼 수 있게 된 경우 즉시 그 가명정보를 회수하여 처리를 중지하고 … 즉시 삭제하여야 한다. ⑧ … 가명처리나 익명처리를 한 경우 … 조치 기록을 3년간 보존하여야 한다.", "req": ["추가정보 분리 보관, 삭제", "가명정보 보안대책과 접속기록", "가명처리, 익명처리 기록 3년 보존"], "ctx": ["망분리 R&D 예외의 전제 조건(감독규정 제15조)", "치환 매핑표는 '추가정보'로 분리 관리", "익명처리가 적정한지 금융위에 심사 요청 가능(③④)"], "change": ["2020-02-04 신설. 2026. 6. 18. 금융위 '가명처리 등 관련 규제 정비' 언급(개정안 미확인)"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/신용정보의이용및보호에관한법률/제40조의2"}, {"t": "금융위원회 보도자료(2026. 6. 18.)", "to": "https://www.fsc.go.kr/no010101/87142"}], "clause": "clause:k22", "en": "", "clauseName": "신용정보법 제40조의2, 제32조제6항제9호의2"}, {"id": "KR-F-08", "region": "금융", "law": "신용정보의 이용 및 보호에 관한 법률(법률 제21445호, 2026. 3. 10. 타법개정)", "article": "제32조제6항제9호의2", "type": "법률", "status": "시행", "date": "2026-09-11", "ko": "9의2. 통계작성, 연구, 공익적 기록보존 등을 위하여 가명정보를 제공하는 경우. 이 경우 통계작성에는 시장조사 등 상업적 목적의 통계작성을 포함하며, 연구에는 산업적 연구를 포함한다.", "req": ["동의 없이 가명정보를 제공하는 근거", "상업적 통계, 산업적 연구 포함"], "ctx": ["AI 모델 개발용 가명정보 제공 근거로 활용", "제공 사실 사전 고지 의무(같은 조 제7항)", "업무 효율화용 LLM 처리는 이 호로 정당화할 수 없음"], "change": ["2020-02-04 신설"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/신용정보의이용및보호에관한법률/제32조"}], "clause": "clause:k22", "en": "", "clauseName": "신용정보법 제40조의2, 제32조제6항제9호의2"}, {"id": "KR-F-09", "region": "금융", "law": "신용정보의 이용 및 보호에 관한 법률(법률 제21445호, 2026. 3. 10. 타법개정)", "article": "제19조제1항", "type": "법률", "status": "시행", "date": "2026-09-11", "ko": "제19조(신용정보전산시스템의 안전보호) ① 신용정보회사등은 신용정보전산시스템(제25조제6항에 따른 신용정보공동전산망을 포함한다. 이하 같다)에 대한 제3자의 불법적인 접근, 입력된 정보의 변경ㆍ훼손 및 파괴, 그 밖의 위험에 대하여 대통령령으로 정하는 바에 따라 기술적ㆍ물리적ㆍ관리적 보안대책을 수립ㆍ시행하여야 한다. ② 신용정보제공ㆍ이용자가 … 서로 이 법에 따라 신용정보를 제공하는 경우에는 금융위원회가 정하여 고시하는 바에 따라 신용정보 보안관리 대책을 포함한 계약을 체결하여야 한다.", "req": ["신용정보전산시스템 보안대책", "신용정보를 제공할 때 보안관리 계약"], "ctx": ["외부 LLM과 연동하는 부분도 전산시스템 보호 범위", "AI 공급자와의 계약에 보안관리 조항 필요"], "change": ["2015-03-11, 2020-02-04 개정 이후 변동 없음"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/신용정보의이용및보호에관한법률/제19조"}], "clause": "clause:k19", "en": "", "clauseName": "전자금융감독규정 제15조제1항제3호, 망분리 개선 로드맵"}, {"id": "KR-M-01", "region": "의료", "law": "의료법(법률 제21490호, 2026. 3. 24. 타법개정)", "article": "제19조제1항", "type": "법률", "status": "시행", "date": "2026-10-02", "ko": "제19조(정보 누설 금지) ①의료인이나 의료기관 종사자는 이 법이나 다른 법령에 특별히 규정된 경우 외에는 의료ㆍ조산 또는 간호업무나 제17조에 따른 진단서ㆍ검안서ㆍ증명서 작성ㆍ교부 업무, 제18조에 따른 처방전 작성ㆍ교부 업무, 제21조에 따른 진료기록 열람ㆍ사본 교부 업무, 제22조제2항에 따른 진료기록부등 보존 업무 및 제23조에 따른 전자의무기록 작성ㆍ보관ㆍ관리 업무를 하면서 알게 된 다른 사람의 정보를 누설하거나 발표하지 못한다.", "req": ["업무상 알게 된 환자 정보 누설 금지", "법령에 근거가 있는 경우만 예외"], "ctx": ["외부 LLM에 원문을 넣으면 누설 소지", "위반 시 제88조 벌칙(친고죄)", "가명처리나 치환을 거친 뒤 처리하는 것이 방어 논리"], "change": ["2025-12-23 개정: 비대면진료 중개업자 비밀유지 신설(현 ②), 시행 2026-12-24"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/의료법/제19조"}], "clause": "clause:k23", "en": "", "clauseName": "의료법 제19조, 제21조제2항, 제23조, 전자의무기록 시설 장비 기준"}, {"id": "KR-M-02", "region": "의료", "law": "의료법(법률 제21490호, 2026. 3. 24. 타법개정)", "article": "제21조제2항", "type": "법률", "status": "시행", "date": "2026-10-02", "ko": "②의료인, 의료기관의 장 및 의료기관 종사자는 환자가 아닌 다른 사람에게 환자에 관한 기록을 열람하게 하거나 그 사본을 내주는 등 내용을 확인할 수 있게 하여서는 아니 된다.", "req": ["환자가 아닌 제3자의 기록 열람 금지", "예외는 제3항 열거 사유뿐"], "ctx": ["AI 공급자, 메신저 사업자는 열거된 예외에 없음", "수탁자의 '다른 사람' 해당 여부 유권해석 필요", "제3항 예외 목록은 2026. 4. 7.까지 개정"], "change": ["2009-01-30, 2016-12-20 개정, 제3항은 2026-04-07 최종 개정"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/의료법/제21조"}], "clause": "clause:k23", "en": "", "clauseName": "의료법 제19조, 제21조제2항, 제23조, 전자의무기록 시설 장비 기준"}, {"id": "KR-M-03", "region": "의료", "law": "의료법(법률 제21490호, 2026. 3. 24. 타법개정)", "article": "제23조제2항·제3항", "type": "법률", "status": "시행", "date": "2026-10-02", "ko": "제23조(전자의무기록) ①의료인이나 의료기관 개설자는 제22조의 규정에도 불구하고 진료기록부등을 「전자서명법」에 따른 전자서명이 기재된 전자문서(이하 “전자의무기록”이라 한다)로 작성ㆍ보관할 수 있다. ②의료인이나 의료기관 개설자는 보건복지부령으로 정하는 바에 따라 전자의무기록을 안전하게 관리ㆍ보존하는 데에 필요한 시설과 장비를 갖추어야 한다. ③누구든지 정당한 사유 없이 전자의무기록에 저장된 개인정보를 탐지하거나 누출ㆍ변조 또는 훼손하여서는 아니 된다.", "req": ["EMR 관리, 보존에 필요한 시설과 장비 구비", "EMR에 저장된 개인정보 탐지, 누출 금지"], "ctx": ["EMR과 연동하는 AI는 시설, 장비 기준(고시) 적용", "'누구든지' 규정이라 공급사도 수범자", "시설 기준은 보건복지부고시로 위임"], "change": ["2026-06-09 개정: 제4항 접속기록 보관 대상에 '기재·열람' 추가, 시행 2026-12-10"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/의료법/제23조"}], "clause": "clause:k23", "en": "", "clauseName": "의료법 제19조, 제21조제2항, 제23조, 전자의무기록 시설 장비 기준"}, {"id": "KR-M-04", "region": "의료", "law": "전자의무기록의 관리·보존에 필요한 시설과 장비에 관한 기준(보건복지부고시 제2023-245호, 2023. 12. 14. 일부개정)", "article": "제7조, 별표 1·별표 2 4.3", "type": "고시", "status": "시행", "date": "2023-12-14", "ko": "제7조(의료기관 외의 장소 관리ㆍ보존시 추가적인 조치) ① 전자의무기록 관리자가 의료기관 외의 장소에서 전자의무기록을 관리ㆍ보존하는 경우에는 규칙 제16조제1항제3호부터 제7호까지에 따른 시설과 장비에 대하여 별표 1에 따른 추가적인 조치를 하여야 한다. ② … 클라우드컴퓨팅서비스를 이용하여 전자의무기록을 관리하는 자가 별표 2에 따른 조치를 하면 별표 1에 따른 조치를 한 것으로 간주한다. / [별표 1·별표 2] 4.3. 물리적 위치의 한정 - 전자의무기록 시스템 및 그 백업장비의 물리적 위치는 국내로 한정한다.", "req": ["EMR 시스템과 백업은 국내 소재", "외부에 보관하면 별표 1의 추가 조치", "클라우드는 인증과 별표 2 조치"], "ctx": ["클라우드를 쓰는 경우에도 똑같이 국내로 한정", "국외 리전 LLM에 EMR을 올리는 것은 불가", "일시 처리나 경유까지 포함되는지는 유권해석 필요", "고시는 제1조~제9조와 별표 2종으로 구성"], "change": ["2016-08-06 제정 → 2018-10-02, 2021-01-05, 2023-12-14 개정. 2026. 10. 6. 기준 후속 개정 없음"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/행정규칙/전자의무기록의관리·보존에필요한시설과장비에관한기준"}], "clause": "clause:k23", "en": "", "clauseName": "의료법 제19조, 제21조제2항, 제23조, 전자의무기록 시설 장비 기준"}, {"id": "KR-M-05", "region": "의료", "law": "보건복지부·개인정보보호위원회 「보건의료데이터 활용 가이드라인」", "article": "붙임2 의료법 지침(개인정보 보호법과의 관계)", "type": "가이드라인", "status": "검증 필요", "date": "2025-12-31", "ko": "- 개인정보 보호법 제6조에 따라, 의료기관이 보유하는 환자에 관한 기록(정보)에 대해 의료법이 우선 적용 … 따라서 개인정보 보호법에서 제3자 제공이 허용되는 경우라도 의료법 제21조 또는 제21조의2에서 정하는 경우가 아니면 환자에 관한 기록과 관련한 정보를 제3자에게 제공 금지 3. 개인정보 보호법이 적용되는 경우(의료법 적용하지 않음) - 가명처리하여 환자식별력이 없는 진료기록(정보) - 의료기관이 아닌 자(또는 기관)가 보유하는 진료기록(정보)", "req": ["환자 기록은 의료법 우선 적용", "가명처리한 진료기록은 개인정보 보호법 적용"], "ctx": ["가명처리가 의료법 제약을 푸는 열쇠", "원문을 외부로 보내는 것은 여전히 의료법상 제한", "인용 문언은 2020. 9. 판 원문에서 확인", "2025. 12. 31. 개정판 원문은 대조하지 못함, 검증 필요"], "change": ["2020-09 제정, 2022-12-28 개정(영상정보, DRB), 2025-12-31 개정 시행(사망자 데이터, 공용 DRB, IRB와 DRB 표준 절차)"], "refs": [{"t": "가이드라인 2020. 9. 판 PDF(비공식 사본, 최신판 대조 필요)", "to": "https://www.smallake.kr/wp-content/uploads/2020/12/보건의료_데이터_활용_가이드라인최종.pdf"}, {"t": "보건복지부 보도참고자료(2022. 12. 28.)", "to": "https://mohw.go.kr/board.es?act=view&bid=0027&list_no=374311&mid=a10503000000"}, {"t": "머니투데이(2025. 12. 31.) 개정 보도", "to": "https://www.mt.co.kr/thebio/2025/12/31/2025123114272425006"}], "clause": "clause:k24", "en": "", "clauseName": "보건의료데이터 활용 가이드라인"}, {"id": "KR-M-06", "region": "의료", "law": "보건복지부·개인정보보호위원회 「보건의료데이터 활용 가이드라인」", "article": "Ⅲ. 1. 적용 대상정보의 범위", "type": "가이드라인", "status": "검증 필요", "date": "2025-12-31", "ko": "개인정보 보호법 제23조에 따른 민감정보 중 ‘건강’에 관한 정보 … - 다만, 정보 주체의 인권 및 사생활 보호에 중대한 피해를 야기할 수 있는 정보*에 대해서는 본인 동의를 받아 활용을 원칙으로 함 * 정신질환 및 처방약 정보, 감염병예방법 제2조제10호에 따른 성매개감염병 정보, 후천성면역결핍증 정보, 희귀질환관리법 제2조제1호에 따른 희귀질환 정보, 학대 및 낙태 관련 정보 (질병분류코드 기준으로 T74, O04 그 외 의료진 판단 활용)", "req": ["건강정보 가명처리 기준 적용", "고위험 5개 범주는 본인 동의가 원칙"], "ctx": ["탐지, 치환 우선순위에 5개 범주 반영", "가명처리만으로는 활용하기 어려운 범주", "인용 문언은 2020. 9. 판 원문에서 확인", "최신판에서 범주가 바뀌었는지 검증 필요"], "change": ["2025-12-31 개정판 시행(해당 범주 문언이 바뀌었는지는 확인하지 못함)"], "refs": [{"t": "가이드라인 2020. 9. 판 PDF(비공식 사본, 최신판 대조 필요)", "to": "https://www.smallake.kr/wp-content/uploads/2020/12/보건의료_데이터_활용_가이드라인최종.pdf"}], "clause": "clause:k24", "en": "", "clauseName": "보건의료데이터 활용 가이드라인"}, {"id": "KR-M-07", "region": "의료", "law": "생명윤리 및 안전에 관한 법률(법률 제21065호, 2025. 10. 1. 타법개정) 및 같은 법 시행규칙(보건복지부령 제1115호)", "article": "법 제15조, 시행규칙 제13조제1항제3호", "type": "법률", "status": "시행", "date": "2025-10-01", "ko": "제15조(인간대상연구의 심의) ① 인간대상연구를 하려는 자는 인간대상연구를 하기 전에 연구계획서를 작성하여 기관위원회의 심의를 받아야 한다. ② 제1항에도 불구하고 연구대상자 및 공공에 미치는 위험이 미미한 경우로서 국가위원회의 심의를 거쳐 보건복지부령으로 정한 기준에 맞는 연구는 기관위원회의 심의를 면제할 수 있다. / 시행규칙 제13조 ① … 일반 대중에게 공개된 정보를 이용하는 연구 또는 개인식별정보를 수집ㆍ기록하지 않는 연구로서 다음 각 호의 어느 하나에 해당하는 연구 … 3. 연구대상자등에 대한 기존의 자료나 문서를 이용하는 연구", "req": ["인간대상연구 전에 IRB 심의", "기존 자료 이용 연구는 심의 면제 가능", "서면동의가 원칙(제16조), 요건을 충족하면 면제"], "ctx": ["진료기록 기반 AI 연구도 인간대상연구", "면제되더라도 IRB 확인 절차는 필요", "제품 학습이 연구가 아니면 따로 검토"], "change": ["시행규칙 2025-06-02 개정(2025-12-03 시행). 법 제15조 자체 변동 없음"], "refs": [{"t": "국가법령정보센터 법률", "to": "https://www.law.go.kr/법령/생명윤리및안전에관한법률/제15조"}, {"t": "국가법령정보센터 시행규칙", "to": "https://www.law.go.kr/법령/생명윤리및안전에관한법률시행규칙/제13조"}], "clause": "clause:k25", "en": "", "clauseName": "생명윤리법 제15조, 시행규칙 제13조"}, {"id": "KR-M-08", "region": "의료", "law": "보건복지부·개인정보보호위원회 「보건의료데이터 활용 가이드라인」", "article": "붙임1 개인정보 보호법 개정에 따른 생명윤리법 유권해석", "type": "가이드라인", "status": "검증 필요", "date": "2025-12-31", "ko": "○ 개정 개인정보 보호법(이하 ‘개보법’)의 ‘가명처리’는 생명윤리법의 ‘익명화’에 포함되는 것으로 해석됨 … ○ 따라서, 의료기관에서 진료목적으로 수집된 의료데이터 등을 개보법 상의 가명처리를 통해 연구목적 등으로 이용하려는 경우, - “연구대상자등에 대한 기존의 자료나 문서를 이용하는 연구”로 간주하고 기관 차원에서 가명처리가 확인된 경우 IRB 심의 및 동의를 면제할 수 있음", "req": ["가명처리가 확인되면 IRB 심의와 동의 면제 가능", "기관 차원의 가명처리 확인 필요"], "ctx": ["면제는 자동이 아니라 IRB가 확인할 사항", "2025.12 판 부록3: 동의 면제와 심의 면제는 별개임을 확인(원문 미대조)", "DRB 승인서로 7일 안에 면제 확인 가능(내부 검토서 인용, 검증 필요)"], "change": ["2020-08-04 생명윤리정책과 유권해석 → 2020. 9. 판 수록. 2025-12-31 개정판에서 IRB와 DRB 표준 절차 마련"], "refs": [{"t": "가이드라인 2020. 9. 판 PDF(비공식 사본, 최신판 대조 필요)", "to": "https://www.smallake.kr/wp-content/uploads/2020/12/보건의료_데이터_활용_가이드라인최종.pdf"}, {"t": "머니투데이(2025. 12. 31.) 개정 보도", "to": "https://www.mt.co.kr/thebio/2025/12/31/2025123114272425006"}], "clause": "clause:k25", "en": "", "clauseName": "생명윤리법 제15조, 시행규칙 제13조"}, {"id": "KR-G-01", "region": "공공", "law": "국가 망 보안체계(N²SF) 보안 가이드라인 (국가정보원, 1.0 정식판)", "article": "본 책자 등급분류 단계 + 부록2 정보서비스 모델 해설서", "type": "가이드라인", "status": "검증 필요", "date": "2025-09-30", "ko": "[원문 미확보] 공식 PDF 본문을 이번 조사에서 열지 못함. ctx 참조", "req": ["업무정보를 C, S, O 등급으로 분류", "등급별 차등 보안통제(6개 영역 280여 개)", "정보서비스 모델 11종(생성형 AI 포함)"], "ctx": ["망분리를 일률 적용하는 대신 등급에 따라 외부 AI와 클라우드 허용", "외부 생성형 AI에는 O등급만 쓰는 구조가 기본(언론)", "S등급을 활용하려면 보안통제 충족이 조건", "검증 필요: 원문 PDF 미대조, 문구는 언론 인용뿐", "\"N2SF 인증\"이라는 표현 금지(사내 규칙)"], "change": ["2025-01-23 드래프트 배포", "2025-09-30 1.0 정식판 공개(본책과 부록 2권)", "2026-09 클라우드 등급을 C, S, O로 정렬한다고 발표(언론, 검증 필요)"], "refs": [{"t": "국가사이버안보센터", "to": "https://www.ncsc.go.kr/"}, {"t": "보안뉴스(2025-09-30)", "to": "http://www.boannews.com/news/articleView.html?idxno=139553"}, {"t": "바이라인네트워크(2025-09-30)", "to": "https://byline.network/2025/09/30-445/"}, {"t": "바이라인네트워크(2026-09-18)", "to": "https://byline.network/2026/09/18-635/"}], "clause": "clause:k26", "en": "", "clauseName": "국가 망 보안체계(N2SF) 보안 가이드라인, 국가 사이버보안 기본지침"}, {"id": "KR-G-02", "region": "공공", "law": "국가 사이버보안 기본지침 (국가정보원)", "article": "제3장 제1절(국가망보안체계 신설), 구 제40조 삭제", "type": "지침", "status": "검증 필요", "date": "2026-05-01", "ko": "[원문 비공개] 국가법령정보센터 행정규칙 검색 결과 없음(2026-10-06). 언론 인용 조문만 확인", "req": ["지침에 N2SF 명시", "내부망과 인터넷망 분리 조항 삭제", "망 간 연동 시 CDS 등 안전한 수단 사용"], "ctx": ["망분리가 의무에서 등급별 선택 통제로 바뀜", "외부 생성형 AI 도입 논리의 상위 근거", "검증 필요: 비공개 문서, 제목과 개정일은 업계 뉴스레터 기준", "구 「국가정보보안 기본지침」과의 관계는 확인하지 못함"], "change": ["2026-05-01 전면 개정(업계 뉴스레터, 검증 필요)"], "refs": [{"t": "국가사이버안보센터", "to": "https://www.ncsc.go.kr/"}, {"t": "maily.so 뉴스레터(참고)", "to": "https://maily.so/nnsp/posts/e9o0y86er8w"}], "clause": "clause:k26", "en": "", "clauseName": "국가 망 보안체계(N2SF) 보안 가이드라인, 국가 사이버보안 기본지침"}, {"id": "KR-G-03", "region": "공공", "law": "공공부문 AI 도입·활용 가이드 (행정안전부 공공인공지능혁신과)", "article": "보도자료 요지(가이드 본문 미확보)", "type": "가이드라인", "status": "시행", "date": "2026-06-10", "ko": "행정안전부는 ’26.6.10.(수) 공공부문 인공지능(AI) 도입을 지원하기 위한 실무 중심의 「공공부문 AI 도입·활용 가이드」를 전국 공공기관에 배포한다고 밝혔다. … 각 공공기관이 범정부 인공지능(AI) 공통 기반을 이용한 서비스 개발 전 과정을 ‘기획-예산-계약-구축-운영’ 5단계로 표준화해 … ‘RAG(검색 증강 생성)’ 우선 전략을 반영해 기관 내부의 최신 문서를 기반으로 정확한 답변을 제공하고, AI 환각 현상 방지 등 …", "req": ["범정부 AI 공통기반 우선 이용", "기획, 예산, 계약, 구축, 운영 5단계", "RAG 우선, 환각 방지"], "ctx": ["공공 AI 도입의 최신 실무 가이드", "외부 AI 단독 도입보다 공통기반을 먼저 쓰는 것이 기본", "검증 필요: 개인정보, 민감정보 입력 기준은 본문에서 확인하지 못함", "ko는 KDI 경제정보센터 게재 보도자료 요약문"], "change": ["2026-06-10 배포", "2026-08-28 인공지능데이터행정법 제27조 시행과 연동"], "refs": [{"t": "행정안전부 보도자료(KDI 경제정보센터 게재)", "to": "https://eiec.kdi.re.kr/policy/materialView.do?num=282444"}], "clause": "clause:k27", "en": "", "clauseName": "공공부문 AI 도입·활용 가이드, 생성형 AI 보안 가이드라인"}, {"id": "KR-G-04", "region": "공공", "law": "챗GPT 활용방법 및 주의사항 안내서 (행정안전부)", "article": "주의사항", "type": "가이드라인", "status": "검증 필요", "date": "2023-05-08", "ko": "[원문 미확보] 행안부 원문·보도자료를 공식 사이트에서 열지 못함", "req": ["비공개 정보 입력 금지", "개인정보 입력 금지", "답변 사실 검증"], "ctx": ["공무원의 생성형 AI 사용에 관한 첫 공식 주의사항", "입력 전에 개인정보를 빼야 한다는 근거", "검증 필요: 날짜와 내용은 언론 보도 기준", "2026 가이드(KR-G-03)로 대체됐는지는 확인하지 못함"], "change": ["2023-05 중앙부처, 지자체 약 300개 기관에 배포(언론)"], "refs": [{"t": "행정안전부", "to": "https://www.mois.go.kr/"}, {"t": "뉴스서울(참고)", "to": "https://newsseoul.co.kr/news/view/1065595206980331"}], "clause": "clause:k27", "en": "", "clauseName": "공공부문 AI 도입·활용 가이드, 생성형 AI 보안 가이드라인"}, {"id": "KR-G-05", "region": "공공", "law": "챗GPT 등 생성형 AI 활용 보안 가이드라인 (국가정보원)", "article": "보도자료 제목(본문은 HWP 첨부)", "type": "가이드라인", "status": "검증 필요", "date": "2023-06-29", "ko": "국정원, '챗GPT 등 생성형 AI 활용 보안 가이드라인' 배포", "req": ["비공개 정보와 민감 정보의 외부 유출 방지", "개인정보 입력 금지", "정보 등급에 따라 도입 판단"], "ctx": ["국정원 보도자료 게시(2023-06-29)는 확인", "본문은 HWP 첨부라 문구는 대조하지 못함", "N2SF 이전의 입력 금지 원칙으로 비식별 수요의 근거", "검증 필요: 요구사항은 언론 요약 기준"], "change": ["2023-06-12 산학연 의견 청취", "2023-06-29 배포", "2025-09-30 N2SF 1.0이 등급별 활용 체계로 확장"], "refs": [{"t": "국가정보원", "to": "https://www.nis.go.kr/CM/1_4/view.do?seq=238"}], "clause": "clause:k27", "en": "", "clauseName": "공공부문 AI 도입·활용 가이드, 생성형 AI 보안 가이드라인"}, {"id": "KR-G-06", "region": "공공", "law": "공공데이터의 인공지능 친화적 관리 가이드라인 v1.1 (행정안전부·한국지능정보사회진흥원)", "article": "FAIR 원칙 03·04·07, 3.1 데이터 생애주기 및 이력 관리", "type": "가이드라인", "status": "시행", "date": "2026-07-31", "ko": "원칙 03 데이터의 구조와 의미를 설명하는 포괄적이고 기계가 이해 가능한 메타데이터를 제공하여야 한다. 원칙 04 데이터 구조, 활용 목적, 편향성 및 한계점, 버전 및 변경 이력을 투명하게 문서화하고 공개하여야 한다. … 원칙 07 데이터 생애주기 단계별 관리정보와 출처·이력을 기록하여 AI 활용에 필요한 데이터 신뢰성과 추적성을 확보하여야 한다.", "req": ["기계가 이해할 수 있는 메타데이터", "버전과 변경 이력 문서화", "출처와 이력 기록, 추적성 확보"], "ctx": ["개방 데이터를 AI에 바로 쓸 수 있는 상태로 관리하도록 요구", "품질 지표 6종(완전성, 정확성 등)을 따로 제시", "평가편람 AI-Ready 체크리스트와 연결", "법적 강제력이 없는 권고 문서"], "change": ["2026-03-31 V1.0 최초 발간", "2026-07-31 V1.1(생애주기, AI 에이전트 대응)", "2026-09-11 공공데이터포털 자료실 게시"], "refs": [{"t": "공공데이터포털", "to": "https://www.data.go.kr/bbs/rcr/selectRecsroom.do?originId=PDS_0000000001269&atchFileId=FILE_000000007668860"}], "clause": "clause:k28", "en": "", "clauseName": "공공데이터의 인공지능 친화적 관리 가이드라인 v1.1"}, {"id": "KR-G-07", "region": "공공", "law": "공공데이터의 인공지능 친화적 관리 가이드라인 v1.1 (행정안전부·한국지능정보사회진흥원)", "article": "1.3.2 공유 데이터 자격 기준", "type": "가이드라인", "status": "시행", "date": "2026-07-31", "ko": "데이터의 등급 분류는 향후 국정원의 보안 가이드라인(N2SF) 기준에 따라 변경 가능 … 1등급(O) 공개공유 개인정보 및 보안상 문제가 없음 … 2등급(S) 제한공유 비식별 처리를 통해 안전성 확보 … 3등급(C) 내부전용 비식별 처리 후라도 보안상 외부 공유 부적절 … 재식별 위험 잔존: 비식별 처리를 수행하였음에도 불구하고 기술적으로 개인 식별 가능성이 남아있는 경우", "req": ["공유 전에 O, S, C 3단계로 등급 분류", "S등급은 비식별 처리가 전제", "재식별 위험이 남아 있으면 공유 제한"], "ctx": ["N2SF 등급과 데이터 개방을 잇는 고리", "비식별 처리와 재식별 위험 점검이 공유 조건", "등급표는 원문상 \"예시\"이며 의무 아님"], "change": ["V1.1(2026-07-31) 기준"], "refs": [{"t": "공공데이터포털", "to": "https://www.data.go.kr/bbs/rcr/selectRecsroom.do?originId=PDS_0000000001269&atchFileId=FILE_000000007668860"}], "clause": "clause:k28", "en": "", "clauseName": "공공데이터의 인공지능 친화적 관리 가이드라인 v1.1"}, {"id": "KR-G-08", "region": "공공", "law": "공공데이터의 제공 및 이용 활성화에 관한 법률 (법률 제21392호, 2026-02-27 일부개정)", "article": "제22조(공공데이터의 품질관리)", "type": "법률", "status": "시행", "date": "2026-08-28", "ko": "① 공공기관의 장은 해당 기관이 생성 또는 취득하여 관리하는 공공데이터의 안정적 품질관리 및 적정한 품질수준의 확보를 위하여 필요한 조치를 취하여야 한다. ② 과학기술정보통신부장관과 행정안전부장관은 공공데이터의 적정한 품질수준의 확보와 제공 촉진을 위하여 품질 진단ㆍ평가, 개선지원 등 필요한 시책을 수립ㆍ추진하여야 한다.", "req": ["기관장의 품질관리 조치 의무", "정부의 품질 진단, 평가, 개선 지원"], "ctx": ["개방 데이터 품질은 기관장의 법적 의무", "품질 진단, 평가 결과 공표 가능(제3항)", "제22조 자체는 2017년 이후 변경 없음"], "change": ["2026-08-28 시행 개정은 전략위원회에 AI 행정을 반영(제22조는 변경 없음)"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/공공데이터의제공및이용활성화에관한법률/제22조"}], "clause": "clause:k29", "en": "", "clauseName": "공공데이터법 제22조, AI 데이터행정법 제16조, 제29조"}, {"id": "KR-G-09", "region": "공공", "law": "인공지능 및 데이터 기반 행정 활성화에 관한 법률 (구 데이터기반행정법, 법률 제21392호)", "article": "제16조(데이터관리체계의 구축)", "type": "법률", "status": "시행", "date": "2026-08-28", "ko": "① 공공기관의 장은 생성하거나 취득하여 관리하는 데이터에 대한 메타데이터(데이터의 체계적인 관리와 편리한 검색 및 활용을 위하여 데이터의 구조, 속성, 특성, 이력 등을 표현한 자료를 말한다. 이하 같다) 및 데이터관계도(데이터 간의 관계를 나타낸 그림을 말한다. 이하 같다)를 체계적으로 관리하여야 한다.", "req": ["메타데이터를 체계적으로 관리", "데이터관계도 관리", "이력을 포함한 메타데이터 관리"], "ctx": ["법상 메타데이터 정의에 \"이력\"이 포함됨", "AI 친화 가이드라인 원칙 03, 07의 법적 바탕", "행안부가 기관 메타데이터를 통합 관리(제2항)"], "change": ["2026-02-27 공포, 2026-08-28 시행: 법명 변경, AI 조항 신설"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/인공지능및데이터기반행정활성화에관한법률/제16조"}], "clause": "clause:k29", "en": "", "clauseName": "공공데이터법 제22조, AI 데이터행정법 제16조, 제29조"}, {"id": "KR-G-10", "region": "공공", "law": "인공지능 및 데이터 기반 행정 활성화에 관한 법률 (법률 제21392호)", "article": "제29조(학습용데이터의 관리)", "type": "법률", "status": "시행", "date": "2026-08-28", "ko": "공공기관의 장은 학습용데이터의 기관 간 공유 및 활용 촉진을 위하여 학습용데이터의 적정한 품질수준을 확보할 수 있도록 필요한 조치를 취하여야 한다. [본조신설 2026.2.27]", "req": ["학습용데이터 품질수준 확보", "기관 간 공유와 활용 촉진"], "ctx": ["AI 학습용 공공데이터의 품질 확보가 법적 의무가 됨", "품질 진단과 개선 수요의 직접 근거", "세부 기준은 시행령과 가이드에서 확인 필요"], "change": ["2026-02-27 신설, 2026-08-28 시행"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/인공지능및데이터기반행정활성화에관한법률/제29조"}], "clause": "clause:k29", "en": "", "clauseName": "공공데이터법 제22조, AI 데이터행정법 제16조, 제29조"}, {"id": "KR-G-11", "region": "공공", "law": "인공지능 및 데이터 기반 행정 활성화에 관한 법률 (법률 제21392호)", "article": "제27조(공통기반의 구축 등)", "type": "법률", "status": "시행", "date": "2026-08-28", "ko": "① 행정안전부장관 및 과학기술정보통신부장관은 공공기관이 공동으로 이용할 수 있고, 중복투자 없이 신속하고 안전하게 인공지능을 도입ㆍ활용할 수 있도록 지원하는 기반(이하 \"공통기반\"이라 한다)을 구축ㆍ운영하여야 한다. ② 공공기관의 장은 인공지능을 도입하는 경우 공통기반을 우선적으로 이용하도록 노력하여야 한다.", "req": ["범정부 AI 공통기반 구축", "도입할 때 공통기반을 우선 이용하도록 노력"], "ctx": ["기관 단독의 외부 AI 도입보다 공통기반 이용이 우선", "노력 의무라 금지 규정은 아님", "공통기반과 연계하는 제안이 가능한지 검토"], "change": ["2026-02-27 신설, 2026-08-28 시행", "2026-06-10 행안부 실무 가이드 배포"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/인공지능및데이터기반행정활성화에관한법률/제27조"}], "clause": "clause:k27", "en": "", "clauseName": "공공부문 AI 도입·활용 가이드, 생성형 AI 보안 가이드라인"}, {"id": "KR-G-12", "region": "공공", "law": "인공지능 및 데이터 기반 행정 활성화에 관한 법률 (법률 제21392호)", "article": "제32조(공공분야 인공지능 영향평가 등)", "type": "법률", "status": "시행", "date": "2026-08-28", "ko": "① 공공기관의 장은 인공지능을 도입하려는 경우에는 사전에 인공지능이 국민의 기본권에 미치는 영향을 평가(이하 \"공공분야 인공지능 영향평가\"라 한다)하고 그 결과를 공표하여야 한다. … ④ 공공기관의 장은 공공분야 인공지능 영향평가를 받은 인공지능을 활용하는 과정에서 발생할 수 있는 오류 등 각종 위험을 대처할 수 있도록 위험관리방안을 수립ㆍ시행하여야 한다.", "req": ["도입 전에 기본권 영향평가와 공표", "위험관리방안 수립, 시행"], "ctx": ["공공기관 AI 도입의 사전 절차로 신설", "단순하거나 경미한 업무 등은 면제 가능(제2항)", "기준과 절차는 시행령 확인 필요"], "change": ["2026-02-27 신설, 2026-08-28 시행"], "refs": [{"t": "국가법령정보센터", "to": "https://www.law.go.kr/법령/인공지능및데이터기반행정활성화에관한법률/제32조"}], "clause": "clause:k30", "en": "", "clauseName": "AI 데이터행정법 제32조 (공공분야 AI 영향평가)"}], "upcoming": [{"date": "2026-12-10", "status": "시행 예정", "article": "의료법 제23조제4항 개정: 접속기록 보관 대상에 기재, 열람 추가", "law": "의료법", "id": "KR-M-03", "href": "#clause-k23"}, {"date": "2026-12-24", "status": "시행 예정", "article": "의료법 제19조 개정: 비대면진료 중개업자 비밀유지 신설", "law": "의료법", "id": "KR-M-01", "href": "#clause-k23"}, {"date": "2027-01-22", "status": "검증 필요", "article": "AI 기본법 계도기간 최소 1년 경과 시점(종료일 공식 발표 전)", "law": "AI 기본법", "id": "KR-A-09", "href": "#src-KR-A-09"}]};
+const EN = {};
+const $ = (s, el=document) => el.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- language ---------- */
+let LANG = 'ko';
+/* 한국어 단일판 */
+const L = (ko, en) => LANG==='en' ? en : ko;
+const tr = s => (LANG==='en' && s && EN[s]) ? EN[s] : (s ?? '');
+const trl = a => (a||[]).map(tr);
+
+/* ---------- icons ---------- */
+const P = {
+  globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/>',
+  bank:'<path d="M3 10 12 4l9 6M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 21h18"/>',
+  health:'<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M12 8v8M8 12h8"/>',
+  gov:'<path d="M4 21h16M6 21v-9M18 21v-9M10 21v-5h4v5M3 12l9-7 9 7"/>',
+  cpu:'<rect x="6" y="6" width="12" height="12" rx="2"/><path d="M10 10h4v4h-4zM9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/>',
+  shield:'<path d="M12 3l8 3v6c0 4.6-3.4 7.9-8 9-4.6-1.1-8-4.4-8-9V6z"/><path d="m9 12 2 2 4-4"/>',
+  layers:'<path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/>',
+  spark:'<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/>',
+  alert:'<path d="M12 4 2.8 19.5h18.4z"/><path d="M12 10v4M12 17h.01"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  flag:'<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',
+  check:'<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',
+  box:'<path d="m12 3 8 4.5v9L12 21l-8-4.5v-9z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/>',
+  db:'<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/>',
+  scale:'<path d="M12 4v17M7 21h10M4 8h16M6 8l-3 7a3 3 0 0 0 6 0zM18 8l-3 7a3 3 0 0 0 6 0z"/>',
+  file:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/>',
+  users:'<circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5M16 4.5a3.5 3.5 0 0 1 0 7M21 20c0-2.6-1.6-4.6-4-5.3"/>',
+  target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+  list:'<path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/>',
+  chat:'<path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h8"/>',
+  link:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+  ext:'<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
+  arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+  left:'<path d="M19 12H5M11 6l-6 6 6 6"/>',
+  home:'<path d="M4 11 12 4l8 7M6 9.5V20h12V9.5"/>',
+  cal:'<rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+  x:'<path d="M6 6l12 12M18 6 6 18"/>',
+  translate:'<path d="M4 5h8M8 3v2M6 5c0 4 2.5 7 6 8M10 5c-.5 3.5-2.5 6.5-6 8M13 21l4-9 4 9M14.5 18h5"/>',
+};
+const I = (n, cls='') => `<svg class="i ${cls}" viewBox="0 0 24 24" aria-hidden="true">${P[n]||''}</svg>`;
+const SECTOR_ICON = {'공통':'globe','금융':'bank','의료':'health','공공':'gov','AI 개발·도입':'cpu'};
+const PROD = {'LLM Capsule':'capsule','Syntitan':'syntitan','DTS':'dts'};
+const PROD_ICON = {'LLM Capsule':'shield','Syntitan':'layers','DTS':'spark'};
+const PRODUCTS = ['LLM Capsule','Syntitan','DTS'];
+const REGION_ICON = {'개인정보':'users','AI':'cpu','금융':'bank','의료':'health','공공':'gov'};
+const regIco = r => REGION_ICON[r] || 'flag';
+const upTag = f => f.status==='출시 예정' ? `<span class="st s-출시예정" title="${esc(f.statusNote||'')}">출시 예정</span>` : f.status==='확인 필요' ? `<span class="st s-확인필요" title="${esc(f.statusNote||'')}">담당 확인 필요</span>` : '';
+
+const byId = {
+  case: Object.fromEntries(DATA.cases.map(x=>[x.id,x])),
+  feature: Object.fromEntries(DATA.features.map(x=>[x.id,x])),
+  clause: Object.fromEntries(DATA.clauses.map(x=>[x.id,x])),
+  source: Object.fromEntries(DATA.sources.map(x=>[x.id,x])),
+};
+const ANCHOR = {case:'case-', feature:'feat-', clause:'clause-', source:'src-'};
+const slug = p => 'p-' + p.toLowerCase().replace(/[^a-z]/g,'');
+const uniq = a => [...new Set(a)];
+const tally = (arr, fn) => arr.reduce((m,x)=>{ [].concat(fn(x)).forEach(v=>m[v]=(m[v]||0)+1); return m; }, {});
+const lawShort = s => tr(s).split(/\s[—–]\s|\(/)[0].trim();
+const TODAY = new Date().toISOString().slice(0,10);
+
+const st = {f:{sector:null, ctype:null, cprod:null, region:'', status:'', stype:'', law:''}, sq:''};
+try{ const s = JSON.parse(localStorage.getItem('kr-regmap1')||'null'); if(s) Object.assign(st.f, s); }catch(e){}
+const saveF = () => { try{ localStorage.setItem('kr-regmap1', JSON.stringify(st.f)); }catch(e){} };
+
+function href(to){
+  if(!to) return null;
+  const m = /^(case|feature|clause|source):(.+)$/.exec(to);
+  return m ? '#' + ANCHOR[m[1]] + m[2] : to;
+}
+const isExt = h => /^https?:/.test(h||'');
+const ul = (a, cls='') => a && a.length ? `<ul class="b ${cls}">${trl(a).map(t=>`<li>${esc(t)}</li>`).join('')}</ul>` : `<p class="lead" style="margin:0">—</p>`;
+const tag = p => `<span class="tag ${PROD[p]}">${I(PROD_ICON[p])}${esc(p)}</span>`;
+const atag = p => `<a class="tag ${PROD[p]}" href="#${slug(p)}">${I(PROD_ICON[p])}${esc(p)}</a>`;
+const stp = s => `<span class="st s-${esc(s.replace(/\s/g,''))}">${esc(tr(s))}</span>`;
+const cnos = ids => `<span class="cnos">${ids.map(id=>`<a class="cno" href="#case-${esc(id)}" title="${esc(tr(byId.case[id]?.customer||''))}">${esc(id)}</a>`).join('')}</span>`;
+const splitLaw = t => { const i=t.lastIndexOf(': '); return i>0 ? [t.slice(0,i), t.slice(i+2)] : [t,'']; };
+const prodOfClause = c => uniq(c.features.map(x=>byId.feature[(x.to||'').split(':')[1]]?.product).filter(Boolean));
+const casesOfProduct = p => uniq(DATA.features.filter(f=>f.product===p).flatMap(f=>f.cases)).sort();
+const sectorIco = (s, cls='sm') => `<span class="ico ${cls}">${I(SECTOR_ICON[s]||'globe')}</span>`;
+const prodIco = (p, cls='') => `<span class="ico ${PROD[p]==='capsule'?'':PROD[p]} ${cls}">${I(PROD_ICON[p])}</span>`;
+function chips(key, values, counts, icons){
+  return `<button class="chip" data-f="${key}" data-v="" aria-pressed="${st.f[key]==null}">${L('전체','All')}</button>${values.map(v=>`<button class="chip" data-f="${key}" data-v="${esc(v)}" aria-pressed="${st.f[key]===v}">${icons?I(icons[v]):''}${esc(tr(v))} <span class="n">${counts[v]||0}</span></button>`).join('')}`;
+}
+
+/* search haystack in both languages */
+const HAY = new WeakMap();
+function hayOf(o){
+  if(HAY.has(o)) return HAY.get(o);
+  const out=[]; (function walk(v){ if(typeof v==='string'){ out.push(v); if(EN[v]) out.push(EN[v]); } else if(Array.isArray(v)) v.forEach(walk); else if(v && typeof v==='object') Object.values(v).forEach(walk); })(o);
+  const h = out.join(' \n ').toLowerCase(); HAY.set(o,h); return h;
+}
+const words = q => q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+const hits = (o, ws) => { const h = hayOf(o); return ws.every(w=>h.includes(w)); };
+
+/* ---------- shared blocks ---------- */
+const caseCard = c => `
+  <a class="card" href="#case-${esc(c.id)}">
+    <div class="top"><span class="who">${sectorIco(c.sector)}${esc(tr(c.sector))}</span><span class="num">${esc(c.id)}</span></div>
+    <h3>${esc(tr(c.customer))}</h3>
+    <div class="tags">${c.products.map(tag).join('')}</div>
+    <div class="foot"><span>${I('scale')}${L(`관련 법령 ${c.laws.length}개`,`${c.laws.length} laws apply`)}</span><span class="go">${L('자세히','Details')} →</span></div>
+  </a>`;
+const clauseCard = c => `
+  <a class="card" href="#clause-${c.id}">
+    <div class="top"><span class="kind">${esc(tr(c.type))}</span><span>${I('users')} ${c.cases.length}</span></div>
+    <h3>${esc(tr(c.name))}</h3>
+    <p class="snip">${esc(tr(c.req[0]||''))}</p>
+    <div class="foot"><span>${I('cal')}${esc(tr(c.status[0]||''))}</span><span class="go">→</span></div>
+  </a>`;
+const pageHead = (crumbs, icon, eyebrow, title, sub, meta) => `
+  <div class="ph"><div class="wrap">
+    <div class="crumb"><a href="#home">${I('home')}${L('홈','Home')}</a>${crumbs.map(([t,h])=>`<span>/</span>${h?`<a href="${h}">${esc(t)}</a>`:`<span>${esc(t)}</span>`}`).join('')}</div>
+    <div class="ph-row">${icon||''}<div style="min-width:0">
+      ${eyebrow?`<p class="eyebrow">${esc(eyebrow)}</p>`:''}
+      <h1>${esc(title)}</h1>
+      ${sub?`<p class="sub">${esc(sub)}</p>`:''}
+      ${meta?`<div class="meta">${meta}</div>`:''}
+    </div></div>
+  </div></div>`;
+const listHead = (icon, eyebrow, title, lead) => `
+  <section class="sec" style="padding-bottom:0"><div class="wrap">
+    <p class="eyebrow">${I(icon)}${esc(eyebrow)}</p><h1 class="h2" style="font-size:clamp(30px,4vw,42px)">${esc(title)}</h1>
+    ${lead?`<p class="lead">${esc(lead)}</p>`:''}
+  </div></section>`;
+function prevNext(arr, i, hrefOf, labelOf){
+  const p = arr[i-1], n = arr[i+1];
+  return `<div class="pn">${p?`<a href="${hrefOf(p)}"><small>← ${L('이전','Previous')}</small><b>${esc(labelOf(p))}</b></a>`:'<span></span>'}${n?`<a class="r" href="${hrefOf(n)}"><small>${L('다음','Next')} →</small><b>${esc(labelOf(n))}</b></a>`:'<span></span>'}</div>`;
+}
+const blk = (id, icon, title, html, n) => `<div class="blk" id="b-${id}"><h3>${n?`<span class="n">${n}</span>`:''}${title}</h3>${html}</div>`;
+const toc = (groups) => `<nav class="toc" id="toc">${groups.map(([g,items])=>`<b>${g}</b>${items.map(([id,icon,t])=>`<a href="#" data-jump="b-${id}">${I(icon)}${t}</a>`).join('')}`).join('')}</nav>`;
+
+/* ---------- pages ---------- */
+function pageHome(){
+  const S = DATA.sources;
+  const upcoming = [...S, ...(DATA.upcoming||[])].filter(s=>/^\d{4}-\d{2}-\d{2}$/.test(s.date) && s.date >= TODAY).sort((a,b)=>a.date.localeCompare(b.date));
+  const byDate = upcoming.reduce((m,s)=>{ (m[s.date]=m[s.date]||[]).push(s); return m; }, {});
+  const dates = Object.keys(byDate).slice(0,6);
+  const topClauses = [...DATA.clauses].sort((a,b)=>b.cases.length-a.cases.length).slice(0,6);
+  const sectors = uniq(DATA.cases.map(c=>c.sector));
+  const cs = DATA.cases.filter(c=>!st.f.sector || c.sector===st.f.sector);
+  return `
+  <section class="hero"><div class="wrap">
+    <p class="pill-eb">KOREA REGULATION MAP · v1.0</p>
+    <h1>${'한국 규제와<em>CUBIG 제품 연결</em>'}</h1>
+    <p class="lead">${'고객 상황별로 적용되는 국내 법령과 지침, 지금 대응해야 하는 이유를 짚고<br class="br-d"> CUBIG 제품으로 어떻게 대응할 수 있는지 근거와 함께 정리했습니다.'}</p>
+    <div class="btns"><a class="btn p" href="#cases">${I('users')}${L('고객 상황 보기','View customer situations')}</a><a class="btn k" href="#sources">${I('file')}${L(`원문 ${S.length}건 찾기`,`Browse ${S.length} source texts`)}</a></div>
+    <p class="fine">${'<span>고객 상황은 예시이며, 제품명이나 조항명을 누르면 해당 설명으로 이동합니다.</span><span>「출시 예정」 기능은 출시된 기능처럼 안내하지 않고, 「담당 확인 필요」 기능은 제품 담당자 확인을 거친 뒤 안내합니다.</span>'}</p>
+    <div class="stats">
+      <a class="stat" href="#cases"><span class="ico">${I('users')}</span><span><b>${DATA.cases.length}</b><span>${L('고객 상황','Customer situations')}</span></span></a>
+      <a class="stat" href="#products"><span class="ico">${I('box')}</span><span><b>${DATA.features.length}</b><span>${L('제품 기능','Product features')}</span></span></a>
+      <a class="stat" href="#clauses"><span class="ico">${I('scale')}</span><span><b>${DATA.clauses.length}</b><span>${L('조항 설명','Clauses')}</span></span></a>
+      <a class="stat" href="#sources"><span class="ico">${I('file')}</span><span><b>${S.length}</b><span>${'국내 원문'}</span></span></a>
+    </div>
+  </div></section>
+
+  <section class="sec alt"><div class="wrap">
+    <div class="sec-h"><div><p class="eyebrow">How to read</p><h2 class="h2">${L('고객 상황 하나를<br>네 단계로 살펴봅니다.','Each customer situation<br>reads in four steps.')}</h2></div></div>
+    <div class="steps">
+      <div class="step"><div class="row"><span class="ico grey">${I('users')}</span><span class="no">01</span></div><h3>${L('고객','Customer')}</h3><p>${L('어떤 업종에서 무슨 일을 하려는 고객인지 확인합니다.','Sector and customer type: what the customer is trying to do.')}</p></div>
+      <div class="step"><div class="row"><span class="ico risk">${I('alert')}</span><span class="no">02</span></div><h3>${L('법 리스크','Legal risk')}</h3><p>${L('어떤 법령이 적용되는지, 지금 무엇이 문제인지, 그대로 두면 어떤 위험이 생기는지 짚습니다.','Laws that apply, why it does not work today, and why it should not be taken lightly.')}</p></div>
+      <div class="step"><div class="row"><span class="ico">${I('box')}</span><span class="no">03</span></div><h3>${L('CUBIG 대응','CUBIG response')}</h3><p>${L('어떤 제품이 무슨 일을 하고, 그 기록이 어디에 남는지 정리합니다.','The product, what it does, and where and how records are kept.')}</p></div>
+      <div class="step"><div class="row"><span class="ico ok">${I('check')}</span><span class="no">04</span></div><h3>${L('설명할 수 있는 것','What they can explain')}</h3><p>${L('고객이 제품 기록을 근거로 내부 검토에서 설명할 수 있는 내용입니다.','What the customer can present in internal review, using product records.')}</p></div>
+    </div>
+  </div></section>
+
+  <section class="sec"><div class="wrap">
+    <div class="sec-h"><div><p class="eyebrow">Customer situations</p><h2 class="h2">${L(`업종별 고객 상황 ${DATA.cases.length}가지`,`${DATA.cases.length} customer situations by sector`)}</h2></div><a class="more" href="#cases">${L('전체 보기','View all')} ${I('arrow')}</a></div>
+    <div class="chips">${chips('sector', sectors, tally(DATA.cases,c=>c.sector), SECTOR_ICON)}</div>
+    <div class="grid3">${cs.map(caseCard).join('')}</div>
+  </div></section>
+
+  <section class="sec alt"><div class="wrap">
+    <div class="sec-h"><div><p class="eyebrow">Products</p><h2 class="h2">${L('제품별 역할','What each product does')}</h2></div><a class="more" href="#products">${L('기능 전체 보기','All features')} ${I('arrow')}</a></div>
+    <div class="grid3">${PRODUCTS.map(p=>`
+      <div class="prod">
+        <div class="hd">${prodIco(p)}<h3>${esc(p)}</h3></div>
+        <ol>${DATA.features.filter(f=>f.product===p).map(f=>`<li><a href="#feat-${f.id}">${esc(tr(f.name))} ${upTag(f)}${I('arrow')}</a></li>`).join('')}</ol>
+        <div class="foot">${'해당 고객 상황'} ${cnos(casesOfProduct(p))}</div>
+      </div>`).join('')}</div>
+  </div></section>
+
+  <section class="sec"><div class="wrap">
+    <div class="sec-h"><div><p class="eyebrow">${I('cal')}Upcoming dates</p><h2 class="h2">${L('다가오는 시행일','Upcoming application dates')}</h2><p class="lead">${'오늘 이후 시행되거나 기한이 돌아오는 항목입니다.'}</p></div><a class="more" href="#sources">${L('원문 전체','All sources')} ${I('arrow')}</a></div>
+    <div class="tl">${dates.map(d=>`
+      <div class="tl-row">
+        <div class="tl-date"><span class="ico sm grey">${I('cal')}</span><span><b>${d}</b><small>${L(`${byDate[d].length}건`,`${byDate[d].length} items`)}</small></span></div>
+        <div class="tl-items">${byDate[d].map(s=>`<a class="tl-item" href="${esc(s.href||('#src-'+s.id))}">${stp(s.status)}<span class="t">${esc(tr(s.article))}</span><span class="l">${esc(lawShort(s.law))} · ${esc(s.id)}</span></a>`).join('')}</div>
+      </div>`).join('') || `<p class="empty">${L('예정된 적용일이 없습니다.','No upcoming dates.')}</p>`}</div>
+  </div></section>
+
+  <section class="sec alt"><div class="wrap">
+    <div class="sec-h"><div><p class="eyebrow">Clauses</p><h2 class="h2">${L('여러 고객 상황에 해당하는 조항','Clauses that apply to the most customers')}</h2></div><a class="more" href="#clauses">${L(`조항 ${DATA.clauses.length}개 전체`,`All ${DATA.clauses.length} clauses`)} ${I('arrow')}</a></div>
+    <div class="grid3">${topClauses.map(clauseCard).join('')}</div>
+  </div></section>`;
+}
+
+function resetBtn(keys){ return keys.some(k=>st.f[k]) ? `<button class="reset" data-reset="${keys.join(',')}">${I('x')}${L('필터 초기화','Clear filters')}</button>` : ''; }
+
+function pageCases(){
+  const sectors = uniq(DATA.cases.map(c=>c.sector));
+  const list = DATA.cases.filter(c => (!st.f.sector || c.sector===st.f.sector) && (!st.f.cprod || c.products.includes(st.f.cprod)));
+  return listHead('users','Customer situations', L('고객 상황','Customer situations'), L('카드를 누르면 고객 상황별 법 리스크와 CUBIG 대응을 한 페이지에서 볼 수 있습니다.','Open a card to read one customer\'s legal risk and CUBIG response on a single page.')) + `
+  <section class="sec" style="padding-top:32px"><div class="wrap">
+    <div class="toolbar">
+      <div class="tgroup"><span class="tlabel">${L('업종','Sector')}</span>${chips('sector', sectors, tally(DATA.cases,c=>c.sector), SECTOR_ICON)}</div>
+      <div class="tgroup"><span class="tlabel">${L('제품','Product')}</span>${chips('cprod', PRODUCTS, tally(DATA.cases,c=>c.products), PROD_ICON)}</div>
+    </div>
+    <div class="resbar"><span>${L(`${list.length}개 고객 상황`,`${list.length} situations`)}</span>${resetBtn(['sector','cprod'])}</div>
+    <div class="grid3">${list.map(caseCard).join('') || `<p class="empty">${L('조건에 맞는 고객이 없습니다.','No matching customers.')}</p>`}</div>
+  </div></section>`;
+}
+
+function pageCase(id){
+  const i = DATA.cases.findIndex(c=>c.id===id), c = DATA.cases[i];
+  if(!c) return pageCases();
+  const lawHtml = `<div class="lawcards">${c.laws.map(x=>{ const [a,n]=splitLaw(tr(x.t)); return `<a class="lawcard" href="${esc(href(x.to))}"><span class="ico sm">${I('scale')}</span><span class="tx"><b>${esc(a)}</b>${n?`<span>${esc(n)}</span>`:''}</span>${I('arrow')}</a>`; }).join('')}</div>`;
+  const T = {laws:'적용 법령', why:'지금 문제가 되는 이유', risk:'그대로 두면 생기는 위험', does:L('제품이 하는 일','What the product does'), where:'기록이 남는 곳', explain:L('고객이 설명할 수 있는 것','What the customer can explain')};
+  return pageHead([[L('고객 상황','Customer situations'),'#cases'],[c.id]], `<span class="ico">${I(SECTOR_ICON[c.sector]||'globe')}</span>`, `${tr(c.sector)} · ${c.id}`, tr(c.customer), '',
+    c.products.map(atag).join('') + `<span class="kind">${L(`관련 법령 ${c.laws.length}개`,`${c.laws.length} laws`)}</span>`) + `
+  <div class="wrap detail">
+    ${toc([[L('법 리스크','Legal risk'),[['laws','scale',T.laws],['why','clock',T.why],['risk','alert',T.risk]]],[L('CUBIG 대응','CUBIG response'),[['does','box',T.does],['where','db',T.where],['explain','check',T.explain]]]])}
+    <div class="dbody">
+      <div class="panel risk">
+        <div class="panel-h"><span class="ico risk">${I('alert')}</span><div><h2>${L('법 리스크','Legal risk')}</h2><p>${L('적용 법령과 지금 문제가 되는 이유','Which laws apply and why it is a problem now')}</p></div></div>
+        <div class="panel-b">
+          ${blk('laws','scale',T.laws,lawHtml,'01')}
+          ${blk('why','clock',T.why,ul(c.why),'02')}
+          ${blk('risk','alert',T.risk,ul(c.risk),'03')}
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><span class="ico">${I('box')}</span><div><h2>${L('CUBIG 대응','CUBIG response')}</h2><p>${L('대응 제품과 남는 기록','The product and the records it keeps')}</p></div></div>
+        <div class="panel-b">
+          ${blk('does','box',T.does,`<div class="links">${c.products.map(p=>`<a class="lk" href="#${slug(p)}">${I(PROD_ICON[p])}${esc(p)} ${L('기능 보기','features')}</a>`).join('')}</div>${ul(c.does)}`,'04')}
+          ${blk('where','db',T.where,ul(c.where),'05')}
+        </div>
+      </div>
+      <div class="box" id="b-explain">
+        <div class="bh"><span class="ico ok">${I('check')}</span><h2>${T.explain}</h2></div>
+        ${ul(c.explain)}
+      </div>
+      ${prevNext(DATA.cases, i, x=>'#case-'+x.id, x=>x.id+' · '+tr(x.customer))}
+    </div>
+  </div>`;
+}
+
+function pageProducts(){
+  return listHead('box','Products', L('제품 기능','Product features'), '기능마다 하는 일, 남는 기록, 관련 조항, 상담 때 확인할 것을 정리했습니다. 「출시 예정」 기능은 상태와 근거 문서를 함께 적었습니다.') + `
+  <section class="sec" style="padding-top:28px;padding-bottom:0"><div class="wrap"><div class="chips" style="margin:0">${PRODUCTS.map(p=>`<a class="chip" href="#${slug(p)}">${I(PROD_ICON[p])}${esc(p)} <span class="n">${DATA.features.filter(f=>f.product===p).length}</span></a>`).join('')}</div></div></section>` +
+  PRODUCTS.map((p,k)=>`
+  <section class="sec ${k%2?'':'alt'}" id="${slug(p)}" style="scroll-margin-top:64px"><div class="wrap">
+    <div class="sec-h"><div style="display:flex;gap:16px;align-items:center">${prodIco(p)}<div><p class="eyebrow" style="margin:0 0 4px">Product ${k+1} / 3</p><h2 class="h2">${esc(p)}</h2></div></div><div style="font-size:14px;color:var(--muted);display:flex;gap:8px;align-items:center;flex-wrap:wrap">${'해당 고객 상황'} ${cnos(casesOfProduct(p))}</div></div>
+    <div class="feats">${DATA.features.filter(f=>f.product===p).map(f=>`
+      <article class="feat" id="feat-${f.id}">
+        <div class="feat-h"><h3>${esc(tr(f.name))} ${upTag(f)}</h3>${f.statusNote?`<p class="upnote">${esc(f.statusNote)}</p>`:''}
+          <div class="meta"><span style="display:inline-flex;gap:6px;align-items:center">${'해당 고객 상황'} ${cnos(f.cases)}</span>${f.src?`<a class="src" href="${esc(f.src)}" target="_blank" rel="noopener">${L('컨플루언스 출처','Confluence source')} ${I('ext')}</a>`:''}</div></div>
+        <div class="feat-b">
+          <div>
+            <div><p class="lab">${I('target')}${L('하는 일','What it does')}</p>${ul(f.does,'sm')}</div>
+            <div><p class="lab">${I('db')}${L('남는 기록과 보관 위치','Records kept and where')}</p>${ul(f.records,'sm')}</div>
+          </div>
+          <div>
+            <div><p class="lab">${I('scale')}${L('관련 조항','Related clauses')}</p><div class="reflist">${f.clauses.map(x=>`<a href="${esc(href(x.to))}">${esc(tr(x.t))}${I('arrow')}</a>`).join('')}</div></div>
+            <div><p class="lab">${I('chat')}${L('상담 때 확인할 것','Check in the sales call')}</p>${ul(f.check,'sm')}</div>
+          </div>
+        </div>
+      </article>`).join('')}</div>
+  </div></section>`).join('');
+}
+
+function pageClauses(){
+  const types = uniq(DATA.clauses.map(c=>c.type));
+  const list = DATA.clauses.filter(c => (!st.f.ctype || c.type===st.f.ctype) && (!st.f.cprod || prodOfClause(c).includes(st.f.cprod)));
+  return listHead('scale','Clauses', L('조항 설명','Clauses'), L('고객 상황에 나오는 조항입니다. 카드를 누르면 요구사항과 고객이 할 일, 원문 링크를 볼 수 있습니다.','Clauses that appear in the customer situations. Open one for its requirements, customer actions, and source texts.')) + `
+  <section class="sec" style="padding-top:32px"><div class="wrap">
+    <div class="toolbar">
+      <div class="tgroup"><span class="tlabel">${L('구분','Type')}</span>${chips('ctype', types, tally(DATA.clauses,c=>c.type))}</div>
+      <div class="tgroup"><span class="tlabel">${L('제품','Product')}</span>${chips('cprod', PRODUCTS, tally(DATA.clauses,prodOfClause), PROD_ICON)}</div>
+    </div>
+    <div class="resbar"><span>${L(`${list.length}개 조항`,`${list.length} clauses`)}</span>${resetBtn(['ctype','cprod'])}</div>
+    <div class="grid3">${list.map(clauseCard).join('') || `<p class="empty">${L('조건에 맞는 조항이 없습니다.','No matching clauses.')}</p>`}</div>
+  </div></section>`;
+}
+
+function pageClause(id){
+  const i = DATA.clauses.findIndex(c=>c.id===id), c = DATA.clauses[i];
+  if(!c) return pageClauses();
+  const T = {req:L('요구사항','Requirements'), target:L('적용 대상','Who it applies to'), todo:L('고객이 할 일','What the customer must do'), cases:L('해당 고객','Customer situations'), feat:L('대응 제품과 기능','Products and features'), src:L('원문','Source texts')};
+  const caseList = `<div class="mini">${c.cases.map(x=>byId.case[x]).filter(Boolean).map(k=>`<a href="#case-${k.id}">${sectorIco(k.sector)}<b>${esc(tr(k.customer))}</b><small>${esc(k.id)}</small>${I('arrow')}</a>`).join('')}</div>`;
+  const srcList = `<div class="lawcards">${c.sources.map(x=>{ const s = byId.source[(x.to||'').split(':')[1]]; return `<a class="lawcard" href="${esc(href(x.to))}"><span class="ico sm grey">${I('file')}</span><span class="tx"><b>${esc(tr(x.t))}</b>${s?`<span>${esc(lawShort(s.law))} · ${esc(tr(s.status))} · ${esc(s.date)}</span>`:''}</span>${I('arrow')}</a>`; }).join('')}</div>`;
+  return pageHead([[L('조항','Clauses'),'#clauses'],[tr(c.name)]], `<span class="ico">${I('scale')}</span>`, tr(c.type), tr(c.name), '',
+    trl(c.status).map(s=>`<span class="kind">${esc(s)}</span>`).join('') + prodOfClause(c).map(atag).join('')) + `
+  <div class="wrap detail">
+    ${toc([[L('이 조항','This clause'),[['req','list',T.req],['target','target',T.target],['todo','check',T.todo]]],[L('연결','Links'),[['cases','users',T.cases],['feat','box',T.feat],['src','file',T.src]]]])}
+    <div class="dbody">
+      <div class="panel">
+        <div class="panel-h"><span class="ico">${I('list')}</span><div><h2>${L('조항 내용','What the clause requires')}</h2></div></div>
+        <div class="panel-b">
+          ${blk('req','list',T.req,ul(c.req),'01')}
+          ${blk('target','target',T.target,ul(c.target),'02')}
+        </div>
+      </div>
+      <div class="box" id="b-todo"><div class="bh"><span class="ico ok">${I('check')}</span><h2>${T.todo}</h2></div>${ul(c.todo)}</div>
+      <div class="panel">
+        <div class="panel-h"><span class="ico grey">${I('link')}</span><div><h2>${L('연결된 항목','Linked items')}</h2></div></div>
+        <div class="panel-b">
+          ${blk('cases','users',T.cases,caseList)}
+          ${blk('feat','box',T.feat,`<div class="links">${c.features.map(x=>{ const f=byId.feature[(x.to||'').split(':')[1]]; return `<a class="lk" href="${esc(href(x.to))}">${f?I(PROD_ICON[f.product]):''}${esc(tr(x.t))}</a>`; }).join('')}</div>`)}
+          ${blk('src','file',T.src,srcList)}
+        </div>
+      </div>
+      ${prevNext(DATA.clauses, i, x=>'#clause-'+x.id, x=>tr(x.name))}
+    </div>
+  </div>`;
+}
+
+function filteredSources(){
+  const ws = words(st.sq);
+  return DATA.sources.filter(s =>
+    (!st.f.region || s.region===st.f.region) && (!st.f.status || s.status===st.f.status) &&
+    (!st.f.stype || s.type===st.f.stype) && (!st.f.law || s.law===st.f.law) && hits(s, ws));
+}
+const sel = (id, all, values, cur, counts) => `<select class="sel" id="${id}" aria-label="${esc(all)}"><option value="">${esc(all)}</option>${values.map(v=>`<option value="${esc(v)}"${cur===v?' selected':''}>${esc(tr(v))}${counts?` (${counts[v]||0})`:''}</option>`).join('')}</select>`;
+function pageSources(){
+  const S = DATA.sources;
+  const laws = uniq(S.filter(s=>!st.f.region||s.region===st.f.region).map(s=>s.law));
+  if(st.f.law && !laws.includes(st.f.law)) st.f.law='';
+  return listHead('file','Sources', `국내 원문 ${S.length}건`, '법령과 지침별로 묶었습니다. 행을 누르면 조문 원문, 해설, 공식 근거가 한 페이지로 열립니다.') + `
+  <section class="sec" style="padding-top:32px"><div class="wrap">
+    <div class="toolbar">
+      <label class="tsearch">${I('search')}<input id="sq" type="search" placeholder="${esc(L('조항, 키워드, 원문 문구로 찾기','Search clauses, keywords or text'))}" value="${esc(st.sq)}" aria-label="${esc(L('원문 검색','Search sources'))}"></label>
+      <div class="tgroup">
+        ${sel('f-region', '분야 전체', ["개인정보", "AI", "금융", "의료", "공공"], st.f.region, tally(S,s=>s.region))}
+        ${sel('f-status', '상태 전체', uniq(S.map(s=>s.status)), st.f.status, tally(S,s=>s.status))}
+        ${sel('f-stype', L('구분 전체','All types'), uniq(S.map(s=>s.type)), st.f.stype, tally(S,s=>s.type))}
+        ${sel('f-law', L(`법 전체 (${laws.length})`,`All laws (${laws.length})`), laws, st.f.law)}
+      </div>
+    </div>
+    <div id="slistWrap">${sourceList()}</div>
+  </div></section>`;
+}
+function sourceList(){
+  const list = filteredSources();
+  const groups = list.reduce((m,s)=>{ (m[s.law]=m[s.law]||[]).push(s); return m; }, {});
+  const active = ['region','status','stype','law'].some(k=>st.f[k]) || st.sq;
+  return `<div class="resbar"><span>${L(`${list.length}건 · 법 ${Object.keys(groups).length}개`,`${list.length} texts · ${Object.keys(groups).length} law${Object.keys(groups).length===1?"":"s"}`)}</span>${active?`<button class="reset" data-reset="region,status,stype,law,sq">${I('x')}${L('필터 초기화','Clear filters')}</button>`:''}</div>` +
+  (Object.entries(groups).map(([law, arr])=>`
+    <div class="sgroup">
+      <div class="sgroup-h"><span class="ico sm grey">${I(regIco(arr[0].region))}</span><h3>${esc(tr(law))}</h3><span class="kind">${esc(tr(arr[0].region))}</span><span class="c">${L(`${arr.length}건`,`${arr.length}`)}</span></div>
+      ${arr.map(s=>`<a class="srow" href="#src-${esc(s.id)}"><span class="num">${esc(s.id)}</span><span class="a">${esc(tr(s.article))}</span><span class="m"><span class="kind">${esc(tr(s.type))}</span>${stp(s.status)}<span class="d">${esc(tr(s.date))}</span></span></a>`).join('')}
+    </div>`).join('') || `<p class="empty">${L('조건에 맞는 원문이 없습니다. 필터를 풀어 보세요.','No matching source texts. Try clearing the filters.')}</p>`);
+}
+function pageSource(id){
+  const list = DATA.sources, i = list.findIndex(s=>s.id===id), s = list[i];
+  if(!s) return pageSources();
+  const texts = `<div class="texts one"><div class="text"><p class="lab">${I('file')}원문</p><p>${esc(s.ko)}</p></div></div>`;
+  const refs = `<div class="links">${s.refs.map(r=>{ const h=href(r.to); return `<a class="lk" href="${esc(h)}"${isExt(h)?' target="_blank" rel="noopener"':''}>${I(isExt(h)?'ext':'link')}${esc(tr(r.t))}</a>`; }).join('')}${s.clause?`<a class="lk" href="${esc(href(s.clause))}">${I('scale')}${L('조항 설명','Clause explanation')}: ${esc(tr(s.clauseName))}</a>`:''}</div>`;
+  return pageHead([[L('원문','Sources'),'#sources'],[s.id]], `<span class="ico grey">${I(regIco(s.region))}</span>`, `${tr(s.region)} · ${s.id}`, tr(s.article), tr(s.law),
+    `<span class="kind">${esc(tr(s.type))}</span>${stp(s.status)}<span class="kind">${I('cal')} 기준일 ${esc(tr(s.date))}</span>`) + `
+  <div class="wrap" style="padding-block:44px 80px;display:grid;gap:28px">
+    ${texts}
+    <div class="dbody" style="max-width:860px">
+      <div class="panel"><div class="panel-b">
+        ${blk('req','list',L('요구사항 해설','What it requires'),ul(s.req))}
+        ${blk('ctx','target',L('적용 맥락','Context'),ul(s.ctx))}
+        ${s.change.length?blk('chg','clock',L('변경 내용','Changes'),ul(s.change)):''}
+        ${blk('ref','link',L('공식 근거','Official references'),refs)}
+      </div></div>
+      ${prevNext(list, i, x=>'#src-'+x.id, x=>x.id+' · '+tr(x.article))}
+    </div>
+  </div>`;
+}
+
+/* ---------- global search ---------- */
+function search(q){
+  const ws = words(q);
+  if(!ws.length) return '';
+  const groups = [
+    [L('고객 상황','Customer situations'), DATA.cases, c=>[`#case-${c.id}`, `${c.id} · ${tr(c.customer)}`, tr(c.sector)]],
+    [L('제품 기능','Product features'), DATA.features, f=>[`#feat-${f.id}`, tr(f.name), f.product]],
+    [L('조항','Clauses'), DATA.clauses, c=>[`#clause-${c.id}`, tr(c.name), tr(c.req[0]||'')]],
+    [L('원문','Sources'), DATA.sources, s=>[`#src-${s.id}`, `${s.id} · ${tr(s.article)}`, tr(s.law)]],
+  ].map(([t,arr,fn])=>[t,arr.filter(o=>hits(o,ws)),fn]);
+  const html = groups.filter(g=>g[1].length).map(([t,arr,fn],gi)=>`<h4>${t} ${arr.length}</h4>${arr.slice(0,5).map(x=>{const [h,a,b]=fn(x);return `<a href="${h}">${esc(a)}<small>${esc(b)}</small></a>`;}).join('')}${arr===groups[3][1]&&arr.length>5?`<a href="#sources" data-sq="${esc(q)}"><b>${L(`원문 ${arr.length}건 모두 보기 →`,`See all ${arr.length} source texts →`)}</b></a>`:''}`).join('');
+  return html || `<div class="none">${L('검색 결과가 없습니다. 다른 조항명이나 키워드로 찾아보세요.','No results. Try another clause name or keyword.')}</div>`;
+}
+
+/* ---------- chrome ---------- */
+function renderChrome(view){
+  document.documentElement.lang = LANG;
+  $('#logoSub').textContent = '한국 규제와 제품 연결';
+  $('#menu').innerHTML = [['cases','users',L('고객 상황','Customers')],['products','box',L('제품','Products')],['clauses','scale',L('조항','Clauses')],['sources','file',L('원문','Sources')]]
+    .map(([v,ic,t])=>`<a href="#${v}" class="${v===view?'on':''}">${I(ic)}${t}</a>`).join('');
+  $('#gq').placeholder = L('조항, 제품, 키워드 검색','Search clauses, products, keywords');
+  $('#gq').setAttribute('aria-label', L('전체 검색','Search everything'));
+  $('#footNote').textContent = '고객 상황은 예시이며 실제 고객사가 아닙니다. 법 해석은 영업 설명용 요약이라 법률 자문을 대신하지 않습니다.';
+  document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.lang===LANG));
+}
+
+/* ---------- routing ---------- */
+let io;
+function route(keepScroll){
+  const h = decodeURIComponent(location.hash.slice(1)) || 'home';
+  let html, view = h, target = null;
+  if(h.startsWith('case-')){ html = pageCase(h.slice(5)); view='cases'; }
+  else if(h.startsWith('clause-')){ html = pageClause(h.slice(7)); view='clauses'; }
+  else if(h.startsWith('src-')){ html = pageSource(h.slice(4)); view='sources'; }
+  else if(h.startsWith('feat-') || h.startsWith('p-')){ html = pageProducts(); view='products'; target=h; }
+  else html = ({home:pageHome, cases:pageCases, products:pageProducts, clauses:pageClauses, sources:pageSources}[h] || pageHome)();
+  const y = window.scrollY;
+  $('#app').innerHTML = html;
+  renderChrome(view);
+  $('#results').hidden = true;
+  if(keepScroll){ window.scrollTo(0,y); }
+  else {
+    const el = target && document.getElementById(target);
+    if(el){ el.scrollIntoView({block:'start'}); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
+    else window.scrollTo(0,0);
+  }
+  setupToc();
+}
+function setupToc(){
+  if(io) io.disconnect();
+  const tocEl = $('#toc'); if(!tocEl || !('IntersectionObserver' in window)) return;
+  const links = [...tocEl.querySelectorAll('a[data-jump]')];
+  io = new IntersectionObserver(es=>{
+    es.forEach(e=>{ if(e.isIntersecting){ links.forEach(a=>a.classList.toggle('on', a.dataset.jump===e.target.id)); } });
+  }, {rootMargin:'-100px 0px -60% 0px'});
+  links.forEach(a=>{ const t=document.getElementById(a.dataset.jump); if(t) io.observe(t); });
+}
+
+document.addEventListener('click', e=>{
+  const lg = e.target.closest('[data-lang]');
+  if(lg){ LANG = lg.dataset.lang; try{ localStorage.setItem('ukeu-lang', LANG); }catch(_){} route(true); return; }
+  const j = e.target.closest('[data-jump]');
+  if(j){ e.preventDefault(); const el=document.getElementById(j.dataset.jump); if(el) el.scrollIntoView({block:'start', behavior:'smooth'}); return; }
+  const rs = e.target.closest('[data-reset]');
+  if(rs){ rs.dataset.reset.split(',').forEach(k=>{ if(k==='sq') st.sq=''; else st.f[k] = ['region','status','stype','law'].includes(k) ? '' : null; }); saveF(); route(true); return; }
+  const sq = e.target.closest('[data-sq]');
+  if(sq){ st.sq = sq.dataset.sq; ['region','status','stype','law'].forEach(k=>st.f[k]=''); }
+  const a = e.target.closest('a[href^="#"]');
+  if(a && a.getAttribute('href')===location.hash){ e.preventDefault(); route(); return; }
+  const c = e.target.closest('.chip[data-f]');
+  if(c){ st.f[c.dataset.f] = c.dataset.v || null; saveF(); route(true); return; }
+  if(!e.target.closest('.gsearch')) $('#results').hidden = true;
+});
+document.addEventListener('change', e=>{
+  const m = /^f-(region|status|stype|law)$/.exec(e.target.id||'');
+  if(m){ st.f[m[1]] = e.target.value; saveF(); route(true); }
+});
+let t1;
+document.addEventListener('input', e=>{
+  if(e.target.id==='sq'){ clearTimeout(t1); t1=setTimeout(()=>{ st.sq=e.target.value; $('#slistWrap').innerHTML = sourceList(); },120); }
+  if(e.target.id==='gq'){ const r=$('#results'); const html=search(e.target.value); r.innerHTML=html; r.hidden=!html; }
+});
+$('#gq').addEventListener('focus', e=>{ if(e.target.value.trim()) $('#results').hidden=false; });
+$('#gq').addEventListener('keydown', e=>{ if(e.key==='Escape'){ $('#results').hidden=true; e.target.blur(); } if(e.key==='Enter'){ const a=$('#results a'); if(a) location.hash=a.getAttribute('href'); } });
+window.addEventListener('hashchange', ()=>route());
+route();
+</script>
+
+</body>
+</html>
